@@ -1,0 +1,309 @@
+openapi: "3.0.2"
+info:
+  title: PreForm API
+  version: "1.0"
+servers:
+  - url: http://localhost:44388
+paths:
+  /scene:
+    get:
+      responses:
+        "200":
+          description: Scene description
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+    post:
+      description: "Create a new scene"
+      parameters: []
+      requestBody:
+        description: Machine type and material type selection
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - machineType
+                - materialCode
+                - printSetting
+                - sliceThickness
+              properties:
+                machineType:
+                  type: string
+                materialCode:
+                  type: string
+                printSetting:
+                  type: string
+                sliceThickness:
+                  type: number
+            example:
+              machineType: PILK-1-0
+              materialCode: FLP11B01
+              printSetting: DEFAULT
+              sliceThickness: 0.11
+      responses:
+        "200":
+          description: OK
+  /load-form/:
+    post:
+      description: "Load a file into the current scene"
+      parameters: []
+      requestBody:
+        description: Full path to the file to load
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              # $ref: '#/components/schemas/User'
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+            example:
+              file: "C:\\Users\\user\\Desktop\\test.form"
+      responses:
+        "200":
+          description: OK
+  /save-form/:
+    post:
+      description: "Save the current scene to a .FORM file"
+      parameters: []
+      requestBody:
+        description: Full path where the file should be saved
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+            example:
+              file: "C:\\Users\\user\\Desktop\\test.form"
+      responses:
+        "200":
+          description: OK
+  /import-model/:
+    post:
+      description: "Load a model into the current scene"
+      parameters: []
+      requestBody:
+        description: Full path to the file to load
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+            example:
+              file: "C:\\Users\\user\\Desktop\\test.stl"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  model_id:
+                    type: string
+                    description: ID of the imported model
+  /models/{id}/:
+    delete:
+      description: "Delete a model into the current scene"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the model
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /v1/slice/:
+    post:
+      description: "Slice the current scene"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - job_name
+              properties:
+                file:
+                  type: string
+                job_name:
+                  type: string
+      responses:
+        "200":
+          description: OK
+  /v1/print/:
+    post:
+      description: "Send the current scene to the printer"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              # $ref: '#/components/schemas/User'
+              type: object
+              required:
+                - printer
+                - job_name
+              properties:
+                printer:
+                  type: string
+                job_name:
+                  type: string
+            example:
+              printer_ip: "192.168.1.34"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    description: ID of the uploaded job
+  /auto-orient/:
+    post:
+      description: "Run auto orient operation"
+      parameters: []
+      requestBody:
+        description: Models to run the auto orient operation on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - models
+              properties:
+                models:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+            examples:
+              AllModels:
+                value:
+                  models: "ALL"
+              SpecificModels:
+                value:
+                  models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+      responses:
+        "200":
+          description: OK
+  /auto-support/:
+    post:
+      description: "Run auto support operation"
+      parameters: []
+      requestBody:
+        description: Models to run the auto support operation on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - models
+              properties:
+                models:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+            examples:
+              AllModels:
+                value:
+                  models: "ALL"
+              SpecificModels:
+                value:
+                  models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+      responses:
+        "200":
+          description: OK
+  /auto-layout/:
+    post:
+      description: "Run auto layout operation"
+      parameters: []
+      requestBody:
+        description: Models to run the auto layout operation on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - models
+              properties:
+                models:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+            examples:
+              AllModels:
+                value:
+                  models: "ALL"
+              SpecificModels:
+                value:
+                  models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Operation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+  /export/:
+    post:
+      description: "Export current scene as a STL"
+      parameters:
+        - name: outputPath
+          in: query
+          description: The path to the output file where the .STL will be saved
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  models:
+                    type: array
+                    items:
+                      type: string

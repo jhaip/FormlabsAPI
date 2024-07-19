@@ -1,0 +1,38 @@
+#app {
+  position: relative; }
+
+.title {
+  font-weight: 900;
+  font-size: 1.4em;
+  border-bottom: 1px black; }
+
+.editor-panel {
+  position: fixed;
+  left: 0;
+  height: 100%;
+  overflow: auto;
+  background-color: #ffffff;
+  box-shadow: 0 10px 10px #888;
+  padding: 8px; }
+  .editor-panel label {
+    display: block;
+    margin: 8px 0 4px;
+    font-weight: 600;
+    font-size: 1em; }
+  .editor-panel ul {
+    padding: 0;
+    margin: 0; }
+  .editor-panel .editor-section {
+    margin-top: 18px; }
+    .editor-panel .editor-section > label {
+      display: block;
+      margin-bottom: 6px; }
+
+.param-line {
+  display: flex; }
+
+.batch-editor-panel {
+  width: 300px; }
+
+.main-editor-panel {
+  width: 300px; }

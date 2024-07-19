@@ -1,0 +1,1424 @@
+openapi: "3.0.2"
+info:
+  title: Formlabs API
+  version: "0.2.0"
+  termsOfService: https://formlabs.com/terms-of-service/
+servers:
+  - url: http://localhost:44388
+tags:
+  - name: Devices
+    description: "Operations related to Formlabs devices"
+  - name: Modifying a Scene
+    description: "Operations related to modifying the scene"
+  - name: Getting Scene Information
+    description: "Operations related to getting information about a scene"
+  - name: Exporting
+  - name: Printing
+  - name: Authentication
+    description: "Operations related to authentication with Formlabs web services."
+  - name: Internal
+    description: "Operations related to authentication with Formlabs web services."
+  - name: Print Settings
+    description: "Operations related to getting available print settings."
+  - name: Tasks
+    description: "Operations related to asynchronous tasks."
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Unique and stable string identifying this error, e.g. "PRINTER_IP_NOT_FOUND"
+            message:
+              type: string
+              description: Human-readable english string describing the error, e.g. "The printer at IP address 10.34.0.1 could not be found"
+    ModelsSelectionModel:
+      oneOf:
+        - type: string
+          title: "Select all models"
+          pattern: "ALL"
+        - type: array
+          title: "Apply to a list of specific models"
+          items:
+            type: string
+      default: "ALL"
+    ScenePositionModel:
+      type: object
+      description: The global position within the build volume of a printer of the model in the scene
+      properties:
+        x:
+          type: number
+          description: X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer.
+        y:
+          type: number
+          description: Y-position, with 0 at the center of the print volume and positive values moving away from you as you face the printer.
+        z:
+          type: number
+          description: Vertical position of the model, with 0 at the bottom of the build platform.
+    OrientationModel:
+      type: object
+      description: >
+        The orientation of the model in the scene.
+        It can be specified using one of the following:
+        Euler angles, a transform matrix, or direction vectors.
+      oneOf:
+        - $ref: '#/components/schemas/EulerAnglesModel'
+        - $ref: '#/components/schemas/TransformMatrixModel'
+        - $ref: '#/components/schemas/DirectionVectorsModel'
+    EulerAnglesModel:
+      type: object
+      description: Orientation specified using Euler angles in radians. TODO applied in what order, in which direction? What axis has worst gimbal lock?
+      properties:
+        x:
+          type: number
+          description: Euler angle x rotation
+        y:
+          type: number
+          description: Euler angle y rotation
+        z:
+          type: number
+          description: Euler angle z rotation
+      required:
+        - x
+        - y
+        - z
+    TransformMatrixModel:
+      type: object
+      description: Orientation specified a 3x3 matrix, the linear component of a 3D rigid transform.
+      properties: 
+        linear:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            minItems: 3
+            maxItems: 3
+          minItems: 3
+          maxItems: 3
+      required:
+        - linear
+    DirectionVectorsModel:
+      type: object
+      properties:
+        z_direction:
+          type: array
+          description: >
+            3D unit vector in model space saying which piece of the model will point "up" in scene space.
+            If "X direction" is not set, X direction is chosen arbitrarily by projecting the nearest major
+            axis to be perpendicular to Z direction.
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        x_direction:
+          type: array
+          description: >
+            Optional 3D unit vector in model space, perpendicular to Z direction, saying which piece of the
+            model will point "right" in scene space.
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+      required:
+        - z_direction
+    UnitsModel:
+      type: string
+      description: The units of the model
+      enum:
+      - MILLIMETERS
+      - INCHES
+    ImportUnitsModel:
+      type: string
+      description: The units of the model
+      default: DETECTED
+      enum:
+      - DETECTED
+      - MILLIMETERS
+      - INCHES
+    ModelProperties:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the model
+        name:
+          type: string
+          description: The name of the model used within job preparation.
+        position:
+          $ref: '#/components/schemas/ScenePositionModel'
+        orientation:
+          $ref: '#/components/schemas/EulerAnglesModel'
+        scale:
+          type: number
+          description: The scale factor to apply to the model
+        units:
+          $ref: '#/components/schemas/UnitsModel'
+        bbox:
+          type: object
+          properties:
+            min_corner:
+              $ref: '#/components/schemas/ScenePositionModel'
+            max_corner:
+              $ref: '#/components/schemas/ScenePositionModel'
+        original_file:
+          type: string
+          description: The original file path of the model
+        visible:
+          type: boolean
+          description: Whether the model is visible in the scene
+        has_supports:
+          type: boolean
+          description: Whether the model has supports
+        in_bounds:
+          type: boolean
+          description: Whether the model is within the build volume
+    PrintingTargetModel:
+      oneOf:
+        - type: string
+          title: "Printer: by IP Address"
+        - type: string
+          title: "Printer: by Serial Name"
+        - type: string
+          title: "Virtual Printer"
+          enum:
+          - "Virtual Form 3"
+          - "Virtual Form 3B"
+          - "Virtual Form 3L"
+          - "Virtual Form 3BL"
+          - "Virtual Form 4"
+          - "Virtual Form 4B"
+          - "Virtual Form 4L"
+          - "Virtual Form 4BL"
+          - "Virtual Form 2"
+          - "Virtual Fuse 1"
+          - "Virtual Fuse 1+ 10W"
+          - "Virtual Fuse 1+ 30W"
+    SceneTypeModel:
+      type: object
+      required:
+        - printer
+        - material_code
+      properties:
+        printer:
+          $ref: '#/components/schemas/PrintingTargetModel'
+        material_code:
+          type: string
+          oneOf:
+            - type: string
+              title: "Use printer's current material"
+              pattern: "DETECTED"
+            - type: string
+              title: "Material code"
+          default: "DETECTED"
+        print_setting:
+          type: string
+        layer_thickness:
+          oneOf:
+            - type: string
+              title: "Layer thickness in millimeters"
+            - type: string
+              pattern: "ADAPTIVE"
+              title: "Adaptive Layer Thickness"
+          type: string
+    SceneModel:
+      type: object
+      properties:
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelProperties'
+        scene_type:
+          $ref: '#/components/schemas/SceneTypeModel'
+        materials:
+          oneOf:
+            - type: object
+              title: "SLA"
+              properties:
+                volume_ml: 
+                  type: number
+                unsupported_volume_ml:
+                  type: number
+            - type: object
+              title: "SLS"
+              properties:
+                total_powder_kg: 
+                  type: number
+                total_fused_powder:
+                  type: number
+                total_unfused_powder:
+                  type: number
+                packing_density:
+                  type: number
+        layers:
+          type: number
+    WebAuthTokensModel:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The access token for the user
+        refresh_token:
+          type: string
+          description: The refresh token for the user
+    EstimatedPrintTimeModel:
+      oneOf:
+        - type: object
+          title: "SLA"
+          properties:
+            printing_time_s:
+              type: number
+        - type: object
+          title: "SLS"
+          properties:
+            preheat_time_s:
+              type: number
+            printing_time_s:
+              type: number
+            cooldown_time_s:
+              type: number
+    PrintValidationResultModel:
+      type: object
+      properties:
+        num_cups:
+          type: number
+          description: The number of detected cup errors
+        num_unsupported_minima:
+          type: number
+          description: The number of detected unsupported minima errors
+        undersupported:
+          type: boolean
+          description: Whether the print is undersupported
+        has_seamline:
+          type: boolean
+          description: Whether the print has a seamline
+        errors:
+          type: array
+          items:
+            type: string
+          description: A list of errors that occurred during print validation
+        warnings:
+          type: array
+          items:
+            type: string
+          description: A list of warnings that occurred during print validation
+    DeviceStatusModel:
+      type: object
+      properties:
+        serial:
+          type: string
+          description: Serial name of the device
+        product_name:
+          type: string
+          description: Product name of the device (e.g. Form 3)
+        firmware_version:
+          type: string
+          description: Firmware version of the device
+        connection_type:
+          type: string
+          description: Type of connection used to communicate with the device
+          enum:
+          - "USB"
+          - "ETHERNET"
+          - "WIFI"
+          - "REMOTE"
+          - "UNKNOWN"
+        status:
+          type: object
+          properties:
+            status:
+              type: string
+              description: The current status of the device
+            last_modified:
+              type: string
+              format: date-time
+              description: The last time the printer status update was received
+            is_remote_print_enabled:
+              type: boolean
+            consumables:
+              type: array
+              items:
+                oneOf:
+                  - type: object
+                    title: "SLA Cartridge"
+                    properties:
+                      id:
+                        type: string
+                      material_code:
+                        type: string
+                      original_volume_ml:
+                        type: number
+                      estimated_volume_dispensed_ml:
+                        type: number
+                  - type: object
+                    title: "SLA Tank"
+                    properties:
+                      id:
+                        type: string
+                      material_code:
+                        type: string
+                  - type: object
+                    title: "SLS Cylinder"
+                    properties:
+                      serial:
+                        type: string
+                  - type: object
+                    title: "SLS Hopper"
+                    properties:
+                      powderLevel:
+                        type: string
+            estimated_total_print_time_ms:
+              type: number
+            estimated_print_time_remaining_ms:
+              type: number
+    RepairBehaviorModel:
+      type: string
+      description: The behavior to use when loading a broken model
+      default: "IGNORE"
+      enum:
+      - "REPAIR"
+      - "ERROR"
+      - "IGNORE"
+    PrintSettingModel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the print setting
+        display_name:
+          type: string
+          description: "The name of the setting for display purposes. Example: Form 3/3+ Draft V2 0.1mm Default"
+        description:
+          type: string
+          description: "A description of the print setting. Example: Fast print speed for same-day iterations"
+        learn_more_url:
+          type: string
+          description: "A URL to learn more about the print setting"
+        layer_thickness_mm:
+          type: string
+          description: "The layer thickness of the print setting. Example: 0.1"
+        material_code:
+          type: string
+          description: The material code of the print setting
+        setting_name:
+          type: string
+          description: "The name of the print setting. Print Settings control print speed, support tip shape, and other aspects of print performance."
+        setting_description:
+          type: string
+          description: "A description of the setting. Example: Updated settings that improve support removal and print 20 - 40% faster than Legacy settings."
+        printer_type:
+          type: string
+          description: "The type of printer the setting is for. Example: Form 3/3+"
+paths:
+  /scene:
+    get:
+      description: "Get a scene's properties"
+      tags: 
+        - "Getting Scene Information"
+      responses:
+        "200":
+          description: Scene description
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SceneModel'
+    post:
+      description: "Create a new scene"
+      tags:
+        - "Modifying a Scene"
+      parameters: []
+      requestBody:
+        description: Create a scene with a given printing setup
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SceneTypeModel'
+            example:
+              printer: "Virtual Fuse 1+ 30W"
+              material_code: FLP11B01
+              print_setting: DEFAULT
+              layer_thickness: "0.11"
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/models/{id}/:
+    get:
+      description: "Get a model's properties"
+      tags:
+        - "Getting Scene Information"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the model
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Model description
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelProperties'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    patch:
+      description: "Update a model's properties"
+      tags:
+        - "Modifying a Scene"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the model
+          schema:
+            type: string
+      requestBody:
+        description: Model properties to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the model used within job preparation.
+                position:
+                  $ref: '#/components/schemas/ScenePositionModel'
+                orientation:
+                  $ref: '#/components/schemas/OrientationModel'
+                scale:
+                  type: number
+                  description: The scale factor to apply to the model
+                units:
+                  $ref: '#/components/schemas/UnitsModel'
+            examples:
+              ChangePosition:
+                value:
+                  position:
+                    x: 10
+                    y: 1
+                    z: 2
+              FullInput:
+                value:
+                  name: "New name"
+                  position:
+                    x: 10
+                    y: 1
+                    z: 2
+                  orientation:
+                    x: 50
+                    y: 2
+                    z: 39
+                  scale: 0.5
+                  units: "MILLIMETERS"
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: "Delete a model into the current scene"
+      tags:
+        - "Modifying a Scene"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the model
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /scene/models/{id}/duplicate:
+    post:
+      description: "Duplicate a model"
+      tags:
+        - "Modifying a Scene"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the model
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: Number of duplicates to create
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  new_model_ids:
+                    type: array
+                    items:
+                      type: string
+                    description: The unique identifiers of the new models
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/models/{id}/replace:
+    post:
+      description: "Replace a model currently in the scene with a new model, copying the existing models setup"
+      tags:
+        - "Modifying a Scene"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the model
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: Full path to the file to load
+                repair_behavior:
+                  $ref: '#/components/schemas/RepairBehaviorModel'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  model_id:
+                    type: string
+                    description: ID of the imported model
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/load-form/:
+    post:
+      description: "Load a file into the current scene"
+      tags:
+        - "Modifying a Scene"
+      parameters: []
+      requestBody:
+        description: Full path to the file to load
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  pattern: "^.+\\.form$"
+            example:
+              file: "C:\\Users\\user\\Desktop\\test.form"
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/save-form/:
+    post:
+      description: "Save the current scene to a .FORM file"
+      tags:
+        - "Exporting"
+      parameters: []
+      requestBody:
+        description: Full path where the file should be saved
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+            example:
+              file: "C:\\Users\\user\\Desktop\\test.form"
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/import-model/:
+    post:
+      description: "Load a model into the current scene"
+      tags:
+        - "Modifying a Scene"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  description: Full path to the file to load
+                repair_behavior:
+                  $ref: '#/components/schemas/RepairBehaviorModel'
+                name:
+                  type: string
+                  description: The name of the model used within job preparation.
+                position:
+                  $ref: '#/components/schemas/ScenePositionModel'
+                orientation:
+                  $ref: '#/components/schemas/OrientationModel'
+                scale:
+                  type: number
+                  default: 1
+                  description: The scale factor to apply to the model
+                units:
+                  $ref: '#/components/schemas/ImportUnitsModel'
+            examples:
+              MinimalInput:
+                value:
+                  file: "C:\\Users\\user\\Desktop\\test.stl"
+              FullInput:
+                value:
+                  file: "C:\\Users\\user\\Desktop\\test.stl"
+                  repair_behavior: "REPAIR"
+                  name: "Test Model"
+                  position:
+                    x: 10
+                    y: 1
+                    z: 2
+                  orientation:
+                    x: 50
+                    y: 2
+                    z: 39
+                  scale: 0.5
+                  units: "MILLIMETERS"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  model_id:
+                    type: string
+                    description: ID of the imported model
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/slice/:
+    post:
+      description: "Slice and save result locally"
+      tags:
+        - "Printing"
+        - "Internal"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  description: File to save the sliced result to
+                job_name:
+                  type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/print/:
+    post:
+      description: "Slice and upload"
+      tags:
+        - "Printing"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - printer
+              properties:
+                printer:
+                  type: string
+                  description: Printer serial name, IP address, or Fleet Control Queue ID
+                job_name:
+                  type: string
+                print_now:
+                  type: boolean
+                  description: Whether to add the job to the printer queue or print immediately after upload
+                account_label:
+                  type: string
+                  description: The account label to use for the print job
+                async:
+                  type: boolean
+                  description: If true, return immediately with a task ID. Otherwise wait for the operation to complete.
+                  default: false
+            examples:
+              Minimal:
+                value:
+                  printer: "192.168.1.2"
+              Full:
+                value:
+                  printer: "TestyTest"
+                  job_name: "Test Job"
+                  print_now: true
+                  account_label: "Test Account"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    title: "Default"
+                    properties:
+                      job_id:
+                        type: string
+                        description: ID of the uploaded job
+                  - type: object
+                    title: "Async"
+                    properties:
+                      task_id:
+                        type: string
+                        description: ID of the printing task
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/auto-orient/:
+    post:
+      description: "Run auto orient operation"
+      tags:
+        - "Modifying a Scene"
+      parameters: []
+      requestBody:
+        description: Models to run the auto orient operation on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - models
+              properties:
+                models:
+                  $ref: '#/components/schemas/ModelsSelectionModel'
+            examples:
+              AllModels:
+                value:
+                  models: "ALL"
+              SpecificModels:
+                value:
+                  models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/auto-support/:
+    post:
+      description: "Run auto support operation"
+      tags:
+        - "Modifying a Scene"
+      parameters: []
+      requestBody:
+        description: Models to run the auto support operation on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - models
+              properties:
+                models:
+                  $ref: '#/components/schemas/ModelsSelectionModel'
+                raft_type:
+                  type: string
+                  description: The type of raft to apply to the models
+                  enum:
+                  - "FULL_RAFT"
+                  - "MINI_RAFTS"
+                  - "NONE"
+                raft_label_enabled:
+                  type: boolean
+                  description: Whether to enable raft labeling
+                breakaway_structure_enabled:
+                  type: boolean
+                  description: Whether to enable breakaway structure
+                density:
+                  type: number
+                  description: The density of the supports
+                  minimum: 0
+                touchpoint_size_mm:
+                  type: number
+                  description: The size of the touchpoints
+                  minimum: 0
+                internal_supports_enabled:
+                  type: boolean
+                  description: Whether to enable internal supports
+                raft_thickness_mm:
+                  type: number
+                  description: The thickness of the raft
+                  minimum: 0
+                slope_multiplier:
+                  type: number
+                  description: The slope multiplier
+                  minimum: 0
+                height_above_raft_mm:
+                  type: number
+                  minimum: 0
+                z_compression_correction_mm:
+                  type: number
+                  minimum: 0
+                early_layer_merge_mm:
+                  type: number
+                  minimum: 0
+                support_structure_override:
+                  type: string
+                  description: Override the default support structure type
+                  enum:
+                  - "NONE"
+                  - "LATTICE"
+            examples:
+              AllModels:
+                value:
+                  models: "ALL"
+              SpecificModels:
+                value:
+                  models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/auto-layout/:
+    post:
+      description: "Run auto layout operation"
+      tags:
+        - "Modifying a Scene"
+      parameters: []
+      requestBody:
+        description: Models to run the auto layout operation on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - models
+              properties:
+                models:
+                  $ref: '#/components/schemas/ModelsSelectionModel'
+                model_spacing_mm:
+                  type: number
+                  description: Minimum (non-zero) distance between models in the scene.
+                  minimum: 0
+                overlapping_rafts:
+                  type: boolean
+                  description: Whether to allow rafts to overlap.
+                rotation_restriction:
+                  type: string
+                  description: The rotation restriction to apply to the models.
+                  enum:
+                  - "NoRestriction"
+                  - "OnlyAroundZ"
+                  - "LockRotation"
+                build_platform_2_optimized:
+                  type: boolean
+                  description: Whether to optimize the build platform for two models.
+            examples:
+              AllModels:
+                value:
+                  models: "ALL"
+              SpecificModels:
+                value:
+                  models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+              WithAutoLayoutParameters:
+                value:
+                  models: "ALL"
+                  model_spacing_mm: 2
+                  overlapping_rafts: true
+                  rotation_restriction: "LockRotation"
+                  build_platform_2_optimized: true
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: |
+            ## Bad Request
+
+            The scene will not be modified if any error occurs. The response will contain an error message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/export/:
+    post:
+      description: "Export current scene as a STL"
+      tags:
+        - "Exporting"
+        - "Internal"
+      parameters: []
+      requestBody:
+        description: Full path where the .STL file should be saved
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/save-screenshot/:
+    post:
+      description: "Save a screenshot the current scene."
+      tags:
+        - "Exporting"
+      parameters: []
+      requestBody:
+        description: Full path where the image should be saved
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                view_type:
+                  type: string
+                  description: The type of view to use when taking the screenshot
+                  enum:
+                  - "ZOOM_ON_MODELS"
+                  - "FULL_BUILD_VOLUME"
+                  - "FULL_PLATFORM_WIDTH"
+                  default: "ZOOM_ON_MODELS"
+                selected_models:
+                  $ref: '#/components/schemas/ModelsSelectionModel'
+            examples:
+              Minimal:
+                value:
+                  file: "C:\\Users\\user\\Desktop\\screenshot.png"
+              FullOptions:
+                value:
+                  file: "C:\\Users\\user\\Desktop\\screenshot.png"
+                  view_type: "FULL_BUILD_VOLUME"
+                  selected_models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/estimate-print-time/:
+    get:
+      description: "Calculate the estimate print time for the current scene"
+      tags:
+        - "Getting Scene Information"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimatedPrintTimeModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/print-validation/:
+    get:
+      description: "Calculate the print validation for the current scene"
+      tags:
+        - "Getting Scene Information"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrintValidationResultModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /login:
+    post:
+      description: "Log in to Formlabs Web Services"
+      tags:
+        - "Authentication"
+      requestBody:
+        description: User credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  title: "Username and password"
+                  required:
+                    - username
+                    - password
+                  properties:
+                    username:
+                      type: string
+                    password:
+                      type: string
+                - type: object
+                  title: "Access token"
+                  required:
+                    - access_token
+                  properties:
+                    access_token:
+                      type: string
+            examples:
+              UsernameAndPassword:
+                value:
+                  username: "username"
+                  password: "password"
+              AccessToken:
+                value:
+                  access_token: "EXAMPLE_ACCESS_TOKEN"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebAuthTokensModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /devices/:
+    get:
+      description: "List available device statuses"
+      tags:
+        - "Devices"
+      parameters:
+        - name: matches_material_code
+          in: query
+          schema:
+            type: string
+        - name: matches_layer_thickness_mm
+          in: query
+          schema:
+            type: string
+        - name: matches_print_setting
+          in: query
+          schema:
+            type: string
+        - name: matches_printer_type
+          in: query
+          schema:
+            $ref: "#/components/schemas/PrintingTargetModel"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Number of discovered devices
+                  devices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeviceStatusModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /devices/{id}/:
+    get:
+      description: "Get device status"
+      tags:
+        - "Devices"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the printer
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceStatusModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /discover-devices/:
+    post:
+      description: "Discover devices on the network"
+      tags:
+        - "Devices"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeout_seconds:
+                  type: integer
+                  description: Number of seconds to wait when discovering devices
+                ip_address:
+                  type: string
+                  description: "Local network IP address to attempt to discover a device at"
+            examples:
+              DiscoverAllWithTimeout:
+                value:
+                  timeout_seconds: 10
+              DiscoverAtSpecificIP:
+                value:
+                  ip_address: "192.168.1.10"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Number of newly discovered devices
+                  devices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeviceStatusModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /print-settings/:
+    get:
+      description: "Get available printing settings"
+      tags:
+        - "Print Settings"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                printer:
+                  $ref: '#/components/schemas/PrintingTargetModel'
+                  description: ID of the printer to list compatible print settings for
+            examples:
+              PrinterSerialName:
+                value:
+                  printer: "TestyTest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  settings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PrintSettingModel'
+              examples:
+                Form3Materials:
+                  value:
+                    settings:
+                      - display_name: "Form 3/3+ Draft V2 0.2mm Default"
+                        description: "Fast print speed for same-day iterations"
+                        learn_more_url: "https://dental.formlabs.com/store/materials/draft-v2-resin/"
+                        layer_thickness_mm: "0.2"
+                        material_code: "FLDRGR02"
+                        setting_name: "Default"
+                        setting_description: "Updated settings that improve support removal and print 20 - 40% faster than Legacy settings."
+                        printer_type: "Form 3/3+"
+                      - display_name: "Form 3/3+ Draft V2 0.1mm Default"
+                        description: "Fast print speed for same-day iterations"
+                        learn_more_url: "https://dental.formlabs.com/store/materials/draft-v2-resin/"
+                        layer_thickness_mm: "0.1"
+                        material_code: "FLDRGR02"
+                        setting_name: "Default"
+                        setting_description: "Updated settings that improve support removal and print 20 - 40% faster than Legacy settings."
+                        printer_type: "Form 3/3+"
+                  
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /tasks/{id}/:
+    get:
+      description: "Get the status of a task"
+      tags:
+        - "Tasks"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the task
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: The current status of the task
+                    enum:
+                    - "UNFINISHED"
+                    - "SUCCEEDED"
+                    - "FAILED"
+                    - "CANCELED"
+                  progress:
+                    type: number
+                    description: The progress of the task as a decimal between 0 and 1
+                    minimum: 0
+                    maximum: 1
+                  result:
+                    type: object
+                    description: The result of the task, if it has completed
+                    additionalProperties: true
+              examples:
+                UnfinishedTask:
+                  value:
+                    status: "UNFINISHED"
+                    progress: 0.5
+                SucceededTask:
+                  value:
+                    status: "SUCCEEDED"
+                    progress: 1
+                    result: {"job_id": "0000537c-9ae2-426a-82ee-a007191a8fb5"}
+                FailedTask:
+                  value:
+                    status: "FAILED"
+                    progress: 0.5
+                    result: {"error": "Printer disconnected during operation."}
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'

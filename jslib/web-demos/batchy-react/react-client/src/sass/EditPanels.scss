@@ -1,0 +1,57 @@
+@import "Global.scss";
+
+#app {
+  position: relative;
+}
+
+.title {
+  font-weight: 900;
+  font-size: 1.4em;
+  border-bottom: 1px black;
+}
+
+.editor-panel {
+  position: fixed;
+  left: 0;
+  //top: 0;
+  //bottom: 0;
+  height: 100%;
+  overflow: auto;
+  background-color: #ffffff;
+  box-shadow: 0 10px 10px #888;
+  padding: $editor-panel-padding;
+
+  label {
+    display: block;
+    margin: 8px 0 4px;
+    font-weight: 600;
+    font-size: 1em;  
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  .editor-section {
+    margin-top: 18px;
+
+    > label {
+      display: block;
+      margin-bottom: 6px;
+    }
+  }
+}
+
+.param-line {
+  display: flex;
+}
+
+.batch-editor-panel {
+  width: $batch-editor-width;
+  // padding-left: 15px;
+}
+
+.main-editor-panel {
+  width: $main-editor-width;
+}
