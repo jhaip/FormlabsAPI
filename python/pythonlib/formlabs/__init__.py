@@ -34,9 +34,22 @@ from formlabs.exceptions import ApiException
 from formlabs.models.auto_layout_post500_response import AutoLayoutPost500Response
 from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
 from formlabs.models.auto_orient_post_request_models import AutoOrientPostRequestModels
+from formlabs.models.direction_vectors_model import DirectionVectorsModel
+from formlabs.models.error_model import ErrorModel
+from formlabs.models.error_model_error import ErrorModelError
+from formlabs.models.euler_angles_model import EulerAnglesModel
 from formlabs.models.export_post200_response import ExportPost200Response
-from formlabs.models.import_model_post200_response import ImportModelPost200Response
+from formlabs.models.import_units_model import ImportUnitsModel
+from formlabs.models.model_properties import ModelProperties
+from formlabs.models.model_properties_bbox import ModelPropertiesBbox
+from formlabs.models.orientation_model import OrientationModel
+from formlabs.models.repair_behavior_model import RepairBehaviorModel
+from formlabs.models.scene_import_model_post200_response import SceneImportModelPost200Response
+from formlabs.models.scene_import_model_post_request import SceneImportModelPostRequest
+from formlabs.models.scene_position_model import ScenePositionModel
 from formlabs.models.scene_post_request import ScenePostRequest
+from formlabs.models.transform_matrix_model import TransformMatrixModel
+from formlabs.models.units_model import UnitsModel
 from formlabs.models.v1_print_post200_response import V1PrintPost200Response
 
 # START SECTION OF CODE ADDED BY FORMLABS

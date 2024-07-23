@@ -16,9 +16,22 @@ import ApiClient from './ApiClient';
 import AutoLayoutPost500Response from './model/AutoLayoutPost500Response';
 import AutoOrientPostRequest from './model/AutoOrientPostRequest';
 import AutoOrientPostRequestModels from './model/AutoOrientPostRequestModels';
+import DirectionVectorsModel from './model/DirectionVectorsModel';
+import ErrorModel from './model/ErrorModel';
+import ErrorModelError from './model/ErrorModelError';
+import EulerAnglesModel from './model/EulerAnglesModel';
 import ExportPost200Response from './model/ExportPost200Response';
-import ImportModelPost200Response from './model/ImportModelPost200Response';
+import ImportUnitsModel from './model/ImportUnitsModel';
+import ModelProperties from './model/ModelProperties';
+import ModelPropertiesBbox from './model/ModelPropertiesBbox';
+import OrientationModel from './model/OrientationModel';
+import RepairBehaviorModel from './model/RepairBehaviorModel';
+import SceneImportModelPost200Response from './model/SceneImportModelPost200Response';
+import SceneImportModelPostRequest from './model/SceneImportModelPostRequest';
+import ScenePositionModel from './model/ScenePositionModel';
 import ScenePostRequest from './model/ScenePostRequest';
+import TransformMatrixModel from './model/TransformMatrixModel';
+import UnitsModel from './model/UnitsModel';
 import V1PrintPost200Response from './model/V1PrintPost200Response';
 import DefaultApi from './api/DefaultApi';
 
@@ -80,22 +93,100 @@ export {
     AutoOrientPostRequestModels,
 
     /**
+     * The DirectionVectorsModel model constructor.
+     * @property {module:model/DirectionVectorsModel}
+     */
+    DirectionVectorsModel,
+
+    /**
+     * The ErrorModel model constructor.
+     * @property {module:model/ErrorModel}
+     */
+    ErrorModel,
+
+    /**
+     * The ErrorModelError model constructor.
+     * @property {module:model/ErrorModelError}
+     */
+    ErrorModelError,
+
+    /**
+     * The EulerAnglesModel model constructor.
+     * @property {module:model/EulerAnglesModel}
+     */
+    EulerAnglesModel,
+
+    /**
      * The ExportPost200Response model constructor.
      * @property {module:model/ExportPost200Response}
      */
     ExportPost200Response,
 
     /**
-     * The ImportModelPost200Response model constructor.
-     * @property {module:model/ImportModelPost200Response}
+     * The ImportUnitsModel model constructor.
+     * @property {module:model/ImportUnitsModel}
      */
-    ImportModelPost200Response,
+    ImportUnitsModel,
+
+    /**
+     * The ModelProperties model constructor.
+     * @property {module:model/ModelProperties}
+     */
+    ModelProperties,
+
+    /**
+     * The ModelPropertiesBbox model constructor.
+     * @property {module:model/ModelPropertiesBbox}
+     */
+    ModelPropertiesBbox,
+
+    /**
+     * The OrientationModel model constructor.
+     * @property {module:model/OrientationModel}
+     */
+    OrientationModel,
+
+    /**
+     * The RepairBehaviorModel model constructor.
+     * @property {module:model/RepairBehaviorModel}
+     */
+    RepairBehaviorModel,
+
+    /**
+     * The SceneImportModelPost200Response model constructor.
+     * @property {module:model/SceneImportModelPost200Response}
+     */
+    SceneImportModelPost200Response,
+
+    /**
+     * The SceneImportModelPostRequest model constructor.
+     * @property {module:model/SceneImportModelPostRequest}
+     */
+    SceneImportModelPostRequest,
+
+    /**
+     * The ScenePositionModel model constructor.
+     * @property {module:model/ScenePositionModel}
+     */
+    ScenePositionModel,
 
     /**
      * The ScenePostRequest model constructor.
      * @property {module:model/ScenePostRequest}
      */
     ScenePostRequest,
+
+    /**
+     * The TransformMatrixModel model constructor.
+     * @property {module:model/TransformMatrixModel}
+     */
+    TransformMatrixModel,
+
+    /**
+     * The UnitsModel model constructor.
+     * @property {module:model/UnitsModel}
+     */
+    UnitsModel,
 
     /**
      * The V1PrintPost200Response model constructor.

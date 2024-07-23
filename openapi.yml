@@ -4,6 +4,159 @@ info:
   version: "1.0"
 servers:
   - url: http://localhost:44388
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Unique and stable string identifying this error, e.g. "PRINTER_IP_NOT_FOUND"
+            message:
+              type: string
+              description: Human-readable english string describing the error, e.g. "The printer at IP address 10.34.0.1 could not be found"
+    ScenePositionModel:
+      type: object
+      description: The global position within the build volume of a printer of the model in the scene
+      properties:
+        x:
+          type: number
+          description: X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer.
+        y:
+          type: number
+          description: Y-position, with 0 at the center of the print volume and positive values moving away from you as you face the printer.
+        z:
+          type: number
+          description: Vertical position of the model, with 0 at the bottom of the build platform.
+    OrientationModel:
+      type: object
+      description: >
+        The orientation of the model in the scene.
+        It can be specified using one of the following:
+        Euler angles, a transform matrix, or direction vectors.
+      oneOf:
+        - $ref: '#/components/schemas/EulerAnglesModel'
+        - $ref: '#/components/schemas/TransformMatrixModel'
+        - $ref: '#/components/schemas/DirectionVectorsModel'
+    EulerAnglesModel:
+      type: object
+      description: Orientation specified using Euler angles in radians. TODO applied in what order, in which direction? What axis has worst gimbal lock?
+      properties:
+        x:
+          type: number
+          description: Euler angle x rotation
+        y:
+          type: number
+          description: Euler angle y rotation
+        z:
+          type: number
+          description: Euler angle z rotation
+      required:
+        - x
+        - y
+        - z
+    TransformMatrixModel:
+      type: object
+      description: Orientation specified a 3x3 matrix, the linear component of a 3D rigid transform.
+      properties: 
+        linear:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+            minItems: 3
+            maxItems: 3
+          minItems: 3
+          maxItems: 3
+      required:
+        - linear
+    DirectionVectorsModel:
+      type: object
+      properties:
+        z_direction:
+          type: array
+          description: >
+            3D unit vector in model space saying which piece of the model will point "up" in scene space.
+            If "X direction" is not set, X direction is chosen arbitrarily by projecting the nearest major
+            axis to be perpendicular to Z direction.
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        x_direction:
+          type: array
+          description: >
+            Optional 3D unit vector in model space, perpendicular to Z direction, saying which piece of the
+            model will point "right" in scene space.
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+      required:
+        - z_direction
+    UnitsModel:
+      type: string
+      description: The units of the model
+      enum:
+      - MILLIMETERS
+      - INCHES
+    ImportUnitsModel:
+      type: string
+      description: The units of the model
+      default: DETECTED
+      enum:
+      - DETECTED
+      - MILLIMETERS
+      - INCHES
+    ModelProperties:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the model
+        name:
+          type: string
+          description: The name of the model used within job preparation.
+        position:
+          $ref: '#/components/schemas/ScenePositionModel'
+        orientation:
+          $ref: '#/components/schemas/EulerAnglesModel'
+        scale:
+          type: number
+          description: The scale factor to apply to the model
+        units:
+          $ref: '#/components/schemas/UnitsModel'
+        bbox:
+          type: object
+          properties:
+            min_corner:
+              $ref: '#/components/schemas/ScenePositionModel'
+            max_corner:
+              $ref: '#/components/schemas/ScenePositionModel'
+        original_file:
+          type: string
+          description: The original file path of the model
+        visible:
+          type: boolean
+          description: Whether the model is visible in the scene
+        has_supports:
+          type: boolean
+          description: Whether the model has supports
+        in_bounds:
+          type: boolean
+          description: Whether the model is within the build volume
+    RepairBehaviorModel:
+      type: string
+      description: The behavior to use when loading a broken model
+      default: "IGNORE"
+      enum:
+      - "REPAIR"
+      - "ERROR"
+      - "IGNORE"
 paths:
   /scene:
     get:
@@ -90,15 +243,14 @@ paths:
       responses:
         "200":
           description: OK
-  /import-model/:
+  /scene/import-model/:
     post:
       description: "Load a model into the current scene"
       parameters: []
       requestBody:
-        description: Full path to the file to load
         required: true
         content:
-          multipart/form-data:
+          application/json:
             schema:
               type: object
               required:
@@ -106,11 +258,44 @@ paths:
               properties:
                 file:
                   type: string
-            example:
-              file: "C:\\Users\\user\\Desktop\\test.stl"
+                  description: Full path to the file to load
+                repair_behavior:
+                  $ref: '#/components/schemas/RepairBehaviorModel'
+                name:
+                  type: string
+                  description: The name of the model used within job preparation.
+                position:
+                  $ref: '#/components/schemas/ScenePositionModel'
+                orientation:
+                  $ref: '#/components/schemas/OrientationModel'
+                scale:
+                  type: number
+                  default: 1
+                  description: The scale factor to apply to the model
+                units:
+                  $ref: '#/components/schemas/ImportUnitsModel'
+            examples:
+              MinimalInput:
+                value:
+                  file: "C:\\Users\\user\\Desktop\\test.stl"
+              FullInput:
+                value:
+                  file: "C:\\Users\\user\\Desktop\\test.stl"
+                  repair_behavior: "REPAIR"
+                  name: "Test Model"
+                  position:
+                    x: 10
+                    y: 1
+                    z: 2
+                  orientation:
+                    x: 50
+                    y: 2
+                    z: 39
+                  scale: 0.5
+                  units: "MILLIMETERS"
       responses:
         "200":
-          description: OK
+          description: Success
           content:
             application/json:
               schema:
@@ -119,6 +304,12 @@ paths:
                   model_id:
                     type: string
                     description: ID of the imported model
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
   /models/{id}/:
     delete:
       description: "Delete a model into the current scene"

@@ -50,12 +50,6 @@ class TestDefaultApi(unittest.TestCase):
         """
         pass
 
-    def test_import_model_post(self) -> None:
-        """Test case for import_model_post
-
-        """
-        pass
-
     def test_load_form_post(self) -> None:
         """Test case for load_form_post
 
@@ -76,6 +70,12 @@ class TestDefaultApi(unittest.TestCase):
 
     def test_scene_get(self) -> None:
         """Test case for scene_get
+
+        """
+        pass
+
+    def test_scene_import_model_post(self) -> None:
+        """Test case for scene_import_model_post
 
         """
         pass

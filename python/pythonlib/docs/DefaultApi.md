@@ -8,11 +8,11 @@ Method | HTTP request | Description
 [**auto_orient_post**](DefaultApi.md#auto_orient_post) | **POST** /auto-orient/ | 
 [**auto_support_post**](DefaultApi.md#auto_support_post) | **POST** /auto-support/ | 
 [**export_post**](DefaultApi.md#export_post) | **POST** /export/ | 
-[**import_model_post**](DefaultApi.md#import_model_post) | **POST** /import-model/ | 
 [**load_form_post**](DefaultApi.md#load_form_post) | **POST** /load-form/ | 
 [**models_id_delete**](DefaultApi.md#models_id_delete) | **DELETE** /models/{id}/ | 
 [**save_form_post**](DefaultApi.md#save_form_post) | **POST** /save-form/ | 
 [**scene_get**](DefaultApi.md#scene_get) | **GET** /scene | 
+[**scene_import_model_post**](DefaultApi.md#scene_import_model_post) | **POST** /scene/import-model/ | 
 [**scene_post**](DefaultApi.md#scene_post) | **POST** /scene | 
 [**v1_print_post**](DefaultApi.md#v1_print_post) | **POST** /v1/print/ | 
 [**v1_slice_post**](DefaultApi.md#v1_slice_post) | **POST** /v1/slice/ | 
@@ -281,73 +281,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **import_model_post**
-> ImportModelPost200Response import_model_post(file)
-
-
-
-Load a model into the current scene
-
-### Example
-
-
-```python
-import formlabs
-from formlabs.models.import_model_post200_response import ImportModelPost200Response
-from formlabs.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost:44388
-# See configuration.py for a list of all supported configuration parameters.
-configuration = formlabs.Configuration(
-    host = "http://localhost:44388"
-)
-
-
-# Enter a context with an instance of the API client
-with formlabs.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = formlabs.DefaultApi(api_client)
-    file = 'file_example' # str | 
-
-    try:
-        api_response = api_instance.import_model_post(file)
-        print("The response of DefaultApi->import_model_post:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling DefaultApi->import_model_post: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **file** | **str**|  | 
-
-### Return type
-
-[**ImportModelPost200Response**](ImportModelPost200Response.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: multipart/form-data
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | OK |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **load_form_post**
 > load_form_post(file)
 
@@ -597,6 +530,75 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Scene description |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **scene_import_model_post**
+> SceneImportModelPost200Response scene_import_model_post(scene_import_model_post_request)
+
+
+
+Load a model into the current scene
+
+### Example
+
+
+```python
+import formlabs
+from formlabs.models.scene_import_model_post200_response import SceneImportModelPost200Response
+from formlabs.models.scene_import_model_post_request import SceneImportModelPostRequest
+from formlabs.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:44388
+# See configuration.py for a list of all supported configuration parameters.
+configuration = formlabs.Configuration(
+    host = "http://localhost:44388"
+)
+
+
+# Enter a context with an instance of the API client
+with formlabs.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = formlabs.DefaultApi(api_client)
+    scene_import_model_post_request = {"file":"C:\\Users\\user\\Desktop\\test.stl"} # SceneImportModelPostRequest | 
+
+    try:
+        api_response = api_instance.scene_import_model_post(scene_import_model_post_request)
+        print("The response of DefaultApi->scene_import_model_post:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->scene_import_model_post: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scene_import_model_post_request** | [**SceneImportModelPostRequest**](SceneImportModelPostRequest.md)|  | 
+
+### Return type
+
+[**SceneImportModelPost200Response**](SceneImportModelPost200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Success |  -  |
+**400** | Bad Request |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

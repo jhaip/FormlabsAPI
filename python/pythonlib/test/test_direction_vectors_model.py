@@ -14,10 +14,10 @@
 
 import unittest
 
-from formlabs.models.import_model_post200_response import ImportModelPost200Response
+from formlabs.models.direction_vectors_model import DirectionVectorsModel
 
-class TestImportModelPost200Response(unittest.TestCase):
-    """ImportModelPost200Response unit test stubs"""
+class TestDirectionVectorsModel(unittest.TestCase):
+    """DirectionVectorsModel unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,25 +25,33 @@ class TestImportModelPost200Response(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ImportModelPost200Response:
-        """Test ImportModelPost200Response
+    def make_instance(self, include_optional) -> DirectionVectorsModel:
+        """Test DirectionVectorsModel
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `ImportModelPost200Response`
+        # uncomment below to create an instance of `DirectionVectorsModel`
         """
-        model = ImportModelPost200Response()
+        model = DirectionVectorsModel()
         if include_optional:
-            return ImportModelPost200Response(
-                model_id = ''
+            return DirectionVectorsModel(
+                z_direction = [
+                    1.337
+                    ],
+                x_direction = [
+                    1.337
+                    ]
             )
         else:
-            return ImportModelPost200Response(
+            return DirectionVectorsModel(
+                z_direction = [
+                    1.337
+                    ],
         )
         """
 
-    def testImportModelPost200Response(self):
-        """Test ImportModelPost200Response"""
+    def testDirectionVectorsModel(self):
+        """Test DirectionVectorsModel"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

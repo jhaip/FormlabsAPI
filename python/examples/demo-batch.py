@@ -8,6 +8,7 @@ Author: @jhaip
 
 import argparse
 import os
+import pathlib
 import formlabs
 from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
 
@@ -39,13 +40,14 @@ print(files_to_batch)
 current_batch = 1
 models_in_current_batch = []
 
-with formlabs.PreFormApi.start_preform_server() as preform:
+pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
     create_scene(preform)
 
     while len(files_to_batch) > 0:
         next_file = files_to_batch.pop()
         print(f"Importing {next_file}")
-        new_model = preform.api.import_model_post(os.path.join(directory_path, next_file))
+        new_model = preform.api.scene_import_model_post({"file": os.path.join(directory_path, next_file)})
         new_model_id = new_model.model_id
         models_in_current_batch.append({"model_id": new_model_id, "file_name": next_file})
         print(f"Model ID: {new_model_id}")

@@ -8,11 +8,11 @@ Method | HTTP request | Description
 [**autoOrientPost**](DefaultApi.md#autoOrientPost) | **POST** /auto-orient/ | 
 [**autoSupportPost**](DefaultApi.md#autoSupportPost) | **POST** /auto-support/ | 
 [**exportPost**](DefaultApi.md#exportPost) | **POST** /export/ | 
-[**importModelPost**](DefaultApi.md#importModelPost) | **POST** /import-model/ | 
 [**loadFormPost**](DefaultApi.md#loadFormPost) | **POST** /load-form/ | 
 [**modelsIdDelete**](DefaultApi.md#modelsIdDelete) | **DELETE** /models/{id}/ | 
 [**saveFormPost**](DefaultApi.md#saveFormPost) | **POST** /save-form/ | 
 [**sceneGet**](DefaultApi.md#sceneGet) | **GET** /scene | 
+[**sceneImportModelPost**](DefaultApi.md#sceneImportModelPost) | **POST** /scene/import-model/ | 
 [**scenePost**](DefaultApi.md#scenePost) | **POST** /scene | 
 [**v1PrintPost**](DefaultApi.md#v1PrintPost) | **POST** /v1/print/ | 
 [**v1SlicePost**](DefaultApi.md#v1SlicePost) | **POST** /v1/slice/ | 
@@ -199,51 +199,6 @@ No authorization required
 - **Accept**: application/json
 
 
-## importModelPost
-
-> ImportModelPost200Response importModelPost(file)
-
-
-
-Load a model into the current scene
-
-### Example
-
-```javascript
-import PreFormApi from 'pre_form_api';
-
-let apiInstance = new PreFormApi.DefaultApi();
-let file = "file_example"; // String | 
-apiInstance.importModelPost(file, (error, data, response) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-});
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **file** | **String**|  | 
-
-### Return type
-
-[**ImportModelPost200Response**](ImportModelPost200Response.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: multipart/form-data
-- **Accept**: application/json
-
-
 ## loadFormPost
 
 > loadFormPost(file)
@@ -415,6 +370,51 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## sceneImportModelPost
+
+> SceneImportModelPost200Response sceneImportModelPost(sceneImportModelPostRequest)
+
+
+
+Load a model into the current scene
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneImportModelPostRequest = {"file":"C:\\Users\\user\\Desktop\\test.stl"}; // SceneImportModelPostRequest | 
+apiInstance.sceneImportModelPost(sceneImportModelPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneImportModelPostRequest** | [**SceneImportModelPostRequest**](SceneImportModelPostRequest.md)|  | 
+
+### Return type
+
+[**SceneImportModelPost200Response**](SceneImportModelPost200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 

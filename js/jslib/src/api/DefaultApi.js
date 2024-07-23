@@ -15,8 +15,10 @@
 import ApiClient from "../ApiClient";
 import AutoLayoutPost500Response from '../model/AutoLayoutPost500Response';
 import AutoOrientPostRequest from '../model/AutoOrientPostRequest';
+import ErrorModel from '../model/ErrorModel';
 import ExportPost200Response from '../model/ExportPost200Response';
-import ImportModelPost200Response from '../model/ImportModelPost200Response';
+import SceneImportModelPost200Response from '../model/SceneImportModelPost200Response';
+import SceneImportModelPostRequest from '../model/SceneImportModelPostRequest';
 import ScenePostRequest from '../model/ScenePostRequest';
 import V1PrintPost200Response from '../model/V1PrintPost200Response';
 
@@ -202,48 +204,6 @@ export default class DefaultApi {
     }
 
     /**
-     * Callback function to receive the result of the importModelPost operation.
-     * @callback module:api/DefaultApi~importModelPostCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/ImportModelPost200Response} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Load a model into the current scene
-     * @param {String} file 
-     * @param {module:api/DefaultApi~importModelPostCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/ImportModelPost200Response}
-     */
-    importModelPost(file, callback) {
-      let postBody = null;
-      // verify the required parameter 'file' is set
-      if (file === undefined || file === null) {
-        throw new Error("Missing the required parameter 'file' when calling importModelPost");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-        'file': file
-      };
-
-      let authNames = [];
-      let contentTypes = ['multipart/form-data'];
-      let accepts = ['application/json'];
-      let returnType = ImportModelPost200Response;
-      return this.apiClient.callApi(
-        '/import-model/', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
      * Callback function to receive the result of the loadFormPost operation.
      * @callback module:api/DefaultApi~loadFormPostCallback
      * @param {String} error Error message, if any.
@@ -396,6 +356,47 @@ export default class DefaultApi {
       let returnType = {'String': Object};
       return this.apiClient.callApi(
         '/scene', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the sceneImportModelPost operation.
+     * @callback module:api/DefaultApi~sceneImportModelPostCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SceneImportModelPost200Response} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Load a model into the current scene
+     * @param {module:model/SceneImportModelPostRequest} sceneImportModelPostRequest 
+     * @param {module:api/DefaultApi~sceneImportModelPostCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SceneImportModelPost200Response}
+     */
+    sceneImportModelPost(sceneImportModelPostRequest, callback) {
+      let postBody = sceneImportModelPostRequest;
+      // verify the required parameter 'sceneImportModelPostRequest' is set
+      if (sceneImportModelPostRequest === undefined || sceneImportModelPostRequest === null) {
+        throw new Error("Missing the required parameter 'sceneImportModelPostRequest' when calling sceneImportModelPost");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = SceneImportModelPost200Response;
+      return this.apiClient.callApi(
+        '/scene/import-model/', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

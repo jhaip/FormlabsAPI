@@ -17,17 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
+from formlabs.models.error_model_error import ErrorModelError
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ImportModelPost200Response(BaseModel):
+class ErrorModel(BaseModel):
     """
-    ImportModelPost200Response
+    ErrorModel
     """ # noqa: E501
-    model_id: Optional[StrictStr] = Field(default=None, description="ID of the imported model")
-    __properties: ClassVar[List[str]] = ["model_id"]
+    error: Optional[ErrorModelError] = None
+    __properties: ClassVar[List[str]] = ["error"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +48,7 @@ class ImportModelPost200Response(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ImportModelPost200Response from a JSON string"""
+        """Create an instance of ErrorModel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -68,11 +69,14 @@ class ImportModelPost200Response(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of error
+        if self.error:
+            _dict['error'] = self.error.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ImportModelPost200Response from a dict"""
+        """Create an instance of ErrorModel from a dict"""
         if obj is None:
             return None
 
@@ -80,7 +84,7 @@ class ImportModelPost200Response(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "model_id": obj.get("model_id")
+            "error": ErrorModelError.from_dict(obj["error"]) if obj.get("error") is not None else None
         })
         return _obj
 
