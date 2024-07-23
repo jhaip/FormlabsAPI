@@ -1,7 +1,6 @@
 .github/workflows/python.yml
 .gitignore
 .gitlab-ci.yml
-.openapi-generator-ignore
 .travis.yml
 README.md
 docs/AutoLayoutPost500Response.md
@@ -12,6 +11,7 @@ docs/ExportPost200Response.md
 docs/ImportModelPost200Response.md
 docs/ScenePostRequest.md
 docs/V1PrintPost200Response.md
+formlabs/PreFormApi.py
 formlabs/__init__.py
 formlabs/api/__init__.py
 formlabs/api/default_api.py
@@ -36,12 +36,4 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
-test/test_auto_layout_post500_response.py
-test/test_auto_orient_post_request.py
-test/test_auto_orient_post_request_models.py
-test/test_default_api.py
-test/test_export_post200_response.py
-test/test_import_model_post200_response.py
-test/test_scene_post_request.py
-test/test_v1_print_post200_response.py
 tox.ini

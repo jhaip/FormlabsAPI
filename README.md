@@ -51,7 +51,7 @@ npx @redocly/cli build-docs -o api-documentation.html openapi.yml
 ```bash
 brew install openapi-generator
 
-openapi-generator generate -i openapi.yml -g python -o ./python/pythonlib
+openapi-generator generate -i openapi.yml -g python -o ./python/pythonlib -c ./python/gen-config.yaml
 ```
 
 ### Generate JavaScript Library

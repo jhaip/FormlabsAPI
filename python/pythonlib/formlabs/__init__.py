@@ -39,5 +39,5 @@ from formlabs.models.import_model_post200_response import ImportModelPost200Resp
 from formlabs.models.scene_post_request import ScenePostRequest
 from formlabs.models.v1_print_post200_response import V1PrintPost200Response
 
-# import our handwritten helper classes
+# START SECTION OF CODE ADDED BY FORMLABS
 from formlabs.PreFormApi import PreFormApi
