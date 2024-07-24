@@ -8,21 +8,25 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 To depend on the current (unpublished) `jslib`, we need to add that directory as an npm link.
 
-From `libraries/jslib`, run `npm install` then `npm link`
+From `jslib`, run `npm install` then `npm link`
 
-From `libraries/jslib/web-demos/batchy-react/`, run `npm link pre_form_api`
+From `/batchy-react/file-server` run `npm install`
 
-### Temporary polyfill workaround:
+From `/batchy-react/react-client` run `npm install`
 
-From `libraries/jslib`:
-- Run `npm i querystring-es3`
-- Edit `src/ApiClient.js`
-- Change `import querystring from "querystring";` to `import querystring from "querystring-es3";` (adding `-es3`)
-- Run `npm run build`
+From `/batchy-react` run `npm install`
+
+From `/batchy-react`, run `npm link pre_form_api`
 
 ### Updating file paths
 
-Replace the hardcoded paths to `PreForm/app/PreFormServer/libraries` in MainEditPanel.js with your own local paths and update the example .STL files to files you have on disk.
+Replace the hardcoded paths to `batchy-react/react-client/.env` with your own local paths to .STL files you want to import from the `file-server/files/input-model-stls` folder.
+
+### Running the app
+
+Download and run PreFormServer in the background.
+
+Then from the `batchy-react` folder, run `npm install` and thne `npm start`.
 
 ## Available Scripts
 

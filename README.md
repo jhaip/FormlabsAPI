@@ -56,8 +56,8 @@ openapi-generator generate -i openapi.yml -g python -o ./python/pythonlib -c ./p
 
 ### Generate JavaScript Library
 
-```
+```bash
 brew install openapi-generator
 
-openapi-generator generate -i openapi.yml -g javascript -o ./js/jslib
+openapi-generator generate -i openapi.yml -g javascript -o ./js/jslib -c ./js/gen-config.yaml
 ```

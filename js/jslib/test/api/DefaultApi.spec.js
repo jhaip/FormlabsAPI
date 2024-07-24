@@ -88,16 +88,6 @@
         done();
       });
     });
-    describe('importModelPost', function() {
-      it('should call importModelPost successfully', function(done) {
-        //uncomment below and update the code to test importModelPost
-        //instance.importModelPost(function(error) {
-        //  if (error) throw error;
-        //expect().to.be();
-        //});
-        done();
-      });
-    });
     describe('loadFormPost', function() {
       it('should call loadFormPost successfully', function(done) {
         //uncomment below and update the code to test loadFormPost
@@ -132,6 +122,16 @@
       it('should call sceneGet successfully', function(done) {
         //uncomment below and update the code to test sceneGet
         //instance.sceneGet(function(error) {
+        //  if (error) throw error;
+        //expect().to.be();
+        //});
+        done();
+      });
+    });
+    describe('sceneImportModelPost', function() {
+      it('should call sceneImportModelPost successfully', function(done) {
+        //uncomment below and update the code to test sceneImportModelPost
+        //instance.sceneImportModelPost(function(error) {
         //  if (error) throw error;
         //expect().to.be();
         //});

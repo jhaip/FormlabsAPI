@@ -1,0 +1,15 @@
+templateDir: js/generator_custom_templates
+# additionalProperties:
+#   key: value
+files:
+  ApiClient.mustache:
+    # Overring the default template:
+    # https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/resources/Javascript/libraries/javascript/ApiClient.mustache
+    # to change the import of querystring-es3
+    folder: src
+    destinationFilename: ApiClient.js
+  package.mustache:
+    # Overring the default template:
+    # https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/resources/Javascript/libraries/javascript/package.mustache
+    # to add the querystring-es3 dependency
+    destinationFilename: package.json

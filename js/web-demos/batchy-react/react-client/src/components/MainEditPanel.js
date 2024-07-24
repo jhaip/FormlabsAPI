@@ -69,19 +69,18 @@ class MainEditPanel extends React.Component {
     }
 
     api.scenePost(
-      this.state.selectedPrinter.machineType,
-      this.state.selectedMaterial.value,
-      this.state.selectedMaterial.print_settings,
-      this.state.selectedMaterial.thickness,
+      {
+        "machineType": this.state.selectedPrinter.machineType,
+        "materialCode":this.state.selectedMaterial.value,
+        "printSetting":this.state.selectedMaterial.print_settings,
+        "sliceThickness":this.state.selectedMaterial.thickness
+      },
       () => {
         console.log('New scene successfully created');
-        this.loadModels([
-          'Spray Nozzle feels-like/Spray Nozzle feels-like - Grip.stl',
-          'Spray Nozzle feels-like/Spray Nozzle feels-like - Handle.stl',
-          'Spray Nozzle feels-like/Spray Nozzle feels-like - Head.stl',
-          // 'Spray Nozzle feels-like/Spray Nozzle feels-like - Rear Knob.stl',
-          // 'Spray Nozzle feels-like/Spray Nozzle feels-like - Twist Ring.stl',
-        ])
+        const batchyReactFullPath = process.env.REACT_APP_REACT_CLIENT_PATH.replace("/react-client", "");
+        const fileServerInputFilesBase = `${batchyReactFullPath}/file-server/files/input-model-stls/`;
+        const modelPaths = process.env.REACT_APP_STL_INPUT_PATHS.split(',').map((path) => fileServerInputFilesBase + path);
+        this.loadModels(modelPaths);
       } // TODO set confirmed scene
     );
     this.currentScene = {}; // TODO: Store pending edits
@@ -89,8 +88,7 @@ class MainEditPanel extends React.Component {
 
   // TODO: async/await
   loadModel(modelFilePath, callback) {
-    return api.importModelPost('/Users/kevin.otoole/repos/PreForm/app/PreFormServer/libraries/demo-stls/'
-        + modelFilePath, (err, data, response) => {
+    return api.sceneImportModelPost({"file": modelFilePath}, (err, data, response) => {
       if (err) {
         console.error('Failed to load model ' + modelFilePath);
         console.error(err);
@@ -117,7 +115,8 @@ class MainEditPanel extends React.Component {
     const uniqueKey = Date.now();
     const outputPath = `files/output-scene-stls/${outputBaseName}-${uniqueKey}.stl`
     // TODO: Some way of resolving the full path
-    const fullOutputPath = `/Users/kevin.otoole/repos/PreForm/app/PreFormServer/libraries/jslib/web-demos/batchy-react/file-server/${outputPath}`;
+    const batchyReactFullPath = process.env.REACT_APP_REACT_CLIENT_PATH.replace("/react-client", "")
+    const fullOutputPath = `${batchyReactFullPath}/file-server/${outputPath}`;
     api.exportPost(fullOutputPath, () => {
       console.log(`scene exported to ${outputPath}`);
       this.props.setConfirmedScenePath(outputPath);

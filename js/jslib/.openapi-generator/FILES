@@ -1,5 +1,8 @@
 .babelrc
+.gitignore
+.openapi-generator-ignore
 .travis.yml
+README.md
 docs/AutoLayoutPost500Response.md
 docs/AutoOrientPostRequest.md
 docs/AutoOrientPostRequestModels.md
@@ -47,10 +50,15 @@ src/model/ScenePostRequest.js
 src/model/TransformMatrixModel.js
 src/model/UnitsModel.js
 src/model/V1PrintPost200Response.js
+test/api/DefaultApi.spec.js
+test/model/AutoLayoutPost500Response.spec.js
+test/model/AutoOrientPostRequest.spec.js
+test/model/AutoOrientPostRequestModels.spec.js
 test/model/DirectionVectorsModel.spec.js
 test/model/ErrorModel.spec.js
 test/model/ErrorModelError.spec.js
 test/model/EulerAnglesModel.spec.js
+test/model/ExportPost200Response.spec.js
 test/model/ImportUnitsModel.spec.js
 test/model/ModelProperties.spec.js
 test/model/ModelPropertiesBbox.spec.js
@@ -59,5 +67,7 @@ test/model/RepairBehaviorModel.spec.js
 test/model/SceneImportModelPost200Response.spec.js
 test/model/SceneImportModelPostRequest.spec.js
 test/model/ScenePositionModel.spec.js
+test/model/ScenePostRequest.spec.js
 test/model/TransformMatrixModel.spec.js
 test/model/UnitsModel.spec.js
+test/model/V1PrintPost200Response.spec.js
