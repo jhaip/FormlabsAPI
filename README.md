@@ -4,6 +4,9 @@ Client libraries and demo code for the Formlabs API.
 
 API endpoint documentation is available in the [api-documentation.html](api-documentation.html) file.
 
+> [!CAUTION]
+> Disclaimer: The Formlabs API And SDK are still in a pre-release "alpha" status. It is suitable for evaluation and prototyping, but expect things to change before public release.
+
 ## Integration Overview
 
 All PreForm SDK integrations involve starting the PreFormServer background application to expose the HTTP API and then making HTTP API calls in your own code. Formlabs provides an example Python library that handles the setup and request formatting, but integrations in other languages can be made by following the same pattern:
@@ -61,3 +64,8 @@ brew install openapi-generator
 
 openapi-generator generate -i openapi.yml -g javascript -o ./js/jslib -c ./js/gen-config.yaml
 ```
+
+# Copyright
+Copyright 2024 Formlabs
+
+Released under the [Apache License](LICENSE).
