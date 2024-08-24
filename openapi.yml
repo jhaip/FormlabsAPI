@@ -208,9 +208,8 @@ paths:
         description: Full path to the file to load
         required: true
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              # $ref: '#/components/schemas/User'
               type: object
               required:
                 - file
@@ -222,7 +221,7 @@ paths:
       responses:
         "200":
           description: OK
-  /save-form/:
+  /scene/save-form/:
     post:
       description: "Save the current scene to a .FORM file"
       parameters: []
@@ -230,7 +229,7 @@ paths:
         description: Full path where the file should be saved
         required: true
         content:
-          multipart/form-data:
+          application/json:
             schema:
               type: object
               required:
@@ -243,6 +242,45 @@ paths:
       responses:
         "200":
           description: OK
+  /scene/models/{id}/replace/:
+    post:
+      description: "Replace a model currently in the scene with a new model, copying the existing models setup"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the model
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: Full path to the file to load
+                repair_behavior:
+                  $ref: '#/components/schemas/RepairBehaviorModel'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID of the imported model
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
   /scene/import-model/:
     post:
       description: "Load a model into the current scene"

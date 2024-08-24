@@ -88,10 +88,11 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**export_post**](docs/DefaultApi.md#export_post) | **POST** /export/ | 
 *DefaultApi* | [**load_form_post**](docs/DefaultApi.md#load_form_post) | **POST** /load-form/ | 
 *DefaultApi* | [**models_id_delete**](docs/DefaultApi.md#models_id_delete) | **DELETE** /models/{id}/ | 
-*DefaultApi* | [**save_form_post**](docs/DefaultApi.md#save_form_post) | **POST** /save-form/ | 
 *DefaultApi* | [**scene_get**](docs/DefaultApi.md#scene_get) | **GET** /scene | 
 *DefaultApi* | [**scene_import_model_post**](docs/DefaultApi.md#scene_import_model_post) | **POST** /scene/import-model/ | 
+*DefaultApi* | [**scene_models_id_replace_post**](docs/DefaultApi.md#scene_models_id_replace_post) | **POST** /scene/models/{id}/replace/ | 
 *DefaultApi* | [**scene_post**](docs/DefaultApi.md#scene_post) | **POST** /scene | 
+*DefaultApi* | [**scene_save_form_post**](docs/DefaultApi.md#scene_save_form_post) | **POST** /scene/save-form/ | 
 *DefaultApi* | [**v1_print_post**](docs/DefaultApi.md#v1_print_post) | **POST** /v1/print/ | 
 *DefaultApi* | [**v1_slice_post**](docs/DefaultApi.md#v1_slice_post) | **POST** /v1/slice/ | 
 
@@ -107,12 +108,15 @@ Class | Method | HTTP request | Description
  - [EulerAnglesModel](docs/EulerAnglesModel.md)
  - [ExportPost200Response](docs/ExportPost200Response.md)
  - [ImportUnitsModel](docs/ImportUnitsModel.md)
+ - [LoadFormPostRequest](docs/LoadFormPostRequest.md)
  - [ModelProperties](docs/ModelProperties.md)
  - [ModelPropertiesBbox](docs/ModelPropertiesBbox.md)
  - [OrientationModel](docs/OrientationModel.md)
  - [RepairBehaviorModel](docs/RepairBehaviorModel.md)
  - [SceneImportModelPost200Response](docs/SceneImportModelPost200Response.md)
  - [SceneImportModelPostRequest](docs/SceneImportModelPostRequest.md)
+ - [SceneModelsIdReplacePost200Response](docs/SceneModelsIdReplacePost200Response.md)
+ - [SceneModelsIdReplacePostRequest](docs/SceneModelsIdReplacePostRequest.md)
  - [ScenePositionModel](docs/ScenePositionModel.md)
  - [ScenePostRequest](docs/ScenePostRequest.md)
  - [TransformMatrixModel](docs/TransformMatrixModel.md)
