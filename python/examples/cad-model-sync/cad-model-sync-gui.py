@@ -25,13 +25,15 @@ def doStuff(formFilePath, selected_version, partName="part1"):
         scene_response = preform.api.scene_get()
         matching_model_ids = [model["id"] for model in scene_response["models"] if model["name"] == partName]
         if len(matching_model_ids) == 0:
-            print(f"No models found with name {partName}")
+            print(f"No models found with name {partName}, falling back to first model ID")
             # TODO: make error appropriate for this GUI application
-            sys.exit(1)
+            # sys.exit(1)
+            matching_model_ids = [model["id"] for model in scene_response["models"][:1]]
         print(f"Found {len(matching_model_ids)} models with name {partName}")
         for model_id in matching_model_ids:
             try:
-                preform.api.scene_models_id_replace_post(model_id, formlabs.SceneModelsIdReplacePostRequest(file=new_version_stl_file_path))
+                replace_response = preform.api.scene_models_id_replace_post(model_id, formlabs.SceneModelsIdReplacePostRequest(file=new_version_stl_file_path))
+                replaced_model_id = replace_response.id
                 print("replace model success")
             except formlabs.exceptions.ApiException as e:
                 if e.status == 400:
@@ -42,6 +44,7 @@ def doStuff(formFilePath, selected_version, partName="part1"):
                     # Goal here is that the old setup model is removed and the new one is added, but with no supports 
                     # TODO: use Preform API to simply import new model to the scene?
                     # TODO: or maybe updated replace model API to allow partial success?
+            # todo: rename new model to part1?
         preform.api.scene_save_form_post(formlabs.LoadFormPostRequest(file=formFilePath))
         progress_label_textvar.set("")
         progress_label.update()
@@ -87,7 +90,7 @@ version_label = tk.Label(version_frame, text="Pretend working on CAD model versi
 version_label.pack(side=tk.LEFT)
 
 # Dropdown for file versions
-versions = ["v1", "v2", "v3", "v4"]
+versions = ["part1", "v2", "v3", "v4"]
 selected_version = tk.StringVar(root)
 selected_version.set(versions[0])  # default value
 
