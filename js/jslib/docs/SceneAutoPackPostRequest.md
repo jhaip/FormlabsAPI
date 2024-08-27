@@ -1,9 +1,9 @@
-# PreFormApi.AutoOrientPostRequest
+# PreFormApi.SceneAutoPackPostRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**models** | [**ModelsSelectionModel**](ModelsSelectionModel.md) |  | 
+**modelSpacingMm** | **Number** |  | [optional] 
 
 

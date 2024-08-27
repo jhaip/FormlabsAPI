@@ -6,11 +6,11 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**auto_layout_post**](DefaultApi.md#auto_layout_post) | **POST** /auto-layout/ | 
 [**auto_orient_post**](DefaultApi.md#auto_orient_post) | **POST** /auto-orient/ | 
-[**auto_pack_post**](DefaultApi.md#auto_pack_post) | **POST** /auto-pack/ | 
 [**auto_support_post**](DefaultApi.md#auto_support_post) | **POST** /auto-support/ | 
 [**export_post**](DefaultApi.md#export_post) | **POST** /export/ | 
 [**load_form_post**](DefaultApi.md#load_form_post) | **POST** /load-form/ | 
 [**models_id_delete**](DefaultApi.md#models_id_delete) | **DELETE** /models/{id}/ | 
+[**scene_auto_pack_post**](DefaultApi.md#scene_auto_pack_post) | **POST** /scene/auto-pack/ | 
 [**scene_get**](DefaultApi.md#scene_get) | **GET** /scene | 
 [**scene_import_model_post**](DefaultApi.md#scene_import_model_post) | **POST** /scene/import-model/ | 
 [**scene_models_id_replace_post**](DefaultApi.md#scene_models_id_replace_post) | **POST** /scene/models/{id}/replace/ | 
@@ -130,71 +130,6 @@ with formlabs.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **auto_orient_post_request** | [**AutoOrientPostRequest**](AutoOrientPostRequest.md)| Models to run the auto orient operation on | 
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: Not defined
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | OK |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **auto_pack_post**
-> auto_pack_post(auto_pack_post_request)
-
-
-
-Run auto pack operation
-
-### Example
-
-
-```python
-import formlabs
-from formlabs.models.auto_pack_post_request import AutoPackPostRequest
-from formlabs.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost:44388
-# See configuration.py for a list of all supported configuration parameters.
-configuration = formlabs.Configuration(
-    host = "http://localhost:44388"
-)
-
-
-# Enter a context with an instance of the API client
-with formlabs.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = formlabs.DefaultApi(api_client)
-    auto_pack_post_request = formlabs.AutoPackPostRequest() # AutoPackPostRequest | 
-
-    try:
-        api_instance.auto_pack_post(auto_pack_post_request)
-    except Exception as e:
-        print("Exception when calling DefaultApi->auto_pack_post: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **auto_pack_post_request** | [**AutoPackPostRequest**](AutoPackPostRequest.md)|  | 
 
 ### Return type
 
@@ -468,6 +403,71 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **scene_auto_pack_post**
+> scene_auto_pack_post(scene_auto_pack_post_request)
+
+
+
+Run auto pack operation
+
+### Example
+
+
+```python
+import formlabs
+from formlabs.models.scene_auto_pack_post_request import SceneAutoPackPostRequest
+from formlabs.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:44388
+# See configuration.py for a list of all supported configuration parameters.
+configuration = formlabs.Configuration(
+    host = "http://localhost:44388"
+)
+
+
+# Enter a context with an instance of the API client
+with formlabs.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = formlabs.DefaultApi(api_client)
+    scene_auto_pack_post_request = formlabs.SceneAutoPackPostRequest() # SceneAutoPackPostRequest | 
+
+    try:
+        api_instance.scene_auto_pack_post(scene_auto_pack_post_request)
+    except Exception as e:
+        print("Exception when calling DefaultApi->scene_auto_pack_post: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scene_auto_pack_post_request** | [**SceneAutoPackPostRequest**](SceneAutoPackPostRequest.md)|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: Not defined
 
 ### HTTP response details

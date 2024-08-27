@@ -17,9 +17,14 @@ import AutoLayoutPost500Response from '../model/AutoLayoutPost500Response';
 import AutoOrientPostRequest from '../model/AutoOrientPostRequest';
 import ErrorModel from '../model/ErrorModel';
 import ExportPost200Response from '../model/ExportPost200Response';
+import LoadFormPostRequest from '../model/LoadFormPostRequest';
+import SceneAutoPackPostRequest from '../model/SceneAutoPackPostRequest';
 import SceneImportModelPost200Response from '../model/SceneImportModelPost200Response';
 import SceneImportModelPostRequest from '../model/SceneImportModelPostRequest';
+import SceneModelsIdReplacePost200Response from '../model/SceneModelsIdReplacePost200Response';
+import SceneModelsIdReplacePostRequest from '../model/SceneModelsIdReplacePostRequest';
 import ScenePostRequest from '../model/ScenePostRequest';
+import SceneSaveScreenshotPostRequest from '../model/SceneSaveScreenshotPostRequest';
 import V1PrintPost200Response from '../model/V1PrintPost200Response';
 
 /**
@@ -213,14 +218,14 @@ export default class DefaultApi {
 
     /**
      * Load a file into the current scene
-     * @param {String} file 
+     * @param {module:model/LoadFormPostRequest} loadFormPostRequest Full path to the file to load
      * @param {module:api/DefaultApi~loadFormPostCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    loadFormPost(file, callback) {
-      let postBody = null;
-      // verify the required parameter 'file' is set
-      if (file === undefined || file === null) {
-        throw new Error("Missing the required parameter 'file' when calling loadFormPost");
+    loadFormPost(loadFormPostRequest, callback) {
+      let postBody = loadFormPostRequest;
+      // verify the required parameter 'loadFormPostRequest' is set
+      if (loadFormPostRequest === undefined || loadFormPostRequest === null) {
+        throw new Error("Missing the required parameter 'loadFormPostRequest' when calling loadFormPost");
       }
 
       let pathParams = {
@@ -230,11 +235,10 @@ export default class DefaultApi {
       let headerParams = {
       };
       let formParams = {
-        'file': file
       };
 
       let authNames = [];
-      let contentTypes = ['multipart/form-data'];
+      let contentTypes = ['application/json'];
       let accepts = [];
       let returnType = null;
       return this.apiClient.callApi(
@@ -286,23 +290,23 @@ export default class DefaultApi {
     }
 
     /**
-     * Callback function to receive the result of the saveFormPost operation.
-     * @callback module:api/DefaultApi~saveFormPostCallback
+     * Callback function to receive the result of the sceneAutoPackPost operation.
+     * @callback module:api/DefaultApi~sceneAutoPackPostCallback
      * @param {String} error Error message, if any.
      * @param data This operation does not return a value.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Save the current scene to a .FORM file
-     * @param {String} file 
-     * @param {module:api/DefaultApi~saveFormPostCallback} callback The callback function, accepting three arguments: error, data, response
+     * Run auto pack operation
+     * @param {module:model/SceneAutoPackPostRequest} sceneAutoPackPostRequest 
+     * @param {module:api/DefaultApi~sceneAutoPackPostCallback} callback The callback function, accepting three arguments: error, data, response
      */
-    saveFormPost(file, callback) {
-      let postBody = null;
-      // verify the required parameter 'file' is set
-      if (file === undefined || file === null) {
-        throw new Error("Missing the required parameter 'file' when calling saveFormPost");
+    sceneAutoPackPost(sceneAutoPackPostRequest, callback) {
+      let postBody = sceneAutoPackPostRequest;
+      // verify the required parameter 'sceneAutoPackPostRequest' is set
+      if (sceneAutoPackPostRequest === undefined || sceneAutoPackPostRequest === null) {
+        throw new Error("Missing the required parameter 'sceneAutoPackPostRequest' when calling sceneAutoPackPost");
       }
 
       let pathParams = {
@@ -312,15 +316,14 @@ export default class DefaultApi {
       let headerParams = {
       };
       let formParams = {
-        'file': file
       };
 
       let authNames = [];
-      let contentTypes = ['multipart/form-data'];
+      let contentTypes = ['application/json'];
       let accepts = [];
       let returnType = null;
       return this.apiClient.callApi(
-        '/save-form/', 'POST',
+        '/scene/auto-pack/', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );
@@ -403,6 +406,53 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the sceneModelsIdReplacePost operation.
+     * @callback module:api/DefaultApi~sceneModelsIdReplacePostCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SceneModelsIdReplacePost200Response} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Replace a model currently in the scene with a new model, copying the existing models setup
+     * @param {String} id The unique identifier of the model
+     * @param {module:model/SceneModelsIdReplacePostRequest} sceneModelsIdReplacePostRequest 
+     * @param {module:api/DefaultApi~sceneModelsIdReplacePostCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SceneModelsIdReplacePost200Response}
+     */
+    sceneModelsIdReplacePost(id, sceneModelsIdReplacePostRequest, callback) {
+      let postBody = sceneModelsIdReplacePostRequest;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling sceneModelsIdReplacePost");
+      }
+      // verify the required parameter 'sceneModelsIdReplacePostRequest' is set
+      if (sceneModelsIdReplacePostRequest === undefined || sceneModelsIdReplacePostRequest === null) {
+        throw new Error("Missing the required parameter 'sceneModelsIdReplacePostRequest' when calling sceneModelsIdReplacePost");
+      }
+
+      let pathParams = {
+        'id': id
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = SceneModelsIdReplacePost200Response;
+      return this.apiClient.callApi(
+        '/scene/models/{id}/replace/', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the scenePost operation.
      * @callback module:api/DefaultApi~scenePostCallback
      * @param {String} error Error message, if any.
@@ -437,6 +487,86 @@ export default class DefaultApi {
       let returnType = null;
       return this.apiClient.callApi(
         '/scene', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the sceneSaveFormPost operation.
+     * @callback module:api/DefaultApi~sceneSaveFormPostCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Save the current scene to a .FORM file
+     * @param {module:model/LoadFormPostRequest} loadFormPostRequest Full path where the file should be saved
+     * @param {module:api/DefaultApi~sceneSaveFormPostCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    sceneSaveFormPost(loadFormPostRequest, callback) {
+      let postBody = loadFormPostRequest;
+      // verify the required parameter 'loadFormPostRequest' is set
+      if (loadFormPostRequest === undefined || loadFormPostRequest === null) {
+        throw new Error("Missing the required parameter 'loadFormPostRequest' when calling sceneSaveFormPost");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = ['application/json'];
+      let accepts = [];
+      let returnType = null;
+      return this.apiClient.callApi(
+        '/scene/save-form/', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the sceneSaveScreenshotPost operation.
+     * @callback module:api/DefaultApi~sceneSaveScreenshotPostCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Save a .png screenshot of the current scene
+     * @param {module:model/SceneSaveScreenshotPostRequest} sceneSaveScreenshotPostRequest 
+     * @param {module:api/DefaultApi~sceneSaveScreenshotPostCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    sceneSaveScreenshotPost(sceneSaveScreenshotPostRequest, callback) {
+      let postBody = sceneSaveScreenshotPostRequest;
+      // verify the required parameter 'sceneSaveScreenshotPostRequest' is set
+      if (sceneSaveScreenshotPostRequest === undefined || sceneSaveScreenshotPostRequest === null) {
+        throw new Error("Missing the required parameter 'sceneSaveScreenshotPostRequest' when calling sceneSaveScreenshotPost");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = ['application/json'];
+      let accepts = [];
+      let returnType = null;
+      return this.apiClient.callApi(
+        '/scene/save-screenshot/', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

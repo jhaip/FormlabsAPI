@@ -12,7 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
-import AutoOrientPostRequestModels from './AutoOrientPostRequestModels';
+import ModelsSelectionModel from './ModelsSelectionModel';
 
 /**
  * The AutoOrientPostRequest model module.
@@ -23,7 +23,7 @@ class AutoOrientPostRequest {
     /**
      * Constructs a new <code>AutoOrientPostRequest</code>.
      * @alias module:model/AutoOrientPostRequest
-     * @param models {module:model/AutoOrientPostRequestModels} 
+     * @param models {module:model/ModelsSelectionModel} 
      */
     constructor(models) { 
         
@@ -51,7 +51,7 @@ class AutoOrientPostRequest {
             obj = obj || new AutoOrientPostRequest();
 
             if (data.hasOwnProperty('models')) {
-                obj['models'] = AutoOrientPostRequestModels.constructFromObject(data['models']);
+                obj['models'] = ModelsSelectionModel.constructFromObject(data['models']);
             }
         }
         return obj;
@@ -71,7 +71,7 @@ class AutoOrientPostRequest {
         }
         // validate the optional field `models`
         if (data['models']) { // data not null
-          AutoOrientPostRequestModels.validateJSON(data['models']);
+          ModelsSelectionModel.validateJSON(data['models']);
         }
 
         return true;
@@ -83,7 +83,7 @@ class AutoOrientPostRequest {
 AutoOrientPostRequest.RequiredProperties = ["models"];
 
 /**
- * @member {module:model/AutoOrientPostRequestModels} models
+ * @member {module:model/ModelsSelectionModel} models
  */
 AutoOrientPostRequest.prototype['models'] = undefined;
 

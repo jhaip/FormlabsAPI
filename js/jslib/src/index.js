@@ -15,21 +15,27 @@
 import ApiClient from './ApiClient';
 import AutoLayoutPost500Response from './model/AutoLayoutPost500Response';
 import AutoOrientPostRequest from './model/AutoOrientPostRequest';
-import AutoOrientPostRequestModels from './model/AutoOrientPostRequestModels';
 import DirectionVectorsModel from './model/DirectionVectorsModel';
 import ErrorModel from './model/ErrorModel';
 import ErrorModelError from './model/ErrorModelError';
 import EulerAnglesModel from './model/EulerAnglesModel';
 import ExportPost200Response from './model/ExportPost200Response';
 import ImportUnitsModel from './model/ImportUnitsModel';
+import LoadFormPostRequest from './model/LoadFormPostRequest';
 import ModelProperties from './model/ModelProperties';
 import ModelPropertiesBbox from './model/ModelPropertiesBbox';
+import ModelsSelectionModel from './model/ModelsSelectionModel';
+import ModelsSelectionModelModels from './model/ModelsSelectionModelModels';
 import OrientationModel from './model/OrientationModel';
 import RepairBehaviorModel from './model/RepairBehaviorModel';
+import SceneAutoPackPostRequest from './model/SceneAutoPackPostRequest';
 import SceneImportModelPost200Response from './model/SceneImportModelPost200Response';
 import SceneImportModelPostRequest from './model/SceneImportModelPostRequest';
+import SceneModelsIdReplacePost200Response from './model/SceneModelsIdReplacePost200Response';
+import SceneModelsIdReplacePostRequest from './model/SceneModelsIdReplacePostRequest';
 import ScenePositionModel from './model/ScenePositionModel';
 import ScenePostRequest from './model/ScenePostRequest';
+import SceneSaveScreenshotPostRequest from './model/SceneSaveScreenshotPostRequest';
 import TransformMatrixModel from './model/TransformMatrixModel';
 import UnitsModel from './model/UnitsModel';
 import V1PrintPost200Response from './model/V1PrintPost200Response';
@@ -87,12 +93,6 @@ export {
     AutoOrientPostRequest,
 
     /**
-     * The AutoOrientPostRequestModels model constructor.
-     * @property {module:model/AutoOrientPostRequestModels}
-     */
-    AutoOrientPostRequestModels,
-
-    /**
      * The DirectionVectorsModel model constructor.
      * @property {module:model/DirectionVectorsModel}
      */
@@ -129,6 +129,12 @@ export {
     ImportUnitsModel,
 
     /**
+     * The LoadFormPostRequest model constructor.
+     * @property {module:model/LoadFormPostRequest}
+     */
+    LoadFormPostRequest,
+
+    /**
      * The ModelProperties model constructor.
      * @property {module:model/ModelProperties}
      */
@@ -139,6 +145,18 @@ export {
      * @property {module:model/ModelPropertiesBbox}
      */
     ModelPropertiesBbox,
+
+    /**
+     * The ModelsSelectionModel model constructor.
+     * @property {module:model/ModelsSelectionModel}
+     */
+    ModelsSelectionModel,
+
+    /**
+     * The ModelsSelectionModelModels model constructor.
+     * @property {module:model/ModelsSelectionModelModels}
+     */
+    ModelsSelectionModelModels,
 
     /**
      * The OrientationModel model constructor.
@@ -153,6 +171,12 @@ export {
     RepairBehaviorModel,
 
     /**
+     * The SceneAutoPackPostRequest model constructor.
+     * @property {module:model/SceneAutoPackPostRequest}
+     */
+    SceneAutoPackPostRequest,
+
+    /**
      * The SceneImportModelPost200Response model constructor.
      * @property {module:model/SceneImportModelPost200Response}
      */
@@ -165,6 +189,18 @@ export {
     SceneImportModelPostRequest,
 
     /**
+     * The SceneModelsIdReplacePost200Response model constructor.
+     * @property {module:model/SceneModelsIdReplacePost200Response}
+     */
+    SceneModelsIdReplacePost200Response,
+
+    /**
+     * The SceneModelsIdReplacePostRequest model constructor.
+     * @property {module:model/SceneModelsIdReplacePostRequest}
+     */
+    SceneModelsIdReplacePostRequest,
+
+    /**
      * The ScenePositionModel model constructor.
      * @property {module:model/ScenePositionModel}
      */
@@ -175,6 +211,12 @@ export {
      * @property {module:model/ScenePostRequest}
      */
     ScenePostRequest,
+
+    /**
+     * The SceneSaveScreenshotPostRequest model constructor.
+     * @property {module:model/SceneSaveScreenshotPostRequest}
+     */
+    SceneSaveScreenshotPostRequest,
 
     /**
      * The TransformMatrixModel model constructor.

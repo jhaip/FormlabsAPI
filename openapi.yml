@@ -547,7 +547,7 @@ paths:
                   error:
                     type: string
                     description: Error message
-  /auto-pack/:
+  /scene/auto-pack/:
     post:
       description: "Run auto pack operation"
       parameters: []

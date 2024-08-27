@@ -3,7 +3,6 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 import json
-import uuid
 from pathlib import Path
 import formlabs
 
@@ -23,23 +22,18 @@ class PreFormApi:
         self.api = None
 
     def load_form(self, form_file_path):
+        print(f"Loading form: {form_file_path}")
         self.api.load_form_post(formlabs.LoadFormPostRequest(file=form_file_path))
 
     def import_model(self, model_path):
-        # In PR 1
-        # self.api.import_model(model_path)
-        pass
+        self.api.scene_import_model_post(formlabs.SceneImportModelPostRequest(file=model_path))
 
     def auto_pack(self):
-        # TODO
-        # self.api.auto_pack()
-        pass
+        self.api.scene_auto_pack_post(formlabs.SceneAutoPackPostRequest())
 
     def save_screenshot(self, screenshot_path):
-        # In other branch
-        # self.api.save_screenshot(screenshot_path)
-        # Mock by copying a file
-        Path(screenshot_path).write_bytes(Path('/Users/jacob.haip/Downloads/lena.png').read_bytes())
+        # Path(screenshot_path).write_bytes(Path('/Users/jacob.haip/Downloads/lena.png').read_bytes())
+        self.api.scene_save_screenshot_post(formlabs.SceneSaveScreenshotPostRequest(file=screenshot_path))
 
     def get_scene(self):
         return self.api.scene_get()
@@ -52,19 +46,25 @@ api = PreFormApi()
 
 def merge(job_id, uploaded_file_paths):
     job_folder = os.path.join(JOBS_DIR, job_id)
-    existing_job_form_path = os.path.join(job_folder, f"{job_id}.form")
-    existing_screenshot_path = os.path.join(job_folder, f"{job_id}.png")
-    existing_metadata_path = os.path.join(job_folder, 'metadata.json')
+    existing_job_form_path = os.path.abspath(os.path.join(job_folder, f"{job_id}.form"))
+    existing_screenshot_path = os.path.abspath(os.path.join(job_folder, f"{job_id}.png"))
+    existing_metadata_path = os.path.abspath(os.path.join(job_folder, 'metadata.json'))
+    print("loading form")
     api.load_form(existing_job_form_path)
     for file_path in uploaded_file_paths:
+        print("importing model")
         api.import_model(file_path)
     try:
+        print("running auto pack")
         api.auto_pack()
     except:
+        print("ERROR running auto pack")
         raise Exception("Failed to auto pack")
+    print("saving screenshot")
     api.save_screenshot(existing_screenshot_path)
-    # TODO: Update metadata with new scene data
+    print("saving .form file")
     api.save_form(existing_job_form_path)
+    print("getting scene data")
     return api.get_scene()
 
 
@@ -137,11 +137,12 @@ def create_new_from_form():
     filename = f"{job_name}.form"
     file.save(os.path.join(job_folder, filename))
     # Use API to get metadata and screenshot from scene
-    api.load_form(os.path.join(job_folder, filename))
+    api.load_form(os.path.abspath(os.path.join(job_folder, filename)))
     scene_metadata = api.get_scene()
     metadata = {
         'id': id,
-        'owners': [{'name': owner_name, 'email': owner_email}],
+        'owner': {'name': owner_name, 'email': owner_email},
+        'people': [{'name': owner_name, 'email': owner_email}],
         'scene': scene_metadata
     }
     # Save metadata to the new directory with the name metadata.json
@@ -149,7 +150,7 @@ def create_new_from_form():
         json.dump(metadata, f, indent=4)
     # Use API to get screenshot of new file
     # Save screenshot to the new directory with the name screenshot.png
-    api.save_screenshot(os.path.join(job_folder, 'screenshot.png'))
+    api.save_screenshot(os.path.abspath(os.path.join(job_folder, f"{job_name}.png")))
     return jsonify({'success': 'New job created successfully', 'id': id})
 
 
@@ -165,8 +166,8 @@ def create_new_from_form():
 @app.route('/import-models/<job_id>', methods=['POST'])
 def import_parts(job_id):
     data = request.form
-    owner_name = data.get('owner_name')
-    owner_email = data.get('owner_email')
+    person_name = data.get('person_name')
+    person_email = data.get('person_email')
     files = request.files.getlist('files')
 
     job_folder = os.path.join(JOBS_DIR, job_id)
@@ -192,7 +193,7 @@ def import_parts(job_id):
     if os.path.exists(metadata_path):
         with open(metadata_path) as f:
             metadata = json.load(f)
-        metadata['owners'].append({'name': owner_name, 'email': owner_email})
+        metadata['people'].append({'name': person_name, 'email': person_email})
         metadata['scene'] = scene_data
         with open(metadata_path, 'w') as f:
             json.dump(metadata, f, indent=4)

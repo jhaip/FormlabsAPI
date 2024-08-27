@@ -84,11 +84,11 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DefaultApi* | [**auto_layout_post**](docs/DefaultApi.md#auto_layout_post) | **POST** /auto-layout/ | 
 *DefaultApi* | [**auto_orient_post**](docs/DefaultApi.md#auto_orient_post) | **POST** /auto-orient/ | 
-*DefaultApi* | [**auto_pack_post**](docs/DefaultApi.md#auto_pack_post) | **POST** /auto-pack/ | 
 *DefaultApi* | [**auto_support_post**](docs/DefaultApi.md#auto_support_post) | **POST** /auto-support/ | 
 *DefaultApi* | [**export_post**](docs/DefaultApi.md#export_post) | **POST** /export/ | 
 *DefaultApi* | [**load_form_post**](docs/DefaultApi.md#load_form_post) | **POST** /load-form/ | 
 *DefaultApi* | [**models_id_delete**](docs/DefaultApi.md#models_id_delete) | **DELETE** /models/{id}/ | 
+*DefaultApi* | [**scene_auto_pack_post**](docs/DefaultApi.md#scene_auto_pack_post) | **POST** /scene/auto-pack/ | 
 *DefaultApi* | [**scene_get**](docs/DefaultApi.md#scene_get) | **GET** /scene | 
 *DefaultApi* | [**scene_import_model_post**](docs/DefaultApi.md#scene_import_model_post) | **POST** /scene/import-model/ | 
 *DefaultApi* | [**scene_models_id_replace_post**](docs/DefaultApi.md#scene_models_id_replace_post) | **POST** /scene/models/{id}/replace/ | 
@@ -103,7 +103,6 @@ Class | Method | HTTP request | Description
 
  - [AutoLayoutPost500Response](docs/AutoLayoutPost500Response.md)
  - [AutoOrientPostRequest](docs/AutoOrientPostRequest.md)
- - [AutoPackPostRequest](docs/AutoPackPostRequest.md)
  - [DirectionVectorsModel](docs/DirectionVectorsModel.md)
  - [ErrorModel](docs/ErrorModel.md)
  - [ErrorModelError](docs/ErrorModelError.md)
@@ -117,6 +116,7 @@ Class | Method | HTTP request | Description
  - [ModelsSelectionModelModels](docs/ModelsSelectionModelModels.md)
  - [OrientationModel](docs/OrientationModel.md)
  - [RepairBehaviorModel](docs/RepairBehaviorModel.md)
+ - [SceneAutoPackPostRequest](docs/SceneAutoPackPostRequest.md)
  - [SceneImportModelPost200Response](docs/SceneImportModelPost200Response.md)
  - [SceneImportModelPostRequest](docs/SceneImportModelPostRequest.md)
  - [SceneModelsIdReplacePost200Response](docs/SceneModelsIdReplacePost200Response.md)

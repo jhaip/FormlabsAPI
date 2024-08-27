@@ -1,9 +1,9 @@
-# PreFormApi.AutoOrientPostRequest
+# PreFormApi.LoadFormPostRequest
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**models** | [**ModelsSelectionModel**](ModelsSelectionModel.md) |  | 
+**file** | **String** |  | 
 
 

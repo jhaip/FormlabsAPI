@@ -21,7 +21,7 @@
         }
         
         #sidebar {
-            flex: 0 0 200px;
+            flex: 0 0 180px;
             background-color: #f4f4f4;
             padding: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -29,7 +29,7 @@
         
         #content {
             flex-grow: 1;
-            padding: 20px;
+            padding: 20px 40px;
         }
         
         #job-list {
@@ -132,6 +132,20 @@
             margin-top: 0;
         }
 
+        .flex {
+            display: flex;
+        }
+        .flex-left {
+            flex: 1;
+        }
+        .flex-right {
+            flex: 2;
+            padding-left: 40px;
+        }
+        .flex-align-center {
+            align-items: center;
+        }
+
         [popover] {
             padding: 20px;
             border-radius: 5px;
@@ -140,56 +154,90 @@
         [popover]:-internal-popover-in-top-layer::backdrop {
             background: rgba(0, 0, 0, .5);  
         }
+
+        p {
+            margin: 0 0 10px 0;
+        }
         
     </style>
 </head>
 <body>
     <div id="container">
         <div id="sidebar">
-            <h2>Jobs</h2>
-            <ul id="job-list"></ul>
             <p>
-                <button popovertarget="create-new-from-form-popover" class="button">Create new Scene</button>
+                <button popovertarget="create-new-from-form-popover" class="button">Upload New Job</button>
             </p>
+            <ul id="job-list"></ul>
         </div>
         <div id="content" style="display: none">
-            <h2 id="job-title">Select a job</h2>
-            <img id="job-thumbnail" src="" alt="Job Thumbnail">
-            <p id="job-metadata"></p>
-            <a id="download-link" href="#" download class="button">Download .form</a>
-            <p>
-                <button popovertarget="import-models-popover"  class="button">Import Parts</button>
-            </p>
-            <p>
+            <div class="flex flex-align-center">
+                <h2 id="job-title" style="margin: 0 20px 0 0">Select a job</h2>
                 <button id="delete-job" class="button">Delete Job</button>
-            </p>
+            </div>
+            <br>
+            <div class="flex">
+                <div class="flex-left">
+                    <img id="job-thumbnail" src="" alt="Job Thumbnail">
+                </div>
+                <div class="flex-right">
+                    <h4>Job Type</h4>
+                    <p id="job-type"></p>
+                    <h4>Job Owner</h4>
+                    <p id="job-owner"></p>
+                    <a id="download-link" href="#" download class="button">Download .form</a>
+                    <h4>People with parts in job:</h4>
+                    <ol id="job-people"></ol>
+                    <h4>Models</h4>
+                    <ol id="job-models"></ol>
+                    <p>
+                        <button popovertarget="import-models-popover"  class="button">Import Parts</button>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
     <div popover id="create-new-from-form-popover">
         <h2>Create New From .form</h2>
         <form id="create-new-from-form-form" method="POST" enctype="multipart/form-data">
-            <label for="file">Select starting .form file:</label>
-            <input type="file" name="file" required accept=".form"><br>
-            <label for="owner-name">Owner Name:</label>
-            <input type="text" name="owner_name" required><br>
-            <label for="owner-email">Owner Email:</label>
-            <input type="email" name="owner_email" required><br>
-            <button type="submit" class="button">Submit</button>
+            <p>
+                <label for="file">Select starting .form file:</label>
+                <input type="file" name="file" required accept=".form">
+            </p>
+            <p>
+                <label for="owner-name">Owner Name:</label>
+                <input type="text" name="owner_name" required>
+            </p>
+            <p>
+                <label for="owner-email">Owner Email:</label>
+                <input type="email" name="owner_email" required>
+            </p>
+            <p>
+                <button type="submit" class="button">Submit</button>
+            </p>
         </form>
     </div>
 
     <div popover id="import-models-popover">
         <h2>Import Models</h2>
         <form id="import-parts-form" method="POST" enctype="multipart/form-data">
-            <label for="files">Select model files (.form, .stl, .obj, .3mf):</label>
-            <input type="file" id="files" name="files" multiple required accept=".form, .stl, .3mf, .obj"><br>
-            <label for="owner-name">Owner Name:</label>
-            <input type="text" name="owner_name" required><br>
-            <label for="owner-email">Owner Email:</label>
-            <input type="email" name="owner_email" required><br>
-            <button type="submit" class="button">Submit</button>
+            <p>
+                <label for="files">Select model files (.form, .stl, .obj, .3mf):</label>
+                <input type="file" id="files" name="files" multiple required accept=".form, .stl, .3mf, .obj">
+            </p>
+            <p>
+                <label for="person_name">Your Name:</label>
+                <input type="text" name="person_name" required>
+            </p>
+            <p>
+                <label for="person_email">Your Email:</label>
+                <input type="email" name="person_email" required>
+            </p>
+            <p>
+                <button type="submit" class="button">Submit</button>
+            </p>
         </form>
+        <div id="import-models-progress" style="display: none">Importing, please wait.</div>
     </div>
 
     <script>
@@ -233,14 +281,29 @@
                 selectedJobId = jobId;
                 const job = jobsMap[jobId];
                 document.getElementById('job-title').textContent = `Job ${job.id}`;
-                document.getElementById('job-thumbnail').src = `/thumbnails/${job.id}/thumbnail.png`;
-                document.getElementById('job-metadata').textContent = JSON.stringify(job, null, 2);
+                document.getElementById('job-thumbnail').src = `/thumbnails/${job.id}/thumbnail.png`
+                document.getElementById('job-type').innerHTML = `
+                    <div>Printer: ${job.scene.scene_type.printer}</div>
+                    <div>Material: ${job.scene.scene_type.material_code}</div>
+                    <div>Resolution: ${job.scene.scene_type.layer_thickness_mm} mm</div>
+                    <div>Print Setting: ${job.scene.scene_type.print_setting}</div>
+                    <div>Layers: ${job.scene.layers}</div>
+                `;
+                document.getElementById('job-owner').innerHTML = `${job.owner.name} (${job.owner.email})`;
+                document.getElementById('job-people').innerHTML = job.people.map(person => `
+                    <li>${person.name} (${person.email})</li>
+                `).join('');
+                document.getElementById('job-models').innerHTML = job.scene.models.map((model, i) => `
+                    <li>${model.name}</li>
+                `).join('');
                 document.getElementById('download-link').href = `/download/${job.id}`;
             }
 
             document.getElementById('import-parts-form').addEventListener('submit', function (e) {
                 e.preventDefault();
                 const formData = new FormData(this);
+                importModelsPopover.querySelector('#import-models-progress').style.display = 'block';
+                document.getElementById('import-parts-form').style.display = 'none';
                 fetch(`/import-models/${selectedJobId}`, {
                     method: 'POST',
                     body: formData
@@ -248,6 +311,8 @@
                 .then(response => response.json())
                 .then(data => {
                     importModelsPopover.hidePopover();
+                    document.getElementById('import-parts-form').style.display = 'block';
+                    importModelsPopover.querySelector('#import-models-progress').style.display = 'none';
                     alert(data.success || data.error);
                     window.location.reload();
                 });
@@ -263,7 +328,9 @@
                 .then(response => response.json())
                 .then(data => {
                     createNewFormFormPopover.hidePopover();
-                    alert(data.success || data.error);
+                    if (!data || !data.success) {
+                        return alert(data.error || 'An error occurred');
+                    }
                     window.location.reload();
                 });
             });

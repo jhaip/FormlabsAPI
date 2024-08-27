@@ -1,9 +1,9 @@
-# PreFormApi.AutoOrientPostRequest
+# PreFormApi.SceneModelsIdReplacePost200Response
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**models** | [**ModelsSelectionModel**](ModelsSelectionModel.md) |  | 
+**id** | **String** | ID of the imported model | [optional] 
 
 

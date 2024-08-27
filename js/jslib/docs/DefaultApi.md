@@ -10,10 +10,13 @@ Method | HTTP request | Description
 [**exportPost**](DefaultApi.md#exportPost) | **POST** /export/ | 
 [**loadFormPost**](DefaultApi.md#loadFormPost) | **POST** /load-form/ | 
 [**modelsIdDelete**](DefaultApi.md#modelsIdDelete) | **DELETE** /models/{id}/ | 
-[**saveFormPost**](DefaultApi.md#saveFormPost) | **POST** /save-form/ | 
+[**sceneAutoPackPost**](DefaultApi.md#sceneAutoPackPost) | **POST** /scene/auto-pack/ | 
 [**sceneGet**](DefaultApi.md#sceneGet) | **GET** /scene | 
 [**sceneImportModelPost**](DefaultApi.md#sceneImportModelPost) | **POST** /scene/import-model/ | 
+[**sceneModelsIdReplacePost**](DefaultApi.md#sceneModelsIdReplacePost) | **POST** /scene/models/{id}/replace/ | 
 [**scenePost**](DefaultApi.md#scenePost) | **POST** /scene | 
+[**sceneSaveFormPost**](DefaultApi.md#sceneSaveFormPost) | **POST** /scene/save-form/ | 
+[**sceneSaveScreenshotPost**](DefaultApi.md#sceneSaveScreenshotPost) | **POST** /scene/save-screenshot/ | 
 [**v1PrintPost**](DefaultApi.md#v1PrintPost) | **POST** /v1/print/ | 
 [**v1SlicePost**](DefaultApi.md#v1SlicePost) | **POST** /v1/slice/ | 
 
@@ -201,7 +204,7 @@ No authorization required
 
 ## loadFormPost
 
-> loadFormPost(file)
+> loadFormPost(loadFormPostRequest)
 
 
 
@@ -213,8 +216,8 @@ Load a file into the current scene
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let file = "file_example"; // String | 
-apiInstance.loadFormPost(file, (error, data, response) => {
+let loadFormPostRequest = {"file":"C:\\Users\\user\\Desktop\\test.form"}; // LoadFormPostRequest | Full path to the file to load
+apiInstance.loadFormPost(loadFormPostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -228,7 +231,7 @@ apiInstance.loadFormPost(file, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file** | **String**|  | 
+ **loadFormPostRequest** | [**LoadFormPostRequest**](LoadFormPostRequest.md)| Full path to the file to load | 
 
 ### Return type
 
@@ -240,7 +243,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: multipart/form-data
+- **Content-Type**: application/json
 - **Accept**: Not defined
 
 
@@ -289,13 +292,13 @@ No authorization required
 - **Accept**: Not defined
 
 
-## saveFormPost
+## sceneAutoPackPost
 
-> saveFormPost(file)
+> sceneAutoPackPost(sceneAutoPackPostRequest)
 
 
 
-Save the current scene to a .FORM file
+Run auto pack operation
 
 ### Example
 
@@ -303,8 +306,8 @@ Save the current scene to a .FORM file
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let file = "file_example"; // String | 
-apiInstance.saveFormPost(file, (error, data, response) => {
+let sceneAutoPackPostRequest = new PreFormApi.SceneAutoPackPostRequest(); // SceneAutoPackPostRequest | 
+apiInstance.sceneAutoPackPost(sceneAutoPackPostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -318,7 +321,7 @@ apiInstance.saveFormPost(file, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file** | **String**|  | 
+ **sceneAutoPackPostRequest** | [**SceneAutoPackPostRequest**](SceneAutoPackPostRequest.md)|  | 
 
 ### Return type
 
@@ -330,7 +333,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: multipart/form-data
+- **Content-Type**: application/json
 - **Accept**: Not defined
 
 
@@ -418,6 +421,53 @@ No authorization required
 - **Accept**: application/json
 
 
+## sceneModelsIdReplacePost
+
+> SceneModelsIdReplacePost200Response sceneModelsIdReplacePost(id, sceneModelsIdReplacePostRequest)
+
+
+
+Replace a model currently in the scene with a new model, copying the existing models setup
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let id = "id_example"; // String | The unique identifier of the model
+let sceneModelsIdReplacePostRequest = new PreFormApi.SceneModelsIdReplacePostRequest(); // SceneModelsIdReplacePostRequest | 
+apiInstance.sceneModelsIdReplacePost(id, sceneModelsIdReplacePostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String**| The unique identifier of the model | 
+ **sceneModelsIdReplacePostRequest** | [**SceneModelsIdReplacePostRequest**](SceneModelsIdReplacePostRequest.md)|  | 
+
+### Return type
+
+[**SceneModelsIdReplacePost200Response**](SceneModelsIdReplacePost200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
 ## scenePost
 
 > scenePost(scenePostRequest)
@@ -448,6 +498,96 @@ apiInstance.scenePost(scenePostRequest, (error, data, response) => {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **scenePostRequest** | [**ScenePostRequest**](ScenePostRequest.md)| Machine type and material type selection | 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
+
+
+## sceneSaveFormPost
+
+> sceneSaveFormPost(loadFormPostRequest)
+
+
+
+Save the current scene to a .FORM file
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let loadFormPostRequest = {"file":"C:\\Users\\user\\Desktop\\test.form"}; // LoadFormPostRequest | Full path where the file should be saved
+apiInstance.sceneSaveFormPost(loadFormPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **loadFormPostRequest** | [**LoadFormPostRequest**](LoadFormPostRequest.md)| Full path where the file should be saved | 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
+
+
+## sceneSaveScreenshotPost
+
+> sceneSaveScreenshotPost(sceneSaveScreenshotPostRequest)
+
+
+
+Save a .png screenshot of the current scene
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneSaveScreenshotPostRequest = {"file":"C:\\Users\\user\\Desktop\\thumbnail.png"}; // SceneSaveScreenshotPostRequest | 
+apiInstance.sceneSaveScreenshotPost(sceneSaveScreenshotPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneSaveScreenshotPostRequest** | [**SceneSaveScreenshotPostRequest**](SceneSaveScreenshotPostRequest.md)|  | 
 
 ### Return type
 
