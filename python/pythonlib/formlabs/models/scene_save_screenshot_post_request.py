@@ -17,19 +17,38 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from formlabs.models.repair_behavior_model import RepairBehaviorModel
+from typing_extensions import Annotated
+from formlabs.models.models_selection_model import ModelsSelectionModel
 from typing import Optional, Set
 from typing_extensions import Self
 
-class SceneModelsIdReplacePostRequest(BaseModel):
+class SceneSaveScreenshotPostRequest(BaseModel):
     """
-    SceneModelsIdReplacePostRequest
+    SceneSaveScreenshotPostRequest
     """ # noqa: E501
-    file: Optional[StrictStr] = Field(default=None, description="Full path to the file to load")
-    repair_behavior: Optional[RepairBehaviorModel] = RepairBehaviorModel.IGNORE
-    __properties: ClassVar[List[str]] = ["file", "repair_behavior"]
+    file: Annotated[str, Field(strict=True)] = Field(description="The file path to save the .png screenshot to")
+    view_type: Optional[StrictStr] = Field(default=None, description="The type of view to use when taking the screenshot")
+    models: Optional[ModelsSelectionModel] = None
+    __properties: ClassVar[List[str]] = ["file", "view_type", "models"]
+
+    @field_validator('file')
+    def file_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not re.match(r"^.*\.png$", value):
+            raise ValueError(r"must validate the regular expression /^.*\.png$/")
+        return value
+
+    @field_validator('view_type')
+    def view_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['ZOOM_ON_MODELS', 'FULL_BUILD_VOLUME', 'FULL_PLATFORM_WIDTH']):
+            raise ValueError("must be one of enum values ('ZOOM_ON_MODELS', 'FULL_BUILD_VOLUME', 'FULL_PLATFORM_WIDTH')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +68,7 @@ class SceneModelsIdReplacePostRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SceneModelsIdReplacePostRequest from a JSON string"""
+        """Create an instance of SceneSaveScreenshotPostRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,11 +89,14 @@ class SceneModelsIdReplacePostRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of models
+        if self.models:
+            _dict['models'] = self.models.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SceneModelsIdReplacePostRequest from a dict"""
+        """Create an instance of SceneSaveScreenshotPostRequest from a dict"""
         if obj is None:
             return None
 
@@ -83,7 +105,8 @@ class SceneModelsIdReplacePostRequest(BaseModel):
 
         _obj = cls.model_validate({
             "file": obj.get("file"),
-            "repair_behavior": obj.get("repair_behavior") if obj.get("repair_behavior") is not None else RepairBehaviorModel.IGNORE
+            "view_type": obj.get("view_type"),
+            "models": ModelsSelectionModel.from_dict(obj["models"]) if obj.get("models") is not None else None
         })
         return _obj
 

@@ -17,19 +17,17 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from formlabs.models.repair_behavior_model import RepairBehaviorModel
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
-class SceneModelsIdReplacePostRequest(BaseModel):
+class AutoPackPostRequest(BaseModel):
     """
-    SceneModelsIdReplacePostRequest
+    AutoPackPostRequest
     """ # noqa: E501
-    file: Optional[StrictStr] = Field(default=None, description="Full path to the file to load")
-    repair_behavior: Optional[RepairBehaviorModel] = RepairBehaviorModel.IGNORE
-    __properties: ClassVar[List[str]] = ["file", "repair_behavior"]
+    model_spacing_mm: Optional[Union[StrictFloat, StrictInt]] = None
+    __properties: ClassVar[List[str]] = ["model_spacing_mm"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +47,7 @@ class SceneModelsIdReplacePostRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SceneModelsIdReplacePostRequest from a JSON string"""
+        """Create an instance of AutoPackPostRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,7 +72,7 @@ class SceneModelsIdReplacePostRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SceneModelsIdReplacePostRequest from a dict"""
+        """Create an instance of AutoPackPostRequest from a dict"""
         if obj is None:
             return None
 
@@ -82,8 +80,7 @@ class SceneModelsIdReplacePostRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "file": obj.get("file"),
-            "repair_behavior": obj.get("repair_behavior") if obj.get("repair_behavior") is not None else RepairBehaviorModel.IGNORE
+            "model_spacing_mm": obj.get("model_spacing_mm")
         })
         return _obj
 

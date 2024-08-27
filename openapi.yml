@@ -157,6 +157,20 @@ components:
       - "REPAIR"
       - "ERROR"
       - "IGNORE"
+    ModelsSelectionModel:
+      type: object
+      properties:
+        models:
+          oneOf:
+            - type: string
+              title: Select all models
+              enum:
+              - "ALL"
+            - type: array
+              title: Apply to a list of specific models
+              items:
+                type: string
+                description: The ID of the model
 paths:
   /scene:
     get:
@@ -239,6 +253,37 @@ paths:
                   type: string
             example:
               file: "C:\\Users\\user\\Desktop\\test.form"
+      responses:
+        "200":
+          description: OK
+  /scene/save-screenshot/:
+    post:
+      description: "Save a .png screenshot of the current scene"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  description: The file path to save the .png screenshot to
+                  pattern: "^.*\\.png$"
+                view_type:
+                  type: string
+                  description: The type of view to use when taking the screenshot
+                  enum:
+                  - "ZOOM_ON_MODELS"
+                  - "FULL_BUILD_VOLUME"
+                  - "FULL_PLATFORM_WIDTH"
+                models:
+                  $ref: '#/components/schemas/ModelsSelectionModel'
+            example:
+              file: "C:\\Users\\user\\Desktop\\thumbnail.png"
       responses:
         "200":
           description: OK
@@ -429,11 +474,7 @@ paths:
                 - models
               properties:
                 models:
-                  oneOf:
-                    - type: string
-                    - type: array
-                      items:
-                        type: string
+                  $ref: '#/components/schemas/ModelsSelectionModel'
             examples:
               AllModels:
                 value:
@@ -459,11 +500,7 @@ paths:
                 - models
               properties:
                 models:
-                  oneOf:
-                    - type: string
-                    - type: array
-                      items:
-                        type: string
+                  $ref: '#/components/schemas/ModelsSelectionModel'
             examples:
               AllModels:
                 value:
@@ -489,11 +526,7 @@ paths:
                 - models
               properties:
                 models:
-                  oneOf:
-                    - type: string
-                    - type: array
-                      items:
-                        type: string
+                  $ref: '#/components/schemas/ModelsSelectionModel'
             examples:
               AllModels:
                 value:
@@ -514,6 +547,22 @@ paths:
                   error:
                     type: string
                     description: Error message
+  /auto-pack/:
+    post:
+      description: "Run auto pack operation"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model_spacing_mm:
+                  type: number
+      responses:
+        "200":
+          description: OK
   /export/:
     post:
       description: "Export current scene as a STL"

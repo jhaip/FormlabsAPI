@@ -5,7 +5,7 @@
 README.md
 docs/AutoLayoutPost500Response.md
 docs/AutoOrientPostRequest.md
-docs/AutoOrientPostRequestModels.md
+docs/AutoPackPostRequest.md
 docs/DefaultApi.md
 docs/DirectionVectorsModel.md
 docs/ErrorModel.md
@@ -16,6 +16,8 @@ docs/ImportUnitsModel.md
 docs/LoadFormPostRequest.md
 docs/ModelProperties.md
 docs/ModelPropertiesBbox.md
+docs/ModelsSelectionModel.md
+docs/ModelsSelectionModelModels.md
 docs/OrientationModel.md
 docs/RepairBehaviorModel.md
 docs/SceneImportModelPost200Response.md
@@ -24,6 +26,7 @@ docs/SceneModelsIdReplacePost200Response.md
 docs/SceneModelsIdReplacePostRequest.md
 docs/ScenePositionModel.md
 docs/ScenePostRequest.md
+docs/SceneSaveScreenshotPostRequest.md
 docs/TransformMatrixModel.md
 docs/UnitsModel.md
 docs/V1PrintPost200Response.md
@@ -38,7 +41,7 @@ formlabs/exceptions.py
 formlabs/models/__init__.py
 formlabs/models/auto_layout_post500_response.py
 formlabs/models/auto_orient_post_request.py
-formlabs/models/auto_orient_post_request_models.py
+formlabs/models/auto_pack_post_request.py
 formlabs/models/direction_vectors_model.py
 formlabs/models/error_model.py
 formlabs/models/error_model_error.py
@@ -48,6 +51,8 @@ formlabs/models/import_units_model.py
 formlabs/models/load_form_post_request.py
 formlabs/models/model_properties.py
 formlabs/models/model_properties_bbox.py
+formlabs/models/models_selection_model.py
+formlabs/models/models_selection_model_models.py
 formlabs/models/orientation_model.py
 formlabs/models/repair_behavior_model.py
 formlabs/models/scene_import_model_post200_response.py
@@ -56,6 +61,7 @@ formlabs/models/scene_models_id_replace_post200_response.py
 formlabs/models/scene_models_id_replace_post_request.py
 formlabs/models/scene_position_model.py
 formlabs/models/scene_post_request.py
+formlabs/models/scene_save_screenshot_post_request.py
 formlabs/models/transform_matrix_model.py
 formlabs/models/units_model.py
 formlabs/models/v1_print_post200_response.py
@@ -68,4 +74,8 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_auto_pack_post_request.py
+test/test_models_selection_model.py
+test/test_models_selection_model_models.py
+test/test_scene_save_screenshot_post_request.py
 tox.ini

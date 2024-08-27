@@ -31,12 +31,12 @@ class SceneImportModelPostRequest(BaseModel):
     SceneImportModelPostRequest
     """ # noqa: E501
     file: StrictStr = Field(description="Full path to the file to load")
-    repair_behavior: Optional[RepairBehaviorModel] = None
+    repair_behavior: Optional[RepairBehaviorModel] = RepairBehaviorModel.IGNORE
     name: Optional[StrictStr] = Field(default=None, description="The name of the model used within job preparation.")
     position: Optional[ScenePositionModel] = None
     orientation: Optional[OrientationModel] = None
     scale: Optional[Union[StrictFloat, StrictInt]] = Field(default=1, description="The scale factor to apply to the model")
-    units: Optional[ImportUnitsModel] = None
+    units: Optional[ImportUnitsModel] = ImportUnitsModel.DETECTED
     __properties: ClassVar[List[str]] = ["file", "repair_behavior", "name", "position", "orientation", "scale", "units"]
 
     model_config = ConfigDict(
@@ -97,12 +97,12 @@ class SceneImportModelPostRequest(BaseModel):
 
         _obj = cls.model_validate({
             "file": obj.get("file"),
-            "repair_behavior": obj.get("repair_behavior"),
+            "repair_behavior": obj.get("repair_behavior") if obj.get("repair_behavior") is not None else RepairBehaviorModel.IGNORE,
             "name": obj.get("name"),
             "position": ScenePositionModel.from_dict(obj["position"]) if obj.get("position") is not None else None,
             "orientation": OrientationModel.from_dict(obj["orientation"]) if obj.get("orientation") is not None else None,
             "scale": obj.get("scale") if obj.get("scale") is not None else 1,
-            "units": obj.get("units")
+            "units": obj.get("units") if obj.get("units") is not None else ImportUnitsModel.DETECTED
         })
         return _obj
 

@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**auto_layout_post**](DefaultApi.md#auto_layout_post) | **POST** /auto-layout/ | 
 [**auto_orient_post**](DefaultApi.md#auto_orient_post) | **POST** /auto-orient/ | 
+[**auto_pack_post**](DefaultApi.md#auto_pack_post) | **POST** /auto-pack/ | 
 [**auto_support_post**](DefaultApi.md#auto_support_post) | **POST** /auto-support/ | 
 [**export_post**](DefaultApi.md#export_post) | **POST** /export/ | 
 [**load_form_post**](DefaultApi.md#load_form_post) | **POST** /load-form/ | 
@@ -15,6 +16,7 @@ Method | HTTP request | Description
 [**scene_models_id_replace_post**](DefaultApi.md#scene_models_id_replace_post) | **POST** /scene/models/{id}/replace/ | 
 [**scene_post**](DefaultApi.md#scene_post) | **POST** /scene | 
 [**scene_save_form_post**](DefaultApi.md#scene_save_form_post) | **POST** /scene/save-form/ | 
+[**scene_save_screenshot_post**](DefaultApi.md#scene_save_screenshot_post) | **POST** /scene/save-screenshot/ | 
 [**v1_print_post**](DefaultApi.md#v1_print_post) | **POST** /v1/print/ | 
 [**v1_slice_post**](DefaultApi.md#v1_slice_post) | **POST** /v1/slice/ | 
 
@@ -128,6 +130,71 @@ with formlabs.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **auto_orient_post_request** | [**AutoOrientPostRequest**](AutoOrientPostRequest.md)| Models to run the auto orient operation on | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **auto_pack_post**
+> auto_pack_post(auto_pack_post_request)
+
+
+
+Run auto pack operation
+
+### Example
+
+
+```python
+import formlabs
+from formlabs.models.auto_pack_post_request import AutoPackPostRequest
+from formlabs.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:44388
+# See configuration.py for a list of all supported configuration parameters.
+configuration = formlabs.Configuration(
+    host = "http://localhost:44388"
+)
+
+
+# Enter a context with an instance of the API client
+with formlabs.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = formlabs.DefaultApi(api_client)
+    auto_pack_post_request = formlabs.AutoPackPostRequest() # AutoPackPostRequest | 
+
+    try:
+        api_instance.auto_pack_post(auto_pack_post_request)
+    except Exception as e:
+        print("Exception when calling DefaultApi->auto_pack_post: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **auto_pack_post_request** | [**AutoPackPostRequest**](AutoPackPostRequest.md)|  | 
 
 ### Return type
 
@@ -719,6 +786,71 @@ with formlabs.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **load_form_post_request** | [**LoadFormPostRequest**](LoadFormPostRequest.md)| Full path where the file should be saved | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **scene_save_screenshot_post**
+> scene_save_screenshot_post(scene_save_screenshot_post_request)
+
+
+
+Save a .png screenshot of the current scene
+
+### Example
+
+
+```python
+import formlabs
+from formlabs.models.scene_save_screenshot_post_request import SceneSaveScreenshotPostRequest
+from formlabs.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:44388
+# See configuration.py for a list of all supported configuration parameters.
+configuration = formlabs.Configuration(
+    host = "http://localhost:44388"
+)
+
+
+# Enter a context with an instance of the API client
+with formlabs.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = formlabs.DefaultApi(api_client)
+    scene_save_screenshot_post_request = {"file":"C:\\Users\\user\\Desktop\\thumbnail.png"} # SceneSaveScreenshotPostRequest | 
+
+    try:
+        api_instance.scene_save_screenshot_post(scene_save_screenshot_post_request)
+    except Exception as e:
+        print("Exception when calling DefaultApi->scene_save_screenshot_post: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scene_save_screenshot_post_request** | [**SceneSaveScreenshotPostRequest**](SceneSaveScreenshotPostRequest.md)|  | 
 
 ### Return type
 

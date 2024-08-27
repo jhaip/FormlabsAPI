@@ -17,19 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
-from formlabs.models.repair_behavior_model import RepairBehaviorModel
+from formlabs.models.models_selection_model_models import ModelsSelectionModelModels
 from typing import Optional, Set
 from typing_extensions import Self
 
-class SceneModelsIdReplacePostRequest(BaseModel):
+class ModelsSelectionModel(BaseModel):
     """
-    SceneModelsIdReplacePostRequest
+    ModelsSelectionModel
     """ # noqa: E501
-    file: Optional[StrictStr] = Field(default=None, description="Full path to the file to load")
-    repair_behavior: Optional[RepairBehaviorModel] = RepairBehaviorModel.IGNORE
-    __properties: ClassVar[List[str]] = ["file", "repair_behavior"]
+    models: Optional[ModelsSelectionModelModels] = None
+    __properties: ClassVar[List[str]] = ["models"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +48,7 @@ class SceneModelsIdReplacePostRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SceneModelsIdReplacePostRequest from a JSON string"""
+        """Create an instance of ModelsSelectionModel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,11 +69,14 @@ class SceneModelsIdReplacePostRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of models
+        if self.models:
+            _dict['models'] = self.models.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SceneModelsIdReplacePostRequest from a dict"""
+        """Create an instance of ModelsSelectionModel from a dict"""
         if obj is None:
             return None
 
@@ -82,8 +84,7 @@ class SceneModelsIdReplacePostRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "file": obj.get("file"),
-            "repair_behavior": obj.get("repair_behavior") if obj.get("repair_behavior") is not None else RepairBehaviorModel.IGNORE
+            "models": ModelsSelectionModelModels.from_dict(obj["models"]) if obj.get("models") is not None else None
         })
         return _obj
 

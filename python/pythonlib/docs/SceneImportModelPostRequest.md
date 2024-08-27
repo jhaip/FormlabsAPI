@@ -6,12 +6,12 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **file** | **str** | Full path to the file to load | 
-**repair_behavior** | [**RepairBehaviorModel**](RepairBehaviorModel.md) |  | [optional] 
+**repair_behavior** | [**RepairBehaviorModel**](RepairBehaviorModel.md) |  | [optional] [default to RepairBehaviorModel.IGNORE]
 **name** | **str** | The name of the model used within job preparation. | [optional] 
 **position** | [**ScenePositionModel**](ScenePositionModel.md) |  | [optional] 
 **orientation** | [**OrientationModel**](OrientationModel.md) |  | [optional] 
 **scale** | **float** | The scale factor to apply to the model | [optional] [default to 1]
-**units** | [**ImportUnitsModel**](ImportUnitsModel.md) |  | [optional] 
+**units** | [**ImportUnitsModel**](ImportUnitsModel.md) |  | [optional] [default to ImportUnitsModel.DETECTED]
 
 ## Example
 
