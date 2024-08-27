@@ -11,6 +11,8 @@ import formlabs
 JOBS_DIR = 'jobs'
 UPLOAD_FOLDER = '/tmp'
 
+# pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
@@ -18,35 +20,32 @@ CORS(app)
 
 class PreFormApi:
     def __init__(self):
-        # self.api = formlabs.Api()
-        pass
+        self.api = None
 
-    def load_form(self, form_path):
-        # self.api.load_form(form_path)
-        pass
+    def load_form(self, form_file_path):
+        self.api.load_form_post(formlabs.LoadFormPostRequest(file=form_file_path))
 
     def import_model(self, model_path):
+        # In PR 1
         # self.api.import_model(model_path)
         pass
 
     def auto_pack(self):
+        # TODO
         # self.api.auto_pack()
         pass
 
     def save_screenshot(self, screenshot_path):
+        # In other branch
         # self.api.save_screenshot(screenshot_path)
         # Mock by copying a file
         Path(screenshot_path).write_bytes(Path('/Users/jacob.haip/Downloads/lena.png').read_bytes())
 
     def get_scene(self):
-        # return self.api.get_scene()
-        return {
-            "mock_scene_data": "mock"
-        }
+        return self.api.scene_get()
 
-    def save_form(self, form_path):
-        # self.api.save_form(form_path)
-        pass
+    def save_form(self, form_file_path):
+        self.api.scene_save_form_post(formlabs.LoadFormPostRequest(file=form_file_path))
 
 api = PreFormApi()
 
@@ -64,7 +63,7 @@ def merge(job_id, uploaded_file_paths):
     except:
         raise Exception("Failed to auto pack")
     api.save_screenshot(existing_screenshot_path)
-    # Update metadata with new scene data
+    # TODO: Update metadata with new scene data
     api.save_form(existing_job_form_path)
     return api.get_scene()
 
@@ -84,7 +83,9 @@ def index():
 @app.route('/list', methods=['GET'])
 def list_jobs():
     jobs = []
-    for job_folder in os.listdir(JOBS_DIR):
+    job_folders = [x for x in os.listdir(JOBS_DIR) if x.isdigit()]
+    sorted_job_folders = sorted(job_folders, key=lambda x: int(x))
+    for job_folder in sorted_job_folders:
         job_path = os.path.join(JOBS_DIR, job_folder)
         if os.path.isdir(job_path):
             metadata_path = os.path.join(job_path, 'metadata.json')
@@ -93,6 +94,16 @@ def list_jobs():
                     metadata = json.load(f)
                 jobs.append(metadata)
     return jsonify(jobs)
+
+@app.route('/jobs/<job_id>', methods=['DELETE'])
+def delete_job(job_id):
+    job_folder = os.path.join(JOBS_DIR, job_id)
+    if os.path.exists(job_folder):
+        for file in os.listdir(job_folder):
+            os.remove(os.path.join(job_folder, file))
+        os.rmdir(job_folder)
+        return jsonify({'success': 'Job deleted successfully'})
+    return jsonify({'error': 'Job not found'}), 404
 
 @app.route('/download/<job_id>', methods=['GET'])
 def download_form(job_id):
@@ -116,12 +127,14 @@ def create_new_from_form():
     owner_email = data.get('owner_email')
     file = request.files['file']
     # Creat a new ID for the job
-    id = str(uuid.uuid4())
+    last_id = max([0] + [int(x) for x in os.listdir(JOBS_DIR) if x.isdigit()])
+    id = last_id + 1
+    job_name = f"{id}"
     # Make new directory in with the name of the ID
-    job_folder = os.path.join(JOBS_DIR, id)
+    job_folder = os.path.join(JOBS_DIR, job_name)
     os.makedirs(job_folder)
     # Save the file to the new directory with the name ID.form
-    filename = f"{id}.form"
+    filename = f"{job_name}.form"
     file.save(os.path.join(job_folder, filename))
     # Use API to get metadata and screenshot from scene
     api.load_form(os.path.join(job_folder, filename))
@@ -169,14 +182,6 @@ def import_parts(job_id):
             file.save(saved_file_path)
             uploaded_file_paths.append(saved_file_path)
 
-    # TODO: Do merge operation here, that could fail
-    # result = merge(files, job_folder.form)
-    # on success or failure, remove the cached file updates
-    # if result.error:
-    #    return jsonify({'error': result.error})
-    # else:
-    #    on sucess, updates .form and takes new screenshot and updates metadata
-
     try:
         scene_data = merge(job_id, uploaded_file_paths)
     except Exception as e:
@@ -195,4 +200,6 @@ def import_parts(job_id):
     return jsonify({'success': 'Parts added successfully to the job'})
 
 if __name__ == '__main__':
-    app.run(port=8323, debug=True)
+    with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
+        api.api = preform.api
+        app.run(port=8323, debug=False)
