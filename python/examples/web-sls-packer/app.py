@@ -61,6 +61,11 @@ def merge(job_id, uploaded_file_paths):
     except:
         print("ERROR running auto pack")
         raise Exception("Failed to auto pack")
+    scene_data = api.get_scene()
+    for model in scene_data['models']:
+        if not model["in_bounds"]:
+            print("ERROR: model out of build volume.")
+            raise Exception("Failed post auto pack in-bounds model check")
     print("saving screenshot")
     api.save_screenshot(existing_screenshot_path)
     print("saving .form file")

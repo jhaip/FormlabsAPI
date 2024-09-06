@@ -313,7 +313,9 @@
                     importModelsPopover.hidePopover();
                     document.getElementById('import-parts-form').style.display = 'block';
                     importModelsPopover.querySelector('#import-models-progress').style.display = 'none';
-                    alert(data.success || data.error);
+                    if (!data || !data.success) {
+                        return alert(data.error || 'An error occurred');
+                    }
                     window.location.reload();
                 });
             });
