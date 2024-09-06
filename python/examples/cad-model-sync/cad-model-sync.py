@@ -18,7 +18,8 @@ parser.add_argument("model", type=str, help="Path to the new .stl file")
 parser.add_argument("name", type=str, help="Name of the model in the source .form to replace")
 args = parser.parse_args()
 
-def foo(preform):
+pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.app/Contents/MacOS/PreFormServer"
+with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
     preform.api.load_form_post(formlabs.LoadFormPostRequest(file=args.source))
     scene_response = preform.api.scene_get()
     matching_model_ids = [model["id"] for model in scene_response["models"] if model["name"] == args.name]
@@ -37,10 +38,3 @@ def foo(preform):
                 # Goal here is that the old setup model is removed and the new one is added, but with no supports 
     preform.api.scene_save_form_post(formlabs.LoadFormPostRequest(file=args.source))
     subprocess.Popen(["/Applications/PreForm 3.34.app/Contents/MacOS/PreForm", args.source], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-
-# foo(formlabs.PreFormApi(44388))
-# pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
-with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
-    foo(preform)
-

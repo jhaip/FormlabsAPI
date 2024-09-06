@@ -10,7 +10,7 @@ import subprocess
 import sys
 import time
 
-# pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.app/Contents/MacOS/PreFormServer"
 
 def doStuff(formFilePath, selected_version, partName="part1"):
     global progress_label_textvar, progress_label

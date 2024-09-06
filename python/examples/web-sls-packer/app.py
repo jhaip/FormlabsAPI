@@ -3,6 +3,7 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 import json
+import pathlib
 from pathlib import Path
 import formlabs
 
@@ -10,7 +11,7 @@ import formlabs
 JOBS_DIR = 'jobs'
 UPLOAD_FOLDER = '/tmp'
 
-# pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.app/Contents/MacOS/PreFormServer"
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
