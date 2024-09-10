@@ -120,39 +120,17 @@ def parse_recurring_order_folder_name(folder_name):
         return None
 
 
-def parse_type_of_stl_from_filename(stl_filename):
-    if "1_L" in stl_filename:
-        return StlModelType.L1
-    elif "1-L" in stl_filename:
-        return StlModelType.L1
-    elif "L-1" in stl_filename:
-        return StlModelType.L1
-    elif "L_1" in stl_filename:
-        return StlModelType.L1
-    elif "1_U" in stl_filename:
-        return StlModelType.U1
-    elif "1-U" in stl_filename:
-        return StlModelType.U1
-    elif "U-1" in stl_filename:
-        return StlModelType.U1
-    elif "U_1" in stl_filename:
-        return StlModelType.U1
-    elif "L_2" in stl_filename:
-        return StlModelType.L2
-    elif "L-2" in stl_filename:
-        return StlModelType.L2
-    elif "2_L" in stl_filename:
-        return StlModelType.L2
-    elif "2-L" in stl_filename:
-        return StlModelType.L2
-    elif "U_2" in stl_filename:
-        return StlModelType.U2
-    elif "U-2" in stl_filename:
-        return StlModelType.U2
-    elif "2_U" in stl_filename:
-        return StlModelType.U2
-    elif "2-U" in stl_filename:
-        return StlModelType.U2
+def parse_type_of_stl_from_filename(stl_filename) -> StlModelType:
+    flags = {
+        StlModelType.L1: ["L_1", "L-1", "1_L", "1-L"],
+        StlModelType.U1: ["U_1", "U-1", "1_U", "1-U"],
+        StlModelType.L2: ["L_2", "L-2", "2_L", "2-L"],
+        StlModelType.U2: ["U_2", "U-2", "2_U", "2-U"],
+    }
+    for model_type, flag_list in flags.items():
+        for flag_str in flag_list:
+            if flag_str in stl_filename:
+                return model_type
     return StlModelType.UNKNOWN
 
 
