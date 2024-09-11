@@ -8,14 +8,16 @@ from datetime import datetime
 from dataclasses import dataclass
 from enum import Enum
 from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
+from formlabs.models.scene_type_model import SceneTypeModel
+from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
 
 
-FORMLABS_MATERIAL_SELECTION = {
-    "machine_type": "FRMB-3-0", # Form 3B
-    "material_code": "FLGPGR04", # TODO change this
-    "slice_thickness": 0.1,
-    "print_setting": "DEFAULT", # TODO change this
-}
+FORMLABS_MATERIAL_SELECTION = SceneTypeModel(
+    machine_type="FRMB-3-0",
+    material_code="FLGPGR04", # TODO: change this
+    layer_thickness=SceneTypeModelLayerThickness("0.1"),
+    print_setting="DEFAULT", # TODO: change this
+)
 
 class StlModelType(Enum):
     L1 = 1 # Lower reference model
@@ -56,23 +58,23 @@ class BatchResult:
 
 STATION_NAME = "Station-3-7-"
 PATH_TO_INPUT_FOLDERS = {
-    OrderType.LOCAL_PATIENT: "TODO",
-    OrderType.NEW_PATIENT: "TODO",
-    OrderType.REOCCURING_PATIENT: "TODO",
+    OrderType.LOCAL_PATIENT: r"C:\Users\haip_formlabs\Desktop\Orders\2. Approved\Local Patient",
+    OrderType.NEW_PATIENT: r"C:\Users\haip_formlabs\Desktop\Orders\2. Approved\New Patient",
+    OrderType.REOCCURING_PATIENT: r"C:\Users\haip_formlabs\Desktop\Orders\2. Approved\Reocurring Patient",
 }
 PATH_TO_OUTPUT_FOLDERS = {
-    OrderType.LOCAL_PATIENT: "TODO",
-    OrderType.NEW_PATIENT: "TODO",
-    OrderType.REOCCURING_PATIENT: "TODO",
+    OrderType.LOCAL_PATIENT: r"C:\Users\haip_formlabs\Desktop\Orders\3. Complete\Local Patient",
+    OrderType.NEW_PATIENT: r"C:\Users\haip_formlabs\Desktop\Orders\3. Complete\New Patient",
+    OrderType.REOCCURING_PATIENT: r"C:\Users\haip_formlabs\Desktop\Orders\3. Complete\Reocurring Patient",
 }
 CACHE_OF_INPUT_FOLDERS = {
     OrderType.LOCAL_PATIENT: set(),
     OrderType.NEW_PATIENT: set(),
     OrderType.REOCCURING_PATIENT: set(),
 }
-PATH_TO_FOLDER_FOR_SAVING_PRINT_FILES = "TODO"
+PATH_TO_FOLDER_FOR_SAVING_PRINT_FILES = r"C:\Users\haip_formlabs\Desktop\Job File Output"
 DELAY_BETWEEN_NEW_ORDER_FOLDER_CHECKS_SECONDS = 2
-pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+pathToPreformServer = r"C:\Users\haip_formlabs\code\FormlabsSDK\python\PreForm_Server\PreFormServer.exe"
 
 
 def check_input_folder(order_type: OrderType):
@@ -81,24 +83,31 @@ def check_input_folder(order_type: OrderType):
     current_folders = set(f for f in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, f)))
     new_folders = current_folders - CACHE_OF_INPUT_FOLDERS[order_type]
     for new_folder in new_folders:
-        process_order(new_folder, order_type)
+        process_order(os.path.join(input_folder, new_folder), order_type)
     CACHE_OF_INPUT_FOLDERS[order_type] = current_folders
 
 
 def process_order(order_folder_path, order_type: OrderType):
+    print("Processing order", order_folder_path, order_type)
     order_parameters = parse_order_parameters(order_folder_path, order_type)
+    print("Parsed order parameters", order_parameters)
     order_parameters = update_order_parameters_with_stl_files(order_parameters)
-    batch_results = mock_process_order_models(order_parameters)
-    # batch_results = process_order_models(order_parameters)
+    print("Updated order parameters with STL info", order_parameters)
+    # batch_results = mock_process_order_models(order_parameters)
+    batch_results = process_order_models(order_parameters)
+    print("Batching result:", batch_results)
     write_result_file(order_parameters, batch_results)
+    print("Result file written")
     move_order_order_to_completed_folder(order_folder_path, order_type)
+    print("Order moved to completed folder")
 
 
 def move_order_order_to_completed_folder(order_folder_path, order_type: OrderType):
     shutil.move(order_folder_path, PATH_TO_OUTPUT_FOLDERS[order_type])
 
 
-def parse_recurring_order_folder_name(folder_name):
+def parse_recurring_order_folder_name(order_folder_path):
+    folder_name = os.path.basename(order_folder_path)
     # Regular expression pattern to extract the required parts, allowing for missing T and B quantities
     # Written by Chat GPT:
     pattern = re.compile(r"(?P<order_id>\d+)-SCANS-\s*(?P<previous_order_id>\d+)(?:-T(?P<top_quantity>\d*))?(?:-B(?P<bottom_quantity>\d*))?")
@@ -110,7 +119,7 @@ def parse_recurring_order_folder_name(folder_name):
         return OrderParameters(
             match.group('order_id'),
             OrderType.REOCCURING_PATIENT,
-            folder_name,
+            order_folder_path,
             match.group('previous_order_id'),
             top_quantity,
             bottom_quantity,
@@ -176,7 +185,7 @@ def create_result_string(order_parameters: OrderParameters, part_quantity_in_thi
     result_str = ""
     order_type_abbreviation = ORDER_TYPE_ABBREVIATIONS[order_parameters.order_type]
     result_str += f"{order_type_abbreviation}: {STATION_NAME}\n"
-    result_str += f"{order_parameters.order_id} #{part_quantity_in_this_print}"
+    result_str += f"{order_parameters.order_id} #{part_quantity_in_this_print}\n"
     date_str = datetime.now().strftime("%Y-%m-%d")  # Example: 2023-01-02
     result_str += f"{date_str}\n"
     if print_number is not None:
@@ -227,8 +236,9 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
     with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
         clear_scene(preform)
         for stl_file_and_quantity in order_parameters.stl_files_and_quantities:
-            for i in range(stl_file_and_quantity["qty"]):
-                new_model = preform.api.scene_import_model_post({"file": os.path.join(order_parameters.order_folder_path, stl_file_and_quantity["file"])})
+            for i in range(stl_file_and_quantity.quantity):
+                print(f"Importing model {stl_file_and_quantity.filename} qty {i+1}/{stl_file_and_quantity.quantity}")
+                new_model = preform.api.scene_import_model_post({"file": os.path.join(order_parameters.order_folder_path, stl_file_and_quantity.filename)})
                 try:
                     print(f"Auto layouting all")
                     preform.api.auto_layout_post_with_http_info(AutoOrientPostRequest.from_dict({"models": "ALL"}))
@@ -240,7 +250,7 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
                         preform.api.models_id_delete(str(new_model.model_id))
                         save_batch_form(preform)
                         clear_scene(preform)
-                print(f"Model {stl_file_and_quantity['file']} added to scene")
+                print(f"Model {stl_file_and_quantity.filename} added to scene")
         if batch_has_unsaved_changed:
             save_batch_form(preform)
 
