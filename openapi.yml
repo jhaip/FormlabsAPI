@@ -47,21 +47,21 @@ components:
         - $ref: '#/components/schemas/DirectionVectorsModel'
     EulerAnglesModel:
       type: object
-      description: Orientation specified using Euler angles in radians. TODO applied in what order, in which direction? What axis has worst gimbal lock?
+      description: "Orientation specified using Euler angles in degrees. Rotation applied in the order: roll, pitch, yaw"
       properties:
-        x:
+        pitch:
           type: number
-          description: Euler angle x rotation
-        y:
+          description: Rotation of pitch degrees around the x axis (applied second)
+        yaw:
           type: number
-          description: Euler angle y rotation
-        z:
+          description: Rotation of yaw degrees around the y axis (applied last)
+        roll:
           type: number
-          description: Euler angle z rotation
+          description: Rotation of roll degress around the z axis (applied first)
       required:
-        - x
-        - y
-        - z
+        - pitch
+        - yaw
+        - roll
     TransformMatrixModel:
       type: object
       description: Orientation specified a 3x3 matrix, the linear component of a 3D rigid transform.
@@ -879,9 +879,9 @@ paths:
                     y: 1
                     z: 2
                   orientation:
-                    x: 50
-                    y: 2
-                    z: 39
+                    pitch: 50
+                    yaw: 2
+                    roll: 39
                   scale: 0.5
                   units: "MILLIMETERS"
       responses:
@@ -1025,9 +1025,9 @@ paths:
                     y: 1
                     z: 2
                   orientation:
-                    x: 50
-                    y: 2
-                    z: 39
+                    pitch: 50
+                    yaw: 2
+                    roll: 39
                   scale: 0.5
                   units: "MILLIMETERS"
       responses:

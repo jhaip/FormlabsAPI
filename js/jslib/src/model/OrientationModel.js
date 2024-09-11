@@ -140,22 +140,22 @@ class OrientationModel {
 }
 
 /**
- * Euler angle x rotation
- * @member {Number} x
+ * Rotation of pitch degrees around the x axis (applied second)
+ * @member {Number} pitch
  */
-OrientationModel.prototype['x'] = undefined;
+OrientationModel.prototype['pitch'] = undefined;
 
 /**
- * Euler angle y rotation
- * @member {Number} y
+ * Rotation of yaw degrees around the y axis (applied last)
+ * @member {Number} yaw
  */
-OrientationModel.prototype['y'] = undefined;
+OrientationModel.prototype['yaw'] = undefined;
 
 /**
- * Euler angle z rotation
- * @member {Number} z
+ * Rotation of roll degress around the z axis (applied first)
+ * @member {Number} roll
  */
-OrientationModel.prototype['z'] = undefined;
+OrientationModel.prototype['roll'] = undefined;
 
 /**
  * @member {Array.<Array.<Number>>} linear

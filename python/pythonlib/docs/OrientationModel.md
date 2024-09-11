@@ -6,9 +6,9 @@ The orientation of the model in the scene. It can be specified using one of the 
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**x** | **float** | Euler angle x rotation | 
-**y** | **float** | Euler angle y rotation | 
-**z** | **float** | Euler angle z rotation | 
+**pitch** | **float** | Rotation of pitch degrees around the x axis (applied second) | 
+**yaw** | **float** | Rotation of yaw degrees around the y axis (applied last) | 
+**roll** | **float** | Rotation of roll degress around the z axis (applied first) | 
 **linear** | **List[List[float]]** |  | 
 **z_direction** | **List[float]** | 3D unit vector in model space saying which piece of the model will point \&quot;up\&quot; in scene space.  | 
 **x_direction** | **List[float]** | 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \&quot;right\&quot; in scene space.  | 

@@ -21,15 +21,15 @@ import ApiClient from '../ApiClient';
 class EulerAnglesModel {
     /**
      * Constructs a new <code>EulerAnglesModel</code>.
-     * Orientation specified using Euler angles in radians. TODO applied in what order, in which direction? What axis has worst gimbal lock?
+     * Orientation specified using Euler angles in degrees. Rotation applied in the order: roll, pitch, yaw
      * @alias module:model/EulerAnglesModel
-     * @param x {Number} Euler angle x rotation
-     * @param y {Number} Euler angle y rotation
-     * @param z {Number} Euler angle z rotation
+     * @param pitch {Number} Rotation of pitch degrees around the x axis (applied second)
+     * @param yaw {Number} Rotation of yaw degrees around the y axis (applied last)
+     * @param roll {Number} Rotation of roll degress around the z axis (applied first)
      */
-    constructor(x, y, z) { 
+    constructor(pitch, yaw, roll) { 
         
-        EulerAnglesModel.initialize(this, x, y, z);
+        EulerAnglesModel.initialize(this, pitch, yaw, roll);
     }
 
     /**
@@ -37,10 +37,10 @@ class EulerAnglesModel {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, x, y, z) { 
-        obj['x'] = x;
-        obj['y'] = y;
-        obj['z'] = z;
+    static initialize(obj, pitch, yaw, roll) { 
+        obj['pitch'] = pitch;
+        obj['yaw'] = yaw;
+        obj['roll'] = roll;
     }
 
     /**
@@ -54,14 +54,14 @@ class EulerAnglesModel {
         if (data) {
             obj = obj || new EulerAnglesModel();
 
-            if (data.hasOwnProperty('x')) {
-                obj['x'] = ApiClient.convertToType(data['x'], 'Number');
+            if (data.hasOwnProperty('pitch')) {
+                obj['pitch'] = ApiClient.convertToType(data['pitch'], 'Number');
             }
-            if (data.hasOwnProperty('y')) {
-                obj['y'] = ApiClient.convertToType(data['y'], 'Number');
+            if (data.hasOwnProperty('yaw')) {
+                obj['yaw'] = ApiClient.convertToType(data['yaw'], 'Number');
             }
-            if (data.hasOwnProperty('z')) {
-                obj['z'] = ApiClient.convertToType(data['z'], 'Number');
+            if (data.hasOwnProperty('roll')) {
+                obj['roll'] = ApiClient.convertToType(data['roll'], 'Number');
             }
         }
         return obj;
@@ -86,25 +86,25 @@ class EulerAnglesModel {
 
 }
 
-EulerAnglesModel.RequiredProperties = ["x", "y", "z"];
+EulerAnglesModel.RequiredProperties = ["pitch", "yaw", "roll"];
 
 /**
- * Euler angle x rotation
- * @member {Number} x
+ * Rotation of pitch degrees around the x axis (applied second)
+ * @member {Number} pitch
  */
-EulerAnglesModel.prototype['x'] = undefined;
+EulerAnglesModel.prototype['pitch'] = undefined;
 
 /**
- * Euler angle y rotation
- * @member {Number} y
+ * Rotation of yaw degrees around the y axis (applied last)
+ * @member {Number} yaw
  */
-EulerAnglesModel.prototype['y'] = undefined;
+EulerAnglesModel.prototype['yaw'] = undefined;
 
 /**
- * Euler angle z rotation
- * @member {Number} z
+ * Rotation of roll degress around the z axis (applied first)
+ * @member {Number} roll
  */
-EulerAnglesModel.prototype['z'] = undefined;
+EulerAnglesModel.prototype['roll'] = undefined;
 
 
 

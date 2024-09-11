@@ -1,14 +1,14 @@
 # EulerAnglesModel
 
-Orientation specified using Euler angles in radians. TODO applied in what order, in which direction? What axis has worst gimbal lock?
+Orientation specified using Euler angles in degrees. Rotation applied in the order: roll, pitch, yaw
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**x** | **float** | Euler angle x rotation | 
-**y** | **float** | Euler angle y rotation | 
-**z** | **float** | Euler angle z rotation | 
+**pitch** | **float** | Rotation of pitch degrees around the x axis (applied second) | 
+**yaw** | **float** | Rotation of yaw degrees around the y axis (applied last) | 
+**roll** | **float** | Rotation of roll degress around the z axis (applied first) | 
 
 ## Example
 
