@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **String** |  | [optional] 
-**productName** | **String** |  | [optional] 
-**status** | **String** |  | [optional] 
-**isConnected** | **Boolean** |  | [optional] 
-**connectionType** | **String** |  | [optional] 
-**ipAddress** | **String** |  | [optional] 
-**firmwareVersion** | **String** |  | [optional] 
-**estimatedPrintTimeRemainingMs** | **Number** |  | [optional] 
-**tankId** | **String** |  | [optional] 
-**tankMaterialCode** | **String** |  | [optional] 
-**cartridgeData** | [**{String: Form4PrinterCartridgeDataValue}**](Form4PrinterCartridgeDataValue.md) |  | [optional] 
+**id** | **String** |  | 
+**productName** | **String** |  | 
+**status** | **String** |  | 
+**isConnected** | **Boolean** |  | 
+**connectionType** | **String** |  | 
+**ipAddress** | **String** |  | 
+**firmwareVersion** | **String** |  | 
+**estimatedPrintTimeRemainingMs** | **Number** |  | 
+**tankId** | **String** |  | 
+**tankMaterialCode** | **String** |  | 
+**cartridgeData** | [**{String: Form4PrinterCartridgeDataValue}**](Form4PrinterCartridgeDataValue.md) |  | 
 
 
 

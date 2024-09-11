@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**machineType** | **String** | The machine type of the scene | [optional] 
-**materialCode** | **String** | The material code of the scene | [optional] 
+**machineType** | **String** | The machine type of the scene | 
+**materialCode** | **String** | The material code of the scene | 
 **printSetting** | **String** | The print setting of the scene | [optional] 
-**layerThickness** | [**SceneTypeModelLayerThickness**](SceneTypeModelLayerThickness.md) |  | [optional] 
+**layerThickness** | [**SceneTypeModelLayerThickness**](SceneTypeModelLayerThickness.md) |  | 
 
 

@@ -4,12 +4,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**volumeMl** | **Number** | The total volume of models and supports in the scene | [optional] 
-**unsupportedVolumeMl** | **Number** | The total volume of models in the scene | [optional] 
-**totalPowderMl** | **Number** |  | [optional] 
-**totalPowderKg** | **Number** |  | [optional] 
-**totalSinteredPowderMl** | **Number** |  | [optional] 
-**totalSinteredPowderKg** | **Number** |  | [optional] 
-**massPackingDensity** | **Number** |  | [optional] 
+**volumeMl** | **Number** | The total volume of models and supports in the scene | 
+**unsupportedVolumeMl** | **Number** | The total volume of models in the scene | 
+**totalPowderMl** | **Number** |  | 
+**totalPowderKg** | **Number** |  | 
+**totalSinteredPowderMl** | **Number** |  | 
+**totalSinteredPowderKg** | **Number** |  | 
+**massPackingDensity** | **Number** |  | 
 
 

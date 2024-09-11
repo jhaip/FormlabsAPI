@@ -22,10 +22,12 @@ class SLA {
     /**
      * Constructs a new <code>SLA</code>.
      * @alias module:model/SLA
+     * @param volumeMl {Number} The total volume of models and supports in the scene
+     * @param unsupportedVolumeMl {Number} The total volume of models in the scene
      */
-    constructor() { 
+    constructor(volumeMl, unsupportedVolumeMl) { 
         
-        SLA.initialize(this);
+        SLA.initialize(this, volumeMl, unsupportedVolumeMl);
     }
 
     /**
@@ -33,7 +35,9 @@ class SLA {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj) { 
+    static initialize(obj, volumeMl, unsupportedVolumeMl) { 
+        obj['volume_ml'] = volumeMl;
+        obj['unsupported_volume_ml'] = unsupportedVolumeMl;
     }
 
     /**
@@ -63,6 +67,12 @@ class SLA {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>SLA</code>.
      */
     static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of SLA.RequiredProperties) {
+            if (!data.hasOwnProperty(property)) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
 
         return true;
     }
@@ -70,7 +80,7 @@ class SLA {
 
 }
 
-
+SLA.RequiredProperties = ["volume_ml", "unsupported_volume_ml"];
 
 /**
  * The total volume of models and supports in the scene

@@ -23,10 +23,13 @@ class ScenePositionModel {
      * Constructs a new <code>ScenePositionModel</code>.
      * The global position within the build volume of a printer of the model in the scene
      * @alias module:model/ScenePositionModel
+     * @param x {Number} X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer.
+     * @param y {Number} Y-position, with 0 at the center of the print volume and positive values moving away from you as you face the printer.
+     * @param z {Number} Vertical position of the model, with 0 at the bottom of the build platform.
      */
-    constructor() { 
+    constructor(x, y, z) { 
         
-        ScenePositionModel.initialize(this);
+        ScenePositionModel.initialize(this, x, y, z);
     }
 
     /**
@@ -34,7 +37,10 @@ class ScenePositionModel {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj) { 
+    static initialize(obj, x, y, z) { 
+        obj['x'] = x;
+        obj['y'] = y;
+        obj['z'] = z;
     }
 
     /**
@@ -67,6 +73,12 @@ class ScenePositionModel {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>ScenePositionModel</code>.
      */
     static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of ScenePositionModel.RequiredProperties) {
+            if (!data.hasOwnProperty(property)) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
 
         return true;
     }
@@ -74,7 +86,7 @@ class ScenePositionModel {
 
 }
 
-
+ScenePositionModel.RequiredProperties = ["x", "y", "z"];
 
 /**
  * X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer.

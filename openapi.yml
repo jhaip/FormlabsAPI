@@ -31,6 +31,10 @@ components:
         z:
           type: number
           description: Vertical position of the model, with 0 at the bottom of the build platform.
+      required:
+        - x
+        - y
+        - z
     OrientationModel:
       type: object
       description: >
@@ -81,8 +85,6 @@ components:
           type: array
           description: >
             3D unit vector in model space saying which piece of the model will point "up" in scene space.
-            If "X direction" is not set, X direction is chosen arbitrarily by projecting the nearest major
-            axis to be perpendicular to Z direction.
           items:
             type: number
           minItems: 3
@@ -90,7 +92,7 @@ components:
         x_direction:
           type: array
           description: >
-            Optional 3D unit vector in model space, perpendicular to Z direction, saying which piece of the
+            3D unit vector in model space, perpendicular to Z direction, saying which piece of the
             model will point "right" in scene space.
           items:
             type: number
@@ -98,6 +100,7 @@ components:
           maxItems: 3
       required:
         - z_direction
+        - x_direction
     UnitsModel:
       type: string
       description: The units of the model
@@ -168,17 +171,18 @@ components:
           type: string
           description: The print setting of the scene
         layer_thickness:
-          type: number
           description: The slice thickness of the scene
-          anyOf:
+          oneOf:
             - type: string
               enum:
               - "ADAPTIVE"
             - type: number
               description: Layer thickness in millimeters
-            - type: string
-              description: Layer thickness in millimeters
-              pattern: "^\\d+(\\.\\d+)?$"
+      required:
+        - machine_type
+        - material_code
+        - layer_thickness
+      additionalProperties: false
     SceneMaterialsModel:
       oneOf:
         - type: object
@@ -190,6 +194,10 @@ components:
             unsupported_volume_ml:
               type: number
               description: The total volume of models in the scene
+          required:
+            - volume_ml
+            - unsupported_volume_ml
+          additionalProperties: false
         - type: object
           title: "SLS"
           properties:
@@ -203,6 +211,13 @@ components:
               type: number
             mass_packing_density:
               type: number
+          required:
+            - total_powder_ml
+            - total_powder_kg
+            - total_sintered_powder_ml
+            - total_sintered_powder_kg
+            - mass_packing_density
+          additionalProperties: false
     SceneModel:
       type: object
       properties:
@@ -590,6 +605,19 @@ components:
                   - cartridgeEstimatedVolumeDispensed_mL
                   - cartridgeOriginalVolume_mL
                 additionalProperties: false
+          required:
+            - id
+            - product_name
+            - status
+            - is_connected
+            - connection_type
+            - ip_address
+            - firmware_version
+            - estimated_print_time_remaining_ms
+            - tank_id
+            - tank_material_code
+            - cartridge_data
+          additionalProperties: false
 paths:
   /:
     get:
@@ -623,6 +651,7 @@ paths:
                       type: string
                     password:
                       type: string
+                  additionalProperties: false
                 - type: object
                   title: "Access token"
                   required:
@@ -630,6 +659,7 @@ paths:
                   properties:
                     access_token:
                       type: string
+                  additionalProperties: false
             examples:
               UsernameAndPassword:
                 value:

@@ -23,10 +23,21 @@ class Form2Printer {
     /**
      * Constructs a new <code>Form2Printer</code>.
      * @alias module:model/Form2Printer
+     * @param id {String} 
+     * @param productName {String} 
+     * @param status {String} 
+     * @param isConnected {Boolean} 
+     * @param connectionType {module:model/Form2Printer.ConnectionTypeEnum} 
+     * @param ipAddress {String} 
+     * @param firmwareVersion {String} 
+     * @param estimatedPrintTimeRemainingMs {Number} 
+     * @param tankId {String} 
+     * @param tankMaterialCode {String} 
+     * @param cartridgeData {Object.<String, module:model/Form4PrinterCartridgeDataValue>} 
      */
-    constructor() { 
+    constructor(id, productName, status, isConnected, connectionType, ipAddress, firmwareVersion, estimatedPrintTimeRemainingMs, tankId, tankMaterialCode, cartridgeData) { 
         
-        Form2Printer.initialize(this);
+        Form2Printer.initialize(this, id, productName, status, isConnected, connectionType, ipAddress, firmwareVersion, estimatedPrintTimeRemainingMs, tankId, tankMaterialCode, cartridgeData);
     }
 
     /**
@@ -34,7 +45,18 @@ class Form2Printer {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj) { 
+    static initialize(obj, id, productName, status, isConnected, connectionType, ipAddress, firmwareVersion, estimatedPrintTimeRemainingMs, tankId, tankMaterialCode, cartridgeData) { 
+        obj['id'] = id;
+        obj['product_name'] = productName;
+        obj['status'] = status;
+        obj['is_connected'] = isConnected;
+        obj['connection_type'] = connectionType;
+        obj['ip_address'] = ipAddress;
+        obj['firmware_version'] = firmwareVersion;
+        obj['estimated_print_time_remaining_ms'] = estimatedPrintTimeRemainingMs;
+        obj['tank_id'] = tankId;
+        obj['tank_material_code'] = tankMaterialCode;
+        obj['cartridge_data'] = cartridgeData;
     }
 
     /**
@@ -91,6 +113,12 @@ class Form2Printer {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>Form2Printer</code>.
      */
     static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of Form2Printer.RequiredProperties) {
+            if (!data.hasOwnProperty(property)) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
         // ensure the json data is a string
         if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
             throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
@@ -130,7 +158,7 @@ class Form2Printer {
 
 }
 
-
+Form2Printer.RequiredProperties = ["id", "product_name", "status", "is_connected", "connection_type", "ip_address", "firmware_version", "estimated_print_time_remaining_ms", "tank_id", "tank_material_code", "cartridge_data"];
 
 /**
  * @member {String} id

@@ -11,6 +11,8 @@ import os
 import pathlib
 import formlabs
 from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
+from formlabs.models.scene_type_model import SceneTypeModel
+from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
 
 
 def list_files_in_directory(directory_path):
@@ -22,12 +24,12 @@ def list_files_in_directory(directory_path):
 
 
 def create_scene(preform):
-    return preform.api.scene_post({
-        "machine_type": "FRMB-3-0",
-        "material_code": "FLGPBK04",
-        "slice_thickness": 0.1,
-        "print_setting": "LEGACY",
-    })
+    return preform.api.scene_post(SceneTypeModel(
+        machine_type="FRMB-3-0",
+        material_code="FLGPBK04",
+        layer_thickness=SceneTypeModelLayerThickness("0.1"),
+        print_setting="LEGACY",
+    ))
 
 parser = argparse.ArgumentParser(description="Process a folder path.")
 parser.add_argument("folder", type=str, help="Path to the folder")

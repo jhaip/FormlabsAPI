@@ -27,10 +27,10 @@ class SceneTypeModel(BaseModel):
     """
     SceneTypeModel
     """ # noqa: E501
-    machine_type: Optional[StrictStr] = Field(default=None, description="The machine type of the scene")
-    material_code: Optional[StrictStr] = Field(default=None, description="The material code of the scene")
+    machine_type: StrictStr = Field(description="The machine type of the scene")
+    material_code: StrictStr = Field(description="The material code of the scene")
     print_setting: Optional[StrictStr] = Field(default=None, description="The print setting of the scene")
-    layer_thickness: Optional[SceneTypeModelLayerThickness] = None
+    layer_thickness: SceneTypeModelLayerThickness
     __properties: ClassVar[List[str]] = ["machine_type", "material_code", "print_setting", "layer_thickness"]
 
     model_config = ConfigDict(

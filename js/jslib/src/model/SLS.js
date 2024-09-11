@@ -22,10 +22,15 @@ class SLS {
     /**
      * Constructs a new <code>SLS</code>.
      * @alias module:model/SLS
+     * @param totalPowderMl {Number} 
+     * @param totalPowderKg {Number} 
+     * @param totalSinteredPowderMl {Number} 
+     * @param totalSinteredPowderKg {Number} 
+     * @param massPackingDensity {Number} 
      */
-    constructor() { 
+    constructor(totalPowderMl, totalPowderKg, totalSinteredPowderMl, totalSinteredPowderKg, massPackingDensity) { 
         
-        SLS.initialize(this);
+        SLS.initialize(this, totalPowderMl, totalPowderKg, totalSinteredPowderMl, totalSinteredPowderKg, massPackingDensity);
     }
 
     /**
@@ -33,7 +38,12 @@ class SLS {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj) { 
+    static initialize(obj, totalPowderMl, totalPowderKg, totalSinteredPowderMl, totalSinteredPowderKg, massPackingDensity) { 
+        obj['total_powder_ml'] = totalPowderMl;
+        obj['total_powder_kg'] = totalPowderKg;
+        obj['total_sintered_powder_ml'] = totalSinteredPowderMl;
+        obj['total_sintered_powder_kg'] = totalSinteredPowderKg;
+        obj['mass_packing_density'] = massPackingDensity;
     }
 
     /**
@@ -72,6 +82,12 @@ class SLS {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>SLS</code>.
      */
     static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of SLS.RequiredProperties) {
+            if (!data.hasOwnProperty(property)) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
 
         return true;
     }
@@ -79,7 +95,7 @@ class SLS {
 
 }
 
-
+SLS.RequiredProperties = ["total_powder_ml", "total_powder_kg", "total_sintered_powder_ml", "total_sintered_powder_kg", "mass_packing_density"];
 
 /**
  * @member {Number} total_powder_ml

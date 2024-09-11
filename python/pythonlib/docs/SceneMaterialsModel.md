@@ -5,13 +5,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**volume_ml** | **float** | The total volume of models and supports in the scene | [optional] 
-**unsupported_volume_ml** | **float** | The total volume of models in the scene | [optional] 
-**total_powder_ml** | **float** |  | [optional] 
-**total_powder_kg** | **float** |  | [optional] 
-**total_sintered_powder_ml** | **float** |  | [optional] 
-**total_sintered_powder_kg** | **float** |  | [optional] 
-**mass_packing_density** | **float** |  | [optional] 
+**volume_ml** | **float** | The total volume of models and supports in the scene | 
+**unsupported_volume_ml** | **float** | The total volume of models in the scene | 
+**total_powder_ml** | **float** |  | 
+**total_powder_kg** | **float** |  | 
+**total_sintered_powder_ml** | **float** |  | 
+**total_sintered_powder_kg** | **float** |  | 
+**mass_packing_density** | **float** |  | 
 
 ## Example
 

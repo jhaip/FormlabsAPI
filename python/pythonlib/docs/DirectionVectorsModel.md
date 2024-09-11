@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**z_direction** | **List[float]** | 3D unit vector in model space saying which piece of the model will point \&quot;up\&quot; in scene space. If \&quot;X direction\&quot; is not set, X direction is chosen arbitrarily by projecting the nearest major axis to be perpendicular to Z direction.  | 
-**x_direction** | **List[float]** | Optional 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \&quot;right\&quot; in scene space.  | [optional] 
+**z_direction** | **List[float]** | 3D unit vector in model space saying which piece of the model will point \&quot;up\&quot; in scene space.  | 
+**x_direction** | **List[float]** | 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \&quot;right\&quot; in scene space.  | 
 
 ## Example
 

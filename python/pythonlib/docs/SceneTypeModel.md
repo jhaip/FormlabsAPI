@@ -5,10 +5,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**machine_type** | **str** | The machine type of the scene | [optional] 
-**material_code** | **str** | The material code of the scene | [optional] 
+**machine_type** | **str** | The machine type of the scene | 
+**material_code** | **str** | The material code of the scene | 
 **print_setting** | **str** | The print setting of the scene | [optional] 
-**layer_thickness** | [**SceneTypeModelLayerThickness**](SceneTypeModelLayerThickness.md) |  | [optional] 
+**layer_thickness** | [**SceneTypeModelLayerThickness**](SceneTypeModelLayerThickness.md) |  | 
 
 ## Example
 

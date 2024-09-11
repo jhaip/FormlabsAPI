@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,11 +26,11 @@ class SLS(BaseModel):
     """
     SLS
     """ # noqa: E501
-    total_powder_ml: Optional[Union[StrictFloat, StrictInt]] = None
-    total_powder_kg: Optional[Union[StrictFloat, StrictInt]] = None
-    total_sintered_powder_ml: Optional[Union[StrictFloat, StrictInt]] = None
-    total_sintered_powder_kg: Optional[Union[StrictFloat, StrictInt]] = None
-    mass_packing_density: Optional[Union[StrictFloat, StrictInt]] = None
+    total_powder_ml: Union[StrictFloat, StrictInt]
+    total_powder_kg: Union[StrictFloat, StrictInt]
+    total_sintered_powder_ml: Union[StrictFloat, StrictInt]
+    total_sintered_powder_kg: Union[StrictFloat, StrictInt]
+    mass_packing_density: Union[StrictFloat, StrictInt]
     __properties: ClassVar[List[str]] = ["total_powder_ml", "total_powder_kg", "total_sintered_powder_ml", "total_sintered_powder_kg", "mass_packing_density"]
 
     model_config = ConfigDict(

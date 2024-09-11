@@ -23,10 +23,13 @@ class SceneTypeModel {
     /**
      * Constructs a new <code>SceneTypeModel</code>.
      * @alias module:model/SceneTypeModel
+     * @param machineType {String} The machine type of the scene
+     * @param materialCode {String} The material code of the scene
+     * @param layerThickness {module:model/SceneTypeModelLayerThickness} 
      */
-    constructor() { 
+    constructor(machineType, materialCode, layerThickness) { 
         
-        SceneTypeModel.initialize(this);
+        SceneTypeModel.initialize(this, machineType, materialCode, layerThickness);
     }
 
     /**
@@ -34,7 +37,10 @@ class SceneTypeModel {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj) { 
+    static initialize(obj, machineType, materialCode, layerThickness) { 
+        obj['machine_type'] = machineType;
+        obj['material_code'] = materialCode;
+        obj['layer_thickness'] = layerThickness;
     }
 
     /**
@@ -70,6 +76,12 @@ class SceneTypeModel {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>SceneTypeModel</code>.
      */
     static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of SceneTypeModel.RequiredProperties) {
+            if (!data.hasOwnProperty(property)) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
         // ensure the json data is a string
         if (data['machine_type'] && !(typeof data['machine_type'] === 'string' || data['machine_type'] instanceof String)) {
             throw new Error("Expected the field `machine_type` to be a primitive type in the JSON string but got " + data['machine_type']);
@@ -93,7 +105,7 @@ class SceneTypeModel {
 
 }
 
-
+SceneTypeModel.RequiredProperties = ["machine_type", "material_code", "layer_thickness"];
 
 /**
  * The machine type of the scene

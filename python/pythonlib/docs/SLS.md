@@ -5,11 +5,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**total_powder_ml** | **float** |  | [optional] 
-**total_powder_kg** | **float** |  | [optional] 
-**total_sintered_powder_ml** | **float** |  | [optional] 
-**total_sintered_powder_kg** | **float** |  | [optional] 
-**mass_packing_density** | **float** |  | [optional] 
+**total_powder_ml** | **float** |  | 
+**total_powder_kg** | **float** |  | 
+**total_sintered_powder_ml** | **float** |  | 
+**total_sintered_powder_kg** | **float** |  | 
+**mass_packing_density** | **float** |  | 
 
 ## Example
 

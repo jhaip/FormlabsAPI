@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,8 +26,8 @@ class SLA(BaseModel):
     """
     SLA
     """ # noqa: E501
-    volume_ml: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The total volume of models and supports in the scene")
-    unsupported_volume_ml: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The total volume of models in the scene")
+    volume_ml: Union[StrictFloat, StrictInt] = Field(description="The total volume of models and supports in the scene")
+    unsupported_volume_ml: Union[StrictFloat, StrictInt] = Field(description="The total volume of models in the scene")
     __properties: ClassVar[List[str]] = ["volume_ml", "unsupported_volume_ml"]
 
     model_config = ConfigDict(

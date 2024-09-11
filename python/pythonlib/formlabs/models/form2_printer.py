@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from formlabs.models.form4_printer_cartridge_data_value import Form4PrinterCartridgeDataValue
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,25 +27,22 @@ class Form2Printer(BaseModel):
     """
     Form2Printer
     """ # noqa: E501
-    id: Optional[StrictStr] = None
-    product_name: Optional[StrictStr] = None
-    status: Optional[StrictStr] = None
-    is_connected: Optional[StrictBool] = None
-    connection_type: Optional[StrictStr] = None
-    ip_address: Optional[StrictStr] = None
-    firmware_version: Optional[StrictStr] = None
-    estimated_print_time_remaining_ms: Optional[StrictInt] = None
-    tank_id: Optional[StrictStr] = None
-    tank_material_code: Optional[StrictStr] = None
-    cartridge_data: Optional[Dict[str, Form4PrinterCartridgeDataValue]] = None
+    id: StrictStr
+    product_name: StrictStr
+    status: StrictStr
+    is_connected: StrictBool
+    connection_type: StrictStr
+    ip_address: StrictStr
+    firmware_version: StrictStr
+    estimated_print_time_remaining_ms: StrictInt
+    tank_id: StrictStr
+    tank_material_code: StrictStr
+    cartridge_data: Dict[str, Form4PrinterCartridgeDataValue]
     __properties: ClassVar[List[str]] = ["id", "product_name", "status", "is_connected", "connection_type", "ip_address", "firmware_version", "estimated_print_time_remaining_ms", "tank_id", "tank_material_code", "cartridge_data"]
 
     @field_validator('connection_type')
     def connection_type_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
         if value not in set(['UNKNOWN', 'VIRTUAL', 'REMOTE', 'USB', 'WIFI', 'ETHERNET', '']):
             raise ValueError("must be one of enum values ('UNKNOWN', 'VIRTUAL', 'REMOTE', 'USB', 'WIFI', 'ETHERNET', '')")
         return value

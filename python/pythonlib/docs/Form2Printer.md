@@ -5,17 +5,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **str** |  | [optional] 
-**product_name** | **str** |  | [optional] 
-**status** | **str** |  | [optional] 
-**is_connected** | **bool** |  | [optional] 
-**connection_type** | **str** |  | [optional] 
-**ip_address** | **str** |  | [optional] 
-**firmware_version** | **str** |  | [optional] 
-**estimated_print_time_remaining_ms** | **int** |  | [optional] 
-**tank_id** | **str** |  | [optional] 
-**tank_material_code** | **str** |  | [optional] 
-**cartridge_data** | [**Dict[str, Form4PrinterCartridgeDataValue]**](Form4PrinterCartridgeDataValue.md) |  | [optional] 
+**id** | **str** |  | 
+**product_name** | **str** |  | 
+**status** | **str** |  | 
+**is_connected** | **bool** |  | 
+**connection_type** | **str** |  | 
+**ip_address** | **str** |  | 
+**firmware_version** | **str** |  | 
+**estimated_print_time_remaining_ms** | **int** |  | 
+**tank_id** | **str** |  | 
+**tank_material_code** | **str** |  | 
+**cartridge_data** | [**Dict[str, Form4PrinterCartridgeDataValue]**](Form4PrinterCartridgeDataValue.md) |  | 
 
 ## Example
 
