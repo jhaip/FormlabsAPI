@@ -263,6 +263,11 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
 
 
 if __name__ == "__main__":
+    print("Running automatic Formlabs job preparation\n")
+    print("Monitoring Input Paths:")
+    for order_type, path in PATH_TO_INPUT_FOLDERS.items():
+        print(f"{order_type.name}: {path}")
+    print("\nNew orders in those folders will be processed automatically")
     while True:
         check_input_folder(OrderType.REOCCURING_PATIENT)
         # Local and new patient folders are implemented in this demo.
