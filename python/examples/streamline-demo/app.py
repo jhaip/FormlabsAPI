@@ -7,9 +7,12 @@ import formlabs
 from datetime import datetime
 from dataclasses import dataclass
 from enum import Enum
+from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
 from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
 from formlabs.models.scene_type_model import SceneTypeModel
 from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
+from formlabs.models.models_selection_model import ModelsSelectionModel
+from formlabs.models.load_form_post_request import LoadFormPostRequest
 
 
 FORMLABS_MATERIAL_SELECTION = SceneTypeModel(
@@ -110,7 +113,7 @@ def parse_recurring_order_folder_name(order_folder_path):
     folder_name = os.path.basename(order_folder_path)
     # Regular expression pattern to extract the required parts, allowing for missing T and B quantities
     # Written by Chat GPT:
-    pattern = re.compile(r"(?P<order_id>\d+)-SCANS-\s*(?P<previous_order_id>\d+)(?:-T(?P<top_quantity>\d*))?(?:-B(?P<bottom_quantity>\d*))?")
+    pattern = re.compile(r"(?P<order_id>\d+)-SCANS-\s*(?P<previous_order_id>\d+)-T?(?P<top_quantity>\d*)-B?(?P<bottom_quantity>\d*)")
     match = pattern.match(folder_name)
     if match:
         # If top_quantity or bottom_quantity is empty, default it to 0
@@ -229,7 +232,7 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
     def save_batch_form(preform):
         nonlocal current_batch
         save_path = os.path.join(PATH_TO_FOLDER_FOR_SAVING_PRINT_FILES, f"{order_parameters.order_id}_part{current_batch}.form")
-        preform.api.save_form_post(save_path)
+        preform.api.scene_save_form_post(LoadFormPostRequest(file=save_path))
         print(f"Saving batch {current_batch} to {save_path}")
         current_batch += 1
 
@@ -241,15 +244,17 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
                 new_model = preform.api.scene_import_model_post({"file": os.path.join(order_parameters.order_folder_path, stl_file_and_quantity.filename)})
                 try:
                     print(f"Auto layouting all")
-                    preform.api.auto_layout_post_with_http_info(AutoOrientPostRequest.from_dict({"models": "ALL"}))
+                    preform.api.scene_auto_layout_post_with_http_info(
+                        SceneAutoOrientPostRequest(models=ModelsSelectionModel("ALL"))
+                    )
                     batch_has_unsaved_changed = True
                     batch_results[-1].part_quantity_in_this_print += 1
-                except formlabs.exceptions.ServiceException as e:
-                    if e.status == 500 and e.data.error == "AUTO_LAYOUT_FAILED":
-                        print("Not all models can fit, removing model")
-                        preform.api.models_id_delete(str(new_model.model_id))
-                        save_batch_form(preform)
-                        clear_scene(preform)
+                except formlabs.exceptions.ApiException as e:
+                    print(e)
+                    print("Not all models can fit, removing model")
+                    preform.api.scene_models_id_delete(str(new_model.id))
+                    save_batch_form(preform)
+                    clear_scene(preform)
                 print(f"Model {stl_file_and_quantity.filename} added to scene")
         if batch_has_unsaved_changed:
             save_batch_form(preform)
