@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,7 +27,7 @@ class SceneAutoPackPostRequest(BaseModel):
     """
     SceneAutoPackPostRequest
     """ # noqa: E501
-    model_spacing_mm: Optional[Union[StrictFloat, StrictInt]] = None
+    model_spacing_mm: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="The minimum spacing between models when packing")
     __properties: ClassVar[List[str]] = ["model_spacing_mm"]
 
     model_config = ConfigDict(

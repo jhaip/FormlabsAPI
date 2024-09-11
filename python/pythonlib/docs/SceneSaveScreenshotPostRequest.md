@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **file** | **str** | The file path to save the .png screenshot to | 
-**view_type** | **str** | The type of view to use when taking the screenshot | [optional] 
+**view_type** | **str** | The type of view to use when taking the screenshot | [optional] [default to 'ZOOM_ON_MODELS']
 **models** | [**ModelsSelectionModel**](ModelsSelectionModel.md) |  | [optional] 
 
 ## Example

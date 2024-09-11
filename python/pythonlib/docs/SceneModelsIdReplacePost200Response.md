@@ -5,7 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **str** | ID of the imported model | [optional] 
+**warnings** | **List[str]** |  | [optional] 
+**model_properties** | [**ModelProperties**](ModelProperties.md) |  | [optional] 
 
 ## Example
 

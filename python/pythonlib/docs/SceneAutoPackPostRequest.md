@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**model_spacing_mm** | **float** |  | [optional] 
+**model_spacing_mm** | **float** | The minimum spacing between models when packing | [optional] 
 
 ## Example
 

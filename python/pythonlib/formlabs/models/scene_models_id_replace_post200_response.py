@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from formlabs.models.model_properties import ModelProperties
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,8 +27,9 @@ class SceneModelsIdReplacePost200Response(BaseModel):
     """
     SceneModelsIdReplacePost200Response
     """ # noqa: E501
-    id: Optional[StrictStr] = Field(default=None, description="ID of the imported model")
-    __properties: ClassVar[List[str]] = ["id"]
+    warnings: Optional[List[StrictStr]] = None
+    model_properties: Optional[ModelProperties] = None
+    __properties: ClassVar[List[str]] = ["warnings", "model_properties"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -68,6 +70,9 @@ class SceneModelsIdReplacePost200Response(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of model_properties
+        if self.model_properties:
+            _dict['model_properties'] = self.model_properties.to_dict()
         return _dict
 
     @classmethod
@@ -80,7 +85,8 @@ class SceneModelsIdReplacePost200Response(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id")
+            "warnings": obj.get("warnings"),
+            "model_properties": ModelProperties.from_dict(obj["model_properties"]) if obj.get("model_properties") is not None else None
         })
         return _obj
 

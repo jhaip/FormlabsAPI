@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import ModelProperties from './ModelProperties';
 
 /**
  * The SceneModelsIdReplacePost200Response model module.
@@ -47,8 +48,11 @@ class SceneModelsIdReplacePost200Response {
         if (data) {
             obj = obj || new SceneModelsIdReplacePost200Response();
 
-            if (data.hasOwnProperty('id')) {
-                obj['id'] = ApiClient.convertToType(data['id'], 'String');
+            if (data.hasOwnProperty('warnings')) {
+                obj['warnings'] = ApiClient.convertToType(data['warnings'], ['String']);
+            }
+            if (data.hasOwnProperty('model_properties')) {
+                obj['model_properties'] = ModelProperties.constructFromObject(data['model_properties']);
             }
         }
         return obj;
@@ -60,9 +64,13 @@ class SceneModelsIdReplacePost200Response {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>SceneModelsIdReplacePost200Response</code>.
      */
     static validateJSON(data) {
-        // ensure the json data is a string
-        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
-            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
+        // ensure the json data is an array
+        if (!Array.isArray(data['warnings'])) {
+            throw new Error("Expected the field `warnings` to be an array in the JSON data but got " + data['warnings']);
+        }
+        // validate the optional field `model_properties`
+        if (data['model_properties']) { // data not null
+          ModelProperties.validateJSON(data['model_properties']);
         }
 
         return true;
@@ -74,10 +82,14 @@ class SceneModelsIdReplacePost200Response {
 
 
 /**
- * ID of the imported model
- * @member {String} id
+ * @member {Array.<String>} warnings
  */
-SceneModelsIdReplacePost200Response.prototype['id'] = undefined;
+SceneModelsIdReplacePost200Response.prototype['warnings'] = undefined;
+
+/**
+ * @member {module:model/ModelProperties} model_properties
+ */
+SceneModelsIdReplacePost200Response.prototype['model_properties'] = undefined;
 
 
 

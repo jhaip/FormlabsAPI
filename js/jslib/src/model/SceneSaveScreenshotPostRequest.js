@@ -105,8 +105,9 @@ SceneSaveScreenshotPostRequest.prototype['file'] = undefined;
 /**
  * The type of view to use when taking the screenshot
  * @member {module:model/SceneSaveScreenshotPostRequest.ViewTypeEnum} view_type
+ * @default 'ZOOM_ON_MODELS'
  */
-SceneSaveScreenshotPostRequest.prototype['view_type'] = undefined;
+SceneSaveScreenshotPostRequest.prototype['view_type'] = 'ZOOM_ON_MODELS';
 
 /**
  * @member {module:model/ModelsSelectionModel} models

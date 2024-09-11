@@ -29,7 +29,7 @@ class SceneSaveScreenshotPostRequest(BaseModel):
     SceneSaveScreenshotPostRequest
     """ # noqa: E501
     file: Annotated[str, Field(strict=True)] = Field(description="The file path to save the .png screenshot to")
-    view_type: Optional[StrictStr] = Field(default=None, description="The type of view to use when taking the screenshot")
+    view_type: Optional[StrictStr] = Field(default='ZOOM_ON_MODELS', description="The type of view to use when taking the screenshot")
     models: Optional[ModelsSelectionModel] = None
     __properties: ClassVar[List[str]] = ["file", "view_type", "models"]
 
@@ -105,7 +105,7 @@ class SceneSaveScreenshotPostRequest(BaseModel):
 
         _obj = cls.model_validate({
             "file": obj.get("file"),
-            "view_type": obj.get("view_type"),
+            "view_type": obj.get("view_type") if obj.get("view_type") is not None else 'ZOOM_ON_MODELS',
             "models": ModelsSelectionModel.from_dict(obj["models"]) if obj.get("models") is not None else None
         })
         return _obj

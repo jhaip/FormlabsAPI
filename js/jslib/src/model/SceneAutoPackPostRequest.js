@@ -70,6 +70,7 @@ class SceneAutoPackPostRequest {
 
 
 /**
+ * The minimum spacing between models when packing
  * @member {Number} model_spacing_mm
  */
 SceneAutoPackPostRequest.prototype['model_spacing_mm'] = undefined;

@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **String** | ID of the imported model | [optional] 
+**warnings** | **[String]** |  | [optional] 
+**modelProperties** | [**ModelProperties**](ModelProperties.md) |  | [optional] 
 
 
