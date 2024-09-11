@@ -37,7 +37,6 @@ import LoginPostRequest from './model/LoginPostRequest';
 import ModelProperties from './model/ModelProperties';
 import ModelPropertiesBbox from './model/ModelPropertiesBbox';
 import ModelsSelectionModel from './model/ModelsSelectionModel';
-import ModelsSelectionModelModels from './model/ModelsSelectionModelModels';
 import OrientationModel from './model/OrientationModel';
 import PrintValidationResultModel from './model/PrintValidationResultModel';
 import PrintValidationResultModelPerModelResultsValue from './model/PrintValidationResultModelPerModelResultsValue';
@@ -248,12 +247,6 @@ export {
      * @property {module:model/ModelsSelectionModel}
      */
     ModelsSelectionModel,
-
-    /**
-     * The ModelsSelectionModelModels model constructor.
-     * @property {module:model/ModelsSelectionModelModels}
-     */
-    ModelsSelectionModelModels,
 
     /**
      * The OrientationModel model constructor.

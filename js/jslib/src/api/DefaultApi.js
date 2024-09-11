@@ -294,6 +294,47 @@ export default class DefaultApi {
     }
 
     /**
+     * Callback function to receive the result of the sceneAutoLayoutPost operation.
+     * @callback module:api/DefaultApi~sceneAutoLayoutPostCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SceneModel} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Run auto layout operation
+     * @param {module:model/SceneAutoOrientPostRequest} sceneAutoOrientPostRequest Models to run the auto layout operation on
+     * @param {module:api/DefaultApi~sceneAutoLayoutPostCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SceneModel}
+     */
+    sceneAutoLayoutPost(sceneAutoOrientPostRequest, callback) {
+      let postBody = sceneAutoOrientPostRequest;
+      // verify the required parameter 'sceneAutoOrientPostRequest' is set
+      if (sceneAutoOrientPostRequest === undefined || sceneAutoOrientPostRequest === null) {
+        throw new Error("Missing the required parameter 'sceneAutoOrientPostRequest' when calling sceneAutoLayoutPost");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = SceneModel;
+      return this.apiClient.callApi(
+        '/scene/auto-layout/', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the sceneAutoOrientPost operation.
      * @callback module:api/DefaultApi~sceneAutoOrientPostCallback
      * @param {String} error Error message, if any.

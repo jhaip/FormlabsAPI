@@ -89,6 +89,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**load_form_post**](docs/DefaultApi.md#load_form_post) | **POST** /load-form/ | 
 *DefaultApi* | [**login_post**](docs/DefaultApi.md#login_post) | **POST** /login/ | 
 *DefaultApi* | [**root_get**](docs/DefaultApi.md#root_get) | **GET** / | 
+*DefaultApi* | [**scene_auto_layout_post**](docs/DefaultApi.md#scene_auto_layout_post) | **POST** /scene/auto-layout/ | 
 *DefaultApi* | [**scene_auto_orient_post**](docs/DefaultApi.md#scene_auto_orient_post) | **POST** /scene/auto-orient/ | 
 *DefaultApi* | [**scene_auto_pack_post**](docs/DefaultApi.md#scene_auto_pack_post) | **POST** /scene/auto-pack/ | 
 *DefaultApi* | [**scene_auto_support_post**](docs/DefaultApi.md#scene_auto_support_post) | **POST** /scene/auto-support/ | 
@@ -133,7 +134,6 @@ Class | Method | HTTP request | Description
  - [ModelProperties](docs/ModelProperties.md)
  - [ModelPropertiesBbox](docs/ModelPropertiesBbox.md)
  - [ModelsSelectionModel](docs/ModelsSelectionModel.md)
- - [ModelsSelectionModelModels](docs/ModelsSelectionModelModels.md)
  - [OrientationModel](docs/OrientationModel.md)
  - [PrintValidationResultModel](docs/PrintValidationResultModel.md)
  - [PrintValidationResultModelPerModelResultsValue](docs/PrintValidationResultModelPerModelResultsValue.md)

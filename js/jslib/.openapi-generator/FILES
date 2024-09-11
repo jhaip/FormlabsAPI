@@ -27,7 +27,6 @@ docs/LoginPostRequest.md
 docs/ModelProperties.md
 docs/ModelPropertiesBbox.md
 docs/ModelsSelectionModel.md
-docs/ModelsSelectionModelModels.md
 docs/OrientationModel.md
 docs/PrintValidationResultModel.md
 docs/PrintValidationResultModelPerModelResultsValue.md
@@ -84,7 +83,6 @@ src/model/LoginPostRequest.js
 src/model/ModelProperties.js
 src/model/ModelPropertiesBbox.js
 src/model/ModelsSelectionModel.js
-src/model/ModelsSelectionModelModels.js
 src/model/OrientationModel.js
 src/model/PrintValidationResultModel.js
 src/model/PrintValidationResultModelPerModelResultsValue.js

@@ -126,6 +126,7 @@ Class | Method | HTTP request | Description
 *PreFormApi.DefaultApi* | [**loadFormPost**](docs/DefaultApi.md#loadFormPost) | **POST** /load-form/ | 
 *PreFormApi.DefaultApi* | [**loginPost**](docs/DefaultApi.md#loginPost) | **POST** /login/ | 
 *PreFormApi.DefaultApi* | [**rootGet**](docs/DefaultApi.md#rootGet) | **GET** / | 
+*PreFormApi.DefaultApi* | [**sceneAutoLayoutPost**](docs/DefaultApi.md#sceneAutoLayoutPost) | **POST** /scene/auto-layout/ | 
 *PreFormApi.DefaultApi* | [**sceneAutoOrientPost**](docs/DefaultApi.md#sceneAutoOrientPost) | **POST** /scene/auto-orient/ | 
 *PreFormApi.DefaultApi* | [**sceneAutoPackPost**](docs/DefaultApi.md#sceneAutoPackPost) | **POST** /scene/auto-pack/ | 
 *PreFormApi.DefaultApi* | [**sceneAutoSupportPost**](docs/DefaultApi.md#sceneAutoSupportPost) | **POST** /scene/auto-support/ | 
@@ -170,7 +171,6 @@ Class | Method | HTTP request | Description
  - [PreFormApi.ModelProperties](docs/ModelProperties.md)
  - [PreFormApi.ModelPropertiesBbox](docs/ModelPropertiesBbox.md)
  - [PreFormApi.ModelsSelectionModel](docs/ModelsSelectionModel.md)
- - [PreFormApi.ModelsSelectionModelModels](docs/ModelsSelectionModelModels.md)
  - [PreFormApi.OrientationModel](docs/OrientationModel.md)
  - [PreFormApi.PrintValidationResultModel](docs/PrintValidationResultModel.md)
  - [PreFormApi.PrintValidationResultModelPerModelResultsValue](docs/PrintValidationResultModelPerModelResultsValue.md)

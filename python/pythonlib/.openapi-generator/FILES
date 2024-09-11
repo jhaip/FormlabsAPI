@@ -28,7 +28,6 @@ docs/LoginPostRequest.md
 docs/ModelProperties.md
 docs/ModelPropertiesBbox.md
 docs/ModelsSelectionModel.md
-docs/ModelsSelectionModelModels.md
 docs/OrientationModel.md
 docs/PrintValidationResultModel.md
 docs/PrintValidationResultModelPerModelResultsValue.md
@@ -88,7 +87,6 @@ formlabs/models/login_post_request.py
 formlabs/models/model_properties.py
 formlabs/models/model_properties_bbox.py
 formlabs/models/models_selection_model.py
-formlabs/models/models_selection_model_models.py
 formlabs/models/orientation_model.py
 formlabs/models/print_validation_result_model.py
 formlabs/models/print_validation_result_model_per_model_results_value.py

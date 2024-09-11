@@ -241,19 +241,16 @@ components:
       - "ERROR"
       - "IGNORE"
     ModelsSelectionModel:
-      type: object
-      properties:
-        models:
-          oneOf:
-            - type: string
-              title: Select all models
-              enum:
-              - "ALL"
-            - type: array
-              title: Apply to a list of specific models
-              items:
-                type: string
-                description: The ID of the model
+      oneOf:
+        - type: string
+          title: Select all models
+          enum:
+          - "ALL"
+        - type: array
+          title: Apply to a list of specific models
+          items:
+            type: string
+            description: The ID of the model
     WebAuthTokensModel:
       type: object
       properties:
@@ -1187,6 +1184,45 @@ paths:
           description: Success
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /scene/auto-layout/:
+    post:
+      description: "Run auto layout operation"
+      parameters: []
+      requestBody:
+        description: Models to run the auto layout operation on
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - models
+              properties:
+                models:
+                  $ref: '#/components/schemas/ModelsSelectionModel'
+            examples:
+              AllModels:
+                value:
+                  models: "ALL"
+              SpecificModels:
+                value:
+                  models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SceneModel'
+        "400":
+          description: |
+            ## Bad Request
+
+            The scene will not be modified if any error occurs. The response will contain an error message.
           content:
             application/json:
               schema:

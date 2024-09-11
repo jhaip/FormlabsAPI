@@ -38,7 +38,6 @@ from formlabs.models.login_post_request import LoginPostRequest
 from formlabs.models.model_properties import ModelProperties
 from formlabs.models.model_properties_bbox import ModelPropertiesBbox
 from formlabs.models.models_selection_model import ModelsSelectionModel
-from formlabs.models.models_selection_model_models import ModelsSelectionModelModels
 from formlabs.models.orientation_model import OrientationModel
 from formlabs.models.print_validation_result_model import PrintValidationResultModel
 from formlabs.models.print_validation_result_model_per_model_results_value import PrintValidationResultModelPerModelResultsValue

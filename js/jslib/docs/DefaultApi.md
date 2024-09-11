@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**loadFormPost**](DefaultApi.md#loadFormPost) | **POST** /load-form/ | 
 [**loginPost**](DefaultApi.md#loginPost) | **POST** /login/ | 
 [**rootGet**](DefaultApi.md#rootGet) | **GET** / | 
+[**sceneAutoLayoutPost**](DefaultApi.md#sceneAutoLayoutPost) | **POST** /scene/auto-layout/ | 
 [**sceneAutoOrientPost**](DefaultApi.md#sceneAutoOrientPost) | **POST** /scene/auto-orient/ | 
 [**sceneAutoPackPost**](DefaultApi.md#sceneAutoPackPost) | **POST** /scene/auto-pack/ | 
 [**sceneAutoSupportPost**](DefaultApi.md#sceneAutoSupportPost) | **POST** /scene/auto-support/ | 
@@ -286,6 +287,51 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## sceneAutoLayoutPost
+
+> SceneModel sceneAutoLayoutPost(sceneAutoOrientPostRequest)
+
+
+
+Run auto layout operation
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneAutoOrientPostRequest = {"models":"ALL"}; // SceneAutoOrientPostRequest | Models to run the auto layout operation on
+apiInstance.sceneAutoLayoutPost(sceneAutoOrientPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneAutoOrientPostRequest** | [**SceneAutoOrientPostRequest**](SceneAutoOrientPostRequest.md)| Models to run the auto layout operation on | 
+
+### Return type
+
+[**SceneModel**](SceneModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 

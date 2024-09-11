@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**load_form_post**](DefaultApi.md#load_form_post) | **POST** /load-form/ | 
 [**login_post**](DefaultApi.md#login_post) | **POST** /login/ | 
 [**root_get**](DefaultApi.md#root_get) | **GET** / | 
+[**scene_auto_layout_post**](DefaultApi.md#scene_auto_layout_post) | **POST** /scene/auto-layout/ | 
 [**scene_auto_orient_post**](DefaultApi.md#scene_auto_orient_post) | **POST** /scene/auto-orient/ | 
 [**scene_auto_pack_post**](DefaultApi.md#scene_auto_pack_post) | **POST** /scene/auto-pack/ | 
 [**scene_auto_support_post**](DefaultApi.md#scene_auto_support_post) | **POST** /scene/auto-support/ | 
@@ -421,6 +422,75 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | API version |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **scene_auto_layout_post**
+> SceneModel scene_auto_layout_post(scene_auto_orient_post_request)
+
+
+
+Run auto layout operation
+
+### Example
+
+
+```python
+import formlabs
+from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
+from formlabs.models.scene_model import SceneModel
+from formlabs.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:44388
+# See configuration.py for a list of all supported configuration parameters.
+configuration = formlabs.Configuration(
+    host = "http://localhost:44388"
+)
+
+
+# Enter a context with an instance of the API client
+with formlabs.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = formlabs.DefaultApi(api_client)
+    scene_auto_orient_post_request = {"models":"ALL"} # SceneAutoOrientPostRequest | Models to run the auto layout operation on
+
+    try:
+        api_response = api_instance.scene_auto_layout_post(scene_auto_orient_post_request)
+        print("The response of DefaultApi->scene_auto_layout_post:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->scene_auto_layout_post: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scene_auto_orient_post_request** | [**SceneAutoOrientPostRequest**](SceneAutoOrientPostRequest.md)| Models to run the auto layout operation on | 
+
+### Return type
+
+[**SceneModel**](SceneModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Success |  -  |
+**400** | ## Bad Request  The scene will not be modified if any error occurs. The response will contain an error message.  |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -11,9 +11,12 @@ import os
 import pathlib
 import csv
 import formlabs
+from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
 from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
 from formlabs.models.scene_type_model import SceneTypeModel
 from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
+from formlabs.models.models_selection_model import ModelsSelectionModel
+from formlabs.models.load_form_post_request import LoadFormPostRequest
 
 
 def list_files_in_directory(directory_path):
@@ -55,33 +58,32 @@ with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformS
             next_file = files_to_batch.pop()
             print(f"Importing {next_file}")
             new_model = preform.api.scene_import_model_post({"file": os.path.join(directory_path, next_file)})
-            new_model_id = new_model.model_id
+            new_model_id = new_model.id
             models_in_current_batch.append({"model_id": new_model_id, "file_name": next_file})
             print(f"Auto layouting all")
             try:
-                preform.api.auto_layout_post_with_http_info(
-                    AutoOrientPostRequest.from_dict({"models": "ALL"})
+                preform.api.scene_auto_layout_post_with_http_info(
+                    SceneAutoOrientPostRequest(models=ModelsSelectionModel("ALL"))
                 )
-            except formlabs.exceptions.ServiceException as e:
-                if e.status == 500 and e.data.error == "AUTO_LAYOUT_FAILED":
-                    print("Not all models can fit, removing model")
-                    model_data = models_in_current_batch.pop()
-                    preform.api.models_id_delete(str(model_data["model_id"]))
-                    files_to_batch.append(model_data["file_name"])
-                    save_path = os.path.join(directory_path, f"batch_{current_batch}.form")
-                    preform.api.save_form_post(save_path)
-                    print(f"Saving batch {current_batch} to {save_path}")
-                    for i, model in enumerate(models_in_current_batch):
-                        print(f"{i+1}. {model['file_name']}")
-                        csvwriter.writerow([current_batch, f"batch_{current_batch}.form", model['file_name']])
-                    current_batch += 1
-                    models_in_current_batch = []
-                    print("Clearing scene")
-                    create_scene(preform)
+            except formlabs.exceptions.ApiException as e:
+                print("Not all models can fit, removing model")
+                model_data = models_in_current_batch.pop()
+                preform.api.scene_models_id_delete(str(model_data["model_id"]))
+                files_to_batch.append(model_data["file_name"])
+                save_path = os.path.join(directory_path, f"batch_{current_batch}.form")
+                preform.api.scene_save_form_post(LoadFormPostRequest(file=save_path))
+                print(f"Saving batch {current_batch} to {save_path}")
+                for i, model in enumerate(models_in_current_batch):
+                    print(f"{i+1}. {model['file_name']}")
+                    csvwriter.writerow([current_batch, f"batch_{current_batch}.form", model['file_name']])
+                current_batch += 1
+                models_in_current_batch = []
+                print("Clearing scene")
+                create_scene(preform)
 
         if len(models_in_current_batch) > 0:
             save_path = os.path.join(directory_path, f"batch_{current_batch}.form")
-            preform.api.save_form_post(save_path)
+            preform.api.scene_save_form_post(LoadFormPostRequest(file=save_path))
             print(f"Saving batch {current_batch} to {save_path}")
             for i, model in enumerate(models_in_current_batch):
                 print(f"{i+1}. {model['file_name']}")
