@@ -53,6 +53,12 @@ class SceneAutoOrientPostRequest {
             if (data.hasOwnProperty('models')) {
                 obj['models'] = ModelsSelectionModel.constructFromObject(data['models']);
             }
+            if (data.hasOwnProperty('mode')) {
+                obj['mode'] = ApiClient.convertToType(data['mode'], 'String');
+            }
+            if (data.hasOwnProperty('tilt')) {
+                obj['tilt'] = ApiClient.convertToType(data['tilt'], 'Number');
+            }
         }
         return obj;
     }
@@ -73,6 +79,10 @@ class SceneAutoOrientPostRequest {
         if (data['models']) { // data not null
           ModelsSelectionModel.validateJSON(data['models']);
         }
+        // ensure the json data is a string
+        if (data['mode'] && !(typeof data['mode'] === 'string' || data['mode'] instanceof String)) {
+            throw new Error("Expected the field `mode` to be a primitive type in the JSON string but got " + data['mode']);
+        }
 
         return true;
     }
@@ -87,8 +97,40 @@ SceneAutoOrientPostRequest.RequiredProperties = ["models"];
  */
 SceneAutoOrientPostRequest.prototype['models'] = undefined;
 
+/**
+ * @member {module:model/SceneAutoOrientPostRequest.ModeEnum} mode
+ */
+SceneAutoOrientPostRequest.prototype['mode'] = undefined;
+
+/**
+ * Degrees of tilt. Only applies to the DENTAL mode
+ * @member {Number} tilt
+ */
+SceneAutoOrientPostRequest.prototype['tilt'] = undefined;
 
 
+
+
+
+/**
+ * Allowed values for the <code>mode</code> property.
+ * @enum {String}
+ * @readonly
+ */
+SceneAutoOrientPostRequest['ModeEnum'] = {
+
+    /**
+     * value: "DEFAULT"
+     * @const
+     */
+    "DEFAULT": "DEFAULT",
+
+    /**
+     * value: "DENTAL"
+     * @const
+     */
+    "DENTAL": "DENTAL"
+};
 
 
 

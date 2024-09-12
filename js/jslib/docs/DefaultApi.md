@@ -292,7 +292,7 @@ No authorization required
 
 ## sceneAutoLayoutPost
 
-> SceneModel sceneAutoLayoutPost(sceneAutoOrientPostRequest)
+> SceneModel sceneAutoLayoutPost(sceneAutoLayoutPostRequest)
 
 
 
@@ -304,8 +304,8 @@ Run auto layout operation
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let sceneAutoOrientPostRequest = {"models":"ALL"}; // SceneAutoOrientPostRequest | Models to run the auto layout operation on
-apiInstance.sceneAutoLayoutPost(sceneAutoOrientPostRequest, (error, data, response) => {
+let sceneAutoLayoutPostRequest = {"models":"ALL"}; // SceneAutoLayoutPostRequest | Models to run the auto layout operation on
+apiInstance.sceneAutoLayoutPost(sceneAutoLayoutPostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -319,7 +319,7 @@ apiInstance.sceneAutoLayoutPost(sceneAutoOrientPostRequest, (error, data, respon
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **sceneAutoOrientPostRequest** | [**SceneAutoOrientPostRequest**](SceneAutoOrientPostRequest.md)| Models to run the auto layout operation on | 
+ **sceneAutoLayoutPostRequest** | [**SceneAutoLayoutPostRequest**](SceneAutoLayoutPostRequest.md)| Models to run the auto layout operation on | 
 
 ### Return type
 

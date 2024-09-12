@@ -33,6 +33,7 @@ docs/PrintValidationResultModelPerModelResultsValue.md
 docs/RepairBehaviorModel.md
 docs/SLA.md
 docs/SLS.md
+docs/SceneAutoLayoutPostRequest.md
 docs/SceneAutoOrientPostRequest.md
 docs/SceneAutoPackPostRequest.md
 docs/SceneAutoSupportPostRequest.md
@@ -89,6 +90,7 @@ src/model/PrintValidationResultModelPerModelResultsValue.js
 src/model/RepairBehaviorModel.js
 src/model/SLA.js
 src/model/SLS.js
+src/model/SceneAutoLayoutPostRequest.js
 src/model/SceneAutoOrientPostRequest.js
 src/model/SceneAutoPackPostRequest.js
 src/model/SceneAutoSupportPostRequest.js
@@ -109,3 +111,4 @@ src/model/TransformMatrixModel.js
 src/model/UnitsModel.js
 src/model/UsernameAndPassword.js
 src/model/WebAuthTokensModel.js
+test/model/SceneAutoLayoutPostRequest.spec.js

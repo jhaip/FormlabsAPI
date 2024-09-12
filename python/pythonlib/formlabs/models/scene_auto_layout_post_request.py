@@ -17,30 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict
+from typing import Any, ClassVar, Dict, List
 from formlabs.models.models_selection_model import ModelsSelectionModel
 from typing import Optional, Set
 from typing_extensions import Self
 
-class SceneAutoOrientPostRequest(BaseModel):
+class SceneAutoLayoutPostRequest(BaseModel):
     """
-    SceneAutoOrientPostRequest
+    SceneAutoLayoutPostRequest
     """ # noqa: E501
     models: ModelsSelectionModel
-    mode: Optional[StrictStr] = None
-    tilt: Optional[StrictInt] = Field(default=None, description="Degrees of tilt. Only applies to the DENTAL mode")
-    __properties: ClassVar[List[str]] = ["models", "mode", "tilt"]
-
-    @field_validator('mode')
-    def mode_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['DEFAULT', 'DENTAL']):
-            raise ValueError("must be one of enum values ('DEFAULT', 'DENTAL')")
-        return value
+    __properties: ClassVar[List[str]] = ["models"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -60,7 +48,7 @@ class SceneAutoOrientPostRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SceneAutoOrientPostRequest from a JSON string"""
+        """Create an instance of SceneAutoLayoutPostRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -88,7 +76,7 @@ class SceneAutoOrientPostRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SceneAutoOrientPostRequest from a dict"""
+        """Create an instance of SceneAutoLayoutPostRequest from a dict"""
         if obj is None:
             return None
 
@@ -96,9 +84,7 @@ class SceneAutoOrientPostRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "models": ModelsSelectionModel.from_dict(obj["models"]) if obj.get("models") is not None else None,
-            "mode": obj.get("mode"),
-            "tilt": obj.get("tilt")
+            "models": ModelsSelectionModel.from_dict(obj["models"]) if obj.get("models") is not None else None
         })
         return _obj
 

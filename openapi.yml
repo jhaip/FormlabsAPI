@@ -1099,6 +1099,14 @@ paths:
               properties:
                 models:
                   $ref: '#/components/schemas/ModelsSelectionModel'
+                mode:
+                  type: string
+                  enum:
+                  - "DEFAULT"
+                  - "DENTAL"
+                tilt:
+                  type: integer
+                  description: Degrees of tilt. Only applies to the DENTAL mode
             examples:
               AllModels:
                 value:

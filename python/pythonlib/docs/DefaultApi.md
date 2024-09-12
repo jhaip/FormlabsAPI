@@ -426,7 +426,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **scene_auto_layout_post**
-> SceneModel scene_auto_layout_post(scene_auto_orient_post_request)
+> SceneModel scene_auto_layout_post(scene_auto_layout_post_request)
 
 
 
@@ -437,7 +437,7 @@ Run auto layout operation
 
 ```python
 import formlabs
-from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
+from formlabs.models.scene_auto_layout_post_request import SceneAutoLayoutPostRequest
 from formlabs.models.scene_model import SceneModel
 from formlabs.rest import ApiException
 from pprint import pprint
@@ -453,10 +453,10 @@ configuration = formlabs.Configuration(
 with formlabs.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = formlabs.DefaultApi(api_client)
-    scene_auto_orient_post_request = {"models":"ALL"} # SceneAutoOrientPostRequest | Models to run the auto layout operation on
+    scene_auto_layout_post_request = {"models":"ALL"} # SceneAutoLayoutPostRequest | Models to run the auto layout operation on
 
     try:
-        api_response = api_instance.scene_auto_layout_post(scene_auto_orient_post_request)
+        api_response = api_instance.scene_auto_layout_post(scene_auto_layout_post_request)
         print("The response of DefaultApi->scene_auto_layout_post:\n")
         pprint(api_response)
     except Exception as e:
@@ -470,7 +470,7 @@ with formlabs.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scene_auto_orient_post_request** | [**SceneAutoOrientPostRequest**](SceneAutoOrientPostRequest.md)| Models to run the auto layout operation on | 
+ **scene_auto_layout_post_request** | [**SceneAutoLayoutPostRequest**](SceneAutoLayoutPostRequest.md)| Models to run the auto layout operation on | 
 
 ### Return type
 

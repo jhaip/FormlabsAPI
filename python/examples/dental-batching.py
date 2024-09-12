@@ -12,7 +12,7 @@ import pathlib
 import csv
 import formlabs
 from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
-from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
+from formlabs.models.scene_auto_layout_post_request import SceneAutoLayoutPostRequest
 from formlabs.models.scene_type_model import SceneTypeModel
 from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
 from formlabs.models.models_selection_model import ModelsSelectionModel
@@ -63,7 +63,7 @@ with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformS
             print(f"Auto layouting all")
             try:
                 preform.api.scene_auto_layout_post_with_http_info(
-                    SceneAutoOrientPostRequest(models=ModelsSelectionModel("ALL"))
+                    SceneAutoLayoutPostRequest(models=ModelsSelectionModel("ALL"))
                 )
             except formlabs.exceptions.ApiException as e:
                 print("Not all models can fit, removing model")

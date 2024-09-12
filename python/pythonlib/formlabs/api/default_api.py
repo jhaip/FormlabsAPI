@@ -28,6 +28,7 @@ from formlabs.models.load_form_post_request import LoadFormPostRequest
 from formlabs.models.login_post_request import LoginPostRequest
 from formlabs.models.model_properties import ModelProperties
 from formlabs.models.print_validation_result_model import PrintValidationResultModel
+from formlabs.models.scene_auto_layout_post_request import SceneAutoLayoutPostRequest
 from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
 from formlabs.models.scene_auto_pack_post_request import SceneAutoPackPostRequest
 from formlabs.models.scene_auto_support_post_request import SceneAutoSupportPostRequest
@@ -1623,7 +1624,7 @@ class DefaultApi:
     @validate_call
     def scene_auto_layout_post(
         self,
-        scene_auto_orient_post_request: Annotated[SceneAutoOrientPostRequest, Field(description="Models to run the auto layout operation on")],
+        scene_auto_layout_post_request: Annotated[SceneAutoLayoutPostRequest, Field(description="Models to run the auto layout operation on")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1641,8 +1642,8 @@ class DefaultApi:
 
         Run auto layout operation
 
-        :param scene_auto_orient_post_request: Models to run the auto layout operation on (required)
-        :type scene_auto_orient_post_request: SceneAutoOrientPostRequest
+        :param scene_auto_layout_post_request: Models to run the auto layout operation on (required)
+        :type scene_auto_layout_post_request: SceneAutoLayoutPostRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1666,7 +1667,7 @@ class DefaultApi:
         """ # noqa: E501
 
         _param = self._scene_auto_layout_post_serialize(
-            scene_auto_orient_post_request=scene_auto_orient_post_request,
+            scene_auto_layout_post_request=scene_auto_layout_post_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1691,7 +1692,7 @@ class DefaultApi:
     @validate_call
     def scene_auto_layout_post_with_http_info(
         self,
-        scene_auto_orient_post_request: Annotated[SceneAutoOrientPostRequest, Field(description="Models to run the auto layout operation on")],
+        scene_auto_layout_post_request: Annotated[SceneAutoLayoutPostRequest, Field(description="Models to run the auto layout operation on")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1709,8 +1710,8 @@ class DefaultApi:
 
         Run auto layout operation
 
-        :param scene_auto_orient_post_request: Models to run the auto layout operation on (required)
-        :type scene_auto_orient_post_request: SceneAutoOrientPostRequest
+        :param scene_auto_layout_post_request: Models to run the auto layout operation on (required)
+        :type scene_auto_layout_post_request: SceneAutoLayoutPostRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1734,7 +1735,7 @@ class DefaultApi:
         """ # noqa: E501
 
         _param = self._scene_auto_layout_post_serialize(
-            scene_auto_orient_post_request=scene_auto_orient_post_request,
+            scene_auto_layout_post_request=scene_auto_layout_post_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1759,7 +1760,7 @@ class DefaultApi:
     @validate_call
     def scene_auto_layout_post_without_preload_content(
         self,
-        scene_auto_orient_post_request: Annotated[SceneAutoOrientPostRequest, Field(description="Models to run the auto layout operation on")],
+        scene_auto_layout_post_request: Annotated[SceneAutoLayoutPostRequest, Field(description="Models to run the auto layout operation on")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1777,8 +1778,8 @@ class DefaultApi:
 
         Run auto layout operation
 
-        :param scene_auto_orient_post_request: Models to run the auto layout operation on (required)
-        :type scene_auto_orient_post_request: SceneAutoOrientPostRequest
+        :param scene_auto_layout_post_request: Models to run the auto layout operation on (required)
+        :type scene_auto_layout_post_request: SceneAutoLayoutPostRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1802,7 +1803,7 @@ class DefaultApi:
         """ # noqa: E501
 
         _param = self._scene_auto_layout_post_serialize(
-            scene_auto_orient_post_request=scene_auto_orient_post_request,
+            scene_auto_layout_post_request=scene_auto_layout_post_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1822,7 +1823,7 @@ class DefaultApi:
 
     def _scene_auto_layout_post_serialize(
         self,
-        scene_auto_orient_post_request,
+        scene_auto_layout_post_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1846,8 +1847,8 @@ class DefaultApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if scene_auto_orient_post_request is not None:
-            _body_params = scene_auto_orient_post_request
+        if scene_auto_layout_post_request is not None:
+            _body_params = scene_auto_layout_post_request
 
 
         # set the HTTP header `Accept`

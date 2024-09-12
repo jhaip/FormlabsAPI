@@ -34,6 +34,7 @@ docs/PrintValidationResultModelPerModelResultsValue.md
 docs/RepairBehaviorModel.md
 docs/SLA.md
 docs/SLS.md
+docs/SceneAutoLayoutPostRequest.md
 docs/SceneAutoOrientPostRequest.md
 docs/SceneAutoPackPostRequest.md
 docs/SceneAutoSupportPostRequest.md
@@ -91,6 +92,7 @@ formlabs/models/orientation_model.py
 formlabs/models/print_validation_result_model.py
 formlabs/models/print_validation_result_model_per_model_results_value.py
 formlabs/models/repair_behavior_model.py
+formlabs/models/scene_auto_layout_post_request.py
 formlabs/models/scene_auto_orient_post_request.py
 formlabs/models/scene_auto_pack_post_request.py
 formlabs/models/scene_auto_support_post_request.py
@@ -122,4 +124,5 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_scene_auto_layout_post_request.py
 tox.ini

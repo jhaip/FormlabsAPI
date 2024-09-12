@@ -140,6 +140,7 @@ Class | Method | HTTP request | Description
  - [RepairBehaviorModel](docs/RepairBehaviorModel.md)
  - [SLA](docs/SLA.md)
  - [SLS](docs/SLS.md)
+ - [SceneAutoLayoutPostRequest](docs/SceneAutoLayoutPostRequest.md)
  - [SceneAutoOrientPostRequest](docs/SceneAutoOrientPostRequest.md)
  - [SceneAutoPackPostRequest](docs/SceneAutoPackPostRequest.md)
  - [SceneAutoSupportPostRequest](docs/SceneAutoSupportPostRequest.md)

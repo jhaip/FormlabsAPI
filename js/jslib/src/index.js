@@ -43,6 +43,7 @@ import PrintValidationResultModelPerModelResultsValue from './model/PrintValidat
 import RepairBehaviorModel from './model/RepairBehaviorModel';
 import SLA from './model/SLA';
 import SLS from './model/SLS';
+import SceneAutoLayoutPostRequest from './model/SceneAutoLayoutPostRequest';
 import SceneAutoOrientPostRequest from './model/SceneAutoOrientPostRequest';
 import SceneAutoPackPostRequest from './model/SceneAutoPackPostRequest';
 import SceneAutoSupportPostRequest from './model/SceneAutoSupportPostRequest';
@@ -283,6 +284,12 @@ export {
      * @property {module:model/SLS}
      */
     SLS,
+
+    /**
+     * The SceneAutoLayoutPostRequest model constructor.
+     * @property {module:model/SceneAutoLayoutPostRequest}
+     */
+    SceneAutoLayoutPostRequest,
 
     /**
      * The SceneAutoOrientPostRequest model constructor.

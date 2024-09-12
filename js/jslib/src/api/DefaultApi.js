@@ -24,6 +24,7 @@ import LoadFormPostRequest from '../model/LoadFormPostRequest';
 import LoginPostRequest from '../model/LoginPostRequest';
 import ModelProperties from '../model/ModelProperties';
 import PrintValidationResultModel from '../model/PrintValidationResultModel';
+import SceneAutoLayoutPostRequest from '../model/SceneAutoLayoutPostRequest';
 import SceneAutoOrientPostRequest from '../model/SceneAutoOrientPostRequest';
 import SceneAutoPackPostRequest from '../model/SceneAutoPackPostRequest';
 import SceneAutoSupportPostRequest from '../model/SceneAutoSupportPostRequest';
@@ -303,15 +304,15 @@ export default class DefaultApi {
 
     /**
      * Run auto layout operation
-     * @param {module:model/SceneAutoOrientPostRequest} sceneAutoOrientPostRequest Models to run the auto layout operation on
+     * @param {module:model/SceneAutoLayoutPostRequest} sceneAutoLayoutPostRequest Models to run the auto layout operation on
      * @param {module:api/DefaultApi~sceneAutoLayoutPostCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/SceneModel}
      */
-    sceneAutoLayoutPost(sceneAutoOrientPostRequest, callback) {
-      let postBody = sceneAutoOrientPostRequest;
-      // verify the required parameter 'sceneAutoOrientPostRequest' is set
-      if (sceneAutoOrientPostRequest === undefined || sceneAutoOrientPostRequest === null) {
-        throw new Error("Missing the required parameter 'sceneAutoOrientPostRequest' when calling sceneAutoLayoutPost");
+    sceneAutoLayoutPost(sceneAutoLayoutPostRequest, callback) {
+      let postBody = sceneAutoLayoutPostRequest;
+      // verify the required parameter 'sceneAutoLayoutPostRequest' is set
+      if (sceneAutoLayoutPostRequest === undefined || sceneAutoLayoutPostRequest === null) {
+        throw new Error("Missing the required parameter 'sceneAutoLayoutPostRequest' when calling sceneAutoLayoutPost");
       }
 
       let pathParams = {

@@ -177,6 +177,7 @@ Class | Method | HTTP request | Description
  - [PreFormApi.RepairBehaviorModel](docs/RepairBehaviorModel.md)
  - [PreFormApi.SLA](docs/SLA.md)
  - [PreFormApi.SLS](docs/SLS.md)
+ - [PreFormApi.SceneAutoLayoutPostRequest](docs/SceneAutoLayoutPostRequest.md)
  - [PreFormApi.SceneAutoOrientPostRequest](docs/SceneAutoOrientPostRequest.md)
  - [PreFormApi.SceneAutoPackPostRequest](docs/SceneAutoPackPostRequest.md)
  - [PreFormApi.SceneAutoSupportPostRequest](docs/SceneAutoSupportPostRequest.md)

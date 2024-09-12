@@ -6,6 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **models** | [**ModelsSelectionModel**](ModelsSelectionModel.md) |  | 
+**mode** | **str** |  | [optional] 
+**tilt** | **int** | Degrees of tilt. Only applies to the DENTAL mode | [optional] 
 
 ## Example
 

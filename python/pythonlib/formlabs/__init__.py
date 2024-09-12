@@ -61,6 +61,7 @@ from formlabs.models.print_validation_result_model_per_model_results_value impor
 from formlabs.models.repair_behavior_model import RepairBehaviorModel
 from formlabs.models.sla import SLA
 from formlabs.models.sls import SLS
+from formlabs.models.scene_auto_layout_post_request import SceneAutoLayoutPostRequest
 from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
 from formlabs.models.scene_auto_pack_post_request import SceneAutoPackPostRequest
 from formlabs.models.scene_auto_support_post_request import SceneAutoSupportPostRequest
