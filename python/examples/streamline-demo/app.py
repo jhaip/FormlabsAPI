@@ -8,7 +8,7 @@ from datetime import datetime
 from dataclasses import dataclass
 from enum import Enum
 from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
-from formlabs.models.auto_orient_post_request import AutoOrientPostRequest
+from formlabs.models.scene_auto_layout_post_request import SceneAutoLayoutPostRequest
 from formlabs.models.scene_type_model import SceneTypeModel
 from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
 from formlabs.models.models_selection_model import ModelsSelectionModel
@@ -94,6 +94,12 @@ def process_order(order_folder_path, order_type: OrderType):
     print("Processing order", order_folder_path, order_type)
     order_parameters = parse_order_parameters(order_folder_path, order_type)
     print("Parsed order parameters", order_parameters)
+    if order_parameters is None:
+        print("Unable to parse order folder name, skipping order")
+        return
+    if order_parameters.top_quantity == 0 and order_parameters.bottom_quantity == 0:
+        print("No top or bottom quantity detected, skipping order")
+        return
     order_parameters = update_order_parameters_with_stl_files(order_parameters)
     print("Updated order parameters with STL info", order_parameters)
     # batch_results = mock_process_order_models(order_parameters)
@@ -106,6 +112,10 @@ def process_order(order_folder_path, order_type: OrderType):
 
 
 def move_order_order_to_completed_folder(order_folder_path, order_type: OrderType):
+    order_folder_new_path = os.path.join(PATH_TO_OUTPUT_FOLDERS[order_type], os.path.basename(order_folder_path))
+    if os.path.exists(order_folder_new_path):
+        print("Folder already exists in completed folder, deleting it so the new version can be moved")
+        shutil.rmtree(order_folder_new_path)
     shutil.move(order_folder_path, PATH_TO_OUTPUT_FOLDERS[order_type])
 
 
@@ -134,10 +144,10 @@ def parse_recurring_order_folder_name(order_folder_path):
 
 def parse_type_of_stl_from_filename(stl_filename) -> StlModelType:
     flags = {
-        StlModelType.L1: ["L_1", "L-1", "1_L", "1-L"],
-        StlModelType.U1: ["U_1", "U-1", "1_U", "1-U"],
-        StlModelType.L2: ["L_2", "L-2", "2_L", "2-L"],
-        StlModelType.U2: ["U_2", "U-2", "2_U", "2-U"],
+        StlModelType.L1: ["_L_1", "-L-1", "_1_L", "-1-L"],
+        StlModelType.U1: ["_U_1", "-U-1", "_1_U", "-1-U"],
+        StlModelType.L2: ["_L_2", "-L-2", "_2_L", "-2-L"],
+        StlModelType.U2: ["_U_2", "-U-2", "_2_U", "-2-U"],
     }
     for model_type, flag_list in flags.items():
         for flag_str in flag_list:
@@ -232,8 +242,9 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
     def save_batch_form(preform):
         nonlocal current_batch
         save_path = os.path.join(PATH_TO_FOLDER_FOR_SAVING_PRINT_FILES, f"{order_parameters.order_id}_part{current_batch}.form")
-        preform.api.scene_save_form_post(LoadFormPostRequest(file=save_path))
         print(f"Saving batch {current_batch} to {save_path}")
+        preform.api.scene_save_form_post(LoadFormPostRequest(file=save_path))
+        print("Batch saved")
         current_batch += 1
 
     with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
@@ -242,20 +253,28 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
             for i in range(stl_file_and_quantity.quantity):
                 print(f"Importing model {stl_file_and_quantity.filename} qty {i+1}/{stl_file_and_quantity.quantity}")
                 new_model = preform.api.scene_import_model_post({"file": os.path.join(order_parameters.order_folder_path, stl_file_and_quantity.filename)})
+                print(f"Auto orienting {new_model.id}")
+                preform.api.scene_auto_orient_post(
+                    SceneAutoOrientPostRequest(models=ModelsSelectionModel([new_model.id]), mode="DENTAL", tilt=0)
+                )
                 try:
                     print(f"Auto layouting all")
                     preform.api.scene_auto_layout_post_with_http_info(
-                        SceneAutoOrientPostRequest(models=ModelsSelectionModel("ALL"))
+                        SceneAutoLayoutPostRequest(models=ModelsSelectionModel("ALL"))
                     )
                     batch_has_unsaved_changed = True
                     batch_results[-1].part_quantity_in_this_print += 1
                 except formlabs.exceptions.ApiException as e:
-                    print(e)
                     print("Not all models can fit, removing model")
                     preform.api.scene_models_id_delete(str(new_model.id))
                     save_batch_form(preform)
                     clear_scene(preform)
+                except Exception as e:
+                    print("Error during auto layout")
+                    print(e)
+                    raise e
                 print(f"Model {stl_file_and_quantity.filename} added to scene")
+
         if batch_has_unsaved_changed:
             save_batch_form(preform)
 
