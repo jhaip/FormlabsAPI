@@ -65,7 +65,7 @@ components:
     TransformMatrixModel:
       type: object
       description: Orientation specified a 3x3 matrix, the linear component of a 3D rigid transform.
-      properties: 
+      properties:
         linear:
           type: array
           items:
@@ -269,7 +269,7 @@ components:
           additionalProperties:
             type: object
             properties:
-              cups: 
+              cups:
                 type: integer
                 description: The number of cups in the model
               unsupported_minima:
