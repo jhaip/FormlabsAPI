@@ -185,13 +185,13 @@
                     <h4>Job Owner</h4>
                     <p id="job-owner"></p>
                     <a id="download-link" href="#" download class="button">Download .form</a>
+                    <p>
+                        <button popovertarget="import-models-popover"  class="button">Import Parts</button>
+                    </p>
                     <h4>People with parts in job:</h4>
                     <ol id="job-people"></ol>
                     <h4>Models</h4>
                     <ol id="job-models"></ol>
-                    <p>
-                        <button popovertarget="import-models-popover"  class="button">Import Parts</button>
-                    </p>
                 </div>
             </div>
         </div>
@@ -204,10 +204,10 @@
                 <label for="file">Select starting .form file:</label>
                 <input type="file" name="file" required accept=".form">
             </p>
-            <p>
+            <!-- <p>
                 <label for="owner-name">Owner Name:</label>
                 <input type="text" name="owner_name" required>
-            </p>
+            </p> -->
             <p>
                 <label for="owner-email">Owner Email:</label>
                 <input type="email" name="owner_email" required>
@@ -225,10 +225,10 @@
                 <label for="files">Select model files (.form, .stl, .obj, .3mf):</label>
                 <input type="file" id="files" name="files" multiple required accept=".form, .stl, .3mf, .obj">
             </p>
-            <p>
+            <!-- <p>
                 <label for="person_name">Your Name:</label>
                 <input type="text" name="person_name" required>
-            </p>
+            </p> -->
             <p>
                 <label for="person_email">Your Email:</label>
                 <input type="email" name="person_email" required>
@@ -283,11 +283,12 @@
                 document.getElementById('job-title').textContent = `Job ${job.id}`;
                 document.getElementById('job-thumbnail').src = `/thumbnails/${job.id}/thumbnail.png`
                 document.getElementById('job-type').innerHTML = `
-                    <div>Printer: ${job.scene.scene_type.printer}</div>
+                    <div>Printer: ${job.scene.scene_type.machine_type}</div>
                     <div>Material: ${job.scene.scene_type.material_code}</div>
-                    <div>Resolution: ${job.scene.scene_type.layer_thickness_mm} mm</div>
+                    <div>Resolution: ${job.scene.scene_type.layer_thickness} mm</div>
                     <div>Print Setting: ${job.scene.scene_type.print_setting}</div>
                     <div>Layers: ${job.scene.layers}</div>
+                    <div>Mass Packing Density: ${(job.scene.materials.mass_packing_density*100).toFixed(0)}%</div>
                 `;
                 document.getElementById('job-owner').innerHTML = `${job.owner.name} (${job.owner.email})`;
                 document.getElementById('job-people').innerHTML = job.people.map(person => `

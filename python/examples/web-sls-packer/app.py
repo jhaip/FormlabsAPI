@@ -6,6 +6,7 @@ import json
 import pathlib
 from pathlib import Path
 import formlabs
+import subprocess
 
 # Directory where jobs are stored
 JOBS_DIR = 'jobs'
@@ -27,7 +28,7 @@ class PreFormApi:
         self.api.load_form_post(formlabs.LoadFormPostRequest(file=form_file_path))
 
     def import_model(self, model_path):
-        self.api.scene_import_model_post(formlabs.SceneImportModelPostRequest(file=model_path))
+        self.api.scene_import_model_post({"file": model_path})
 
     def auto_pack(self):
         self.api.scene_auto_pack_post(formlabs.SceneAutoPackPostRequest())
@@ -61,7 +62,7 @@ def merge(job_id, uploaded_file_paths):
     except:
         print("ERROR running auto pack")
         raise Exception("Failed to auto pack")
-    scene_data = api.get_scene()
+    scene_data = api.get_scene().to_dict()
     for model in scene_data['models']:
         if not model["in_bounds"]:
             print("ERROR: model out of build volume.")
@@ -71,7 +72,7 @@ def merge(job_id, uploaded_file_paths):
     print("saving .form file")
     api.save_form(existing_job_form_path)
     print("getting scene data")
-    return api.get_scene()
+    return scene_data
 
 
 def get_job_form_path(job_id):
@@ -129,8 +130,8 @@ def download_image(job_id):
 @app.route('/new-from-form', methods=['POST'])
 def create_new_from_form():
     data = request.form
-    owner_name = data.get('owner_name')
     owner_email = data.get('owner_email')
+    owner_name = data.get('owner_name', owner_email)
     file = request.files['file']
     # Creat a new ID for the job
     last_id = max([0] + [int(x) for x in os.listdir(JOBS_DIR) if x.isdigit()])
@@ -144,7 +145,7 @@ def create_new_from_form():
     file.save(os.path.join(job_folder, filename))
     # Use API to get metadata and screenshot from scene
     api.load_form(os.path.abspath(os.path.join(job_folder, filename)))
-    scene_metadata = api.get_scene()
+    scene_metadata = api.get_scene().to_dict()
     metadata = {
         'id': id,
         'owner': {'name': owner_name, 'email': owner_email},
@@ -172,8 +173,8 @@ def create_new_from_form():
 @app.route('/import-models/<job_id>', methods=['POST'])
 def import_parts(job_id):
     data = request.form
-    person_name = data.get('person_name')
     person_email = data.get('person_email')
+    person_name = data.get('person_name', person_email)
     files = request.files.getlist('files')
 
     job_folder = os.path.join(JOBS_DIR, job_id)
@@ -209,4 +210,5 @@ def import_parts(job_id):
 if __name__ == '__main__':
     with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
         api.api = preform.api
+        subprocess.Popen(["open", "http://localhost:8323"])
         app.run(port=8323, debug=False)
