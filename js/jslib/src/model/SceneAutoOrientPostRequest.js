@@ -12,6 +12,8 @@
  */
 
 import ApiClient from '../ApiClient';
+import Default from './Default';
+import DentalMode from './DentalMode';
 import ModelsSelectionModel from './ModelsSelectionModel';
 
 /**
@@ -23,20 +25,56 @@ class SceneAutoOrientPostRequest {
     /**
      * Constructs a new <code>SceneAutoOrientPostRequest</code>.
      * @alias module:model/SceneAutoOrientPostRequest
-     * @param models {module:model/ModelsSelectionModel} 
+     * @param {(module:model/Default|module:model/DentalMode)} instance The actual instance to initialize SceneAutoOrientPostRequest.
      */
-    constructor(models) { 
-        
-        SceneAutoOrientPostRequest.initialize(this, models);
-    }
+    constructor(instance = null) {
+        if (instance === null) {
+            this.actualInstance = null;
+            return;
+        }
+        var match = 0;
+        var errorMessages = [];
+        try {
+            if (typeof instance === "Default") {
+                this.actualInstance = instance;
+            } else {
+                // plain JS object
+                // validate the object
+                Default.validateJSON(instance); // throw an exception if no match
+                // create Default from JS object
+                this.actualInstance = Default.constructFromObject(instance);
+            }
+            match++;
+        } catch(err) {
+            // json data failed to deserialize into Default
+            errorMessages.push("Failed to construct Default: " + err)
+        }
 
-    /**
-     * Initializes the fields of this object.
-     * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
-     * Only for internal use.
-     */
-    static initialize(obj, models) { 
-        obj['models'] = models;
+        try {
+            if (typeof instance === "DentalMode") {
+                this.actualInstance = instance;
+            } else {
+                // plain JS object
+                // validate the object
+                DentalMode.validateJSON(instance); // throw an exception if no match
+                // create DentalMode from JS object
+                this.actualInstance = DentalMode.constructFromObject(instance);
+            }
+            match++;
+        } catch(err) {
+            // json data failed to deserialize into DentalMode
+            errorMessages.push("Failed to construct DentalMode: " + err)
+        }
+
+        if (match > 1) {
+            throw new Error("Multiple matches found constructing `SceneAutoOrientPostRequest` with oneOf schemas Default, DentalMode. Input: " + JSON.stringify(instance));
+        } else if (match === 0) {
+            this.actualInstance = null; // clear the actual instance in case there are multiple matches
+            throw new Error("No match found constructing `SceneAutoOrientPostRequest` with oneOf schemas Default, DentalMode. Details: " +
+                            errorMessages.join(", "));
+        } else { // only 1 match
+            // the input is valid
+        }
     }
 
     /**
@@ -47,50 +85,42 @@ class SceneAutoOrientPostRequest {
      * @return {module:model/SceneAutoOrientPostRequest} The populated <code>SceneAutoOrientPostRequest</code> instance.
      */
     static constructFromObject(data, obj) {
-        if (data) {
-            obj = obj || new SceneAutoOrientPostRequest();
-
-            if (data.hasOwnProperty('models')) {
-                obj['models'] = ModelsSelectionModel.constructFromObject(data['models']);
-            }
-            if (data.hasOwnProperty('mode')) {
-                obj['mode'] = ApiClient.convertToType(data['mode'], 'String');
-            }
-            if (data.hasOwnProperty('tilt')) {
-                obj['tilt'] = ApiClient.convertToType(data['tilt'], 'Number');
-            }
-        }
-        return obj;
+        return new SceneAutoOrientPostRequest(data);
     }
 
     /**
-     * Validates the JSON data with respect to <code>SceneAutoOrientPostRequest</code>.
-     * @param {Object} data The plain JavaScript object bearing properties of interest.
-     * @return {boolean} to indicate whether the JSON data is valid with respect to <code>SceneAutoOrientPostRequest</code>.
+     * Gets the actual instance, which can be <code>Default</code>, <code>DentalMode</code>.
+     * @return {(module:model/Default|module:model/DentalMode)} The actual instance.
      */
-    static validateJSON(data) {
-        // check to make sure all required properties are present in the JSON string
-        for (const property of SceneAutoOrientPostRequest.RequiredProperties) {
-            if (!data.hasOwnProperty(property)) {
-                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
-            }
-        }
-        // validate the optional field `models`
-        if (data['models']) { // data not null
-          ModelsSelectionModel.validateJSON(data['models']);
-        }
-        // ensure the json data is a string
-        if (data['mode'] && !(typeof data['mode'] === 'string' || data['mode'] instanceof String)) {
-            throw new Error("Expected the field `mode` to be a primitive type in the JSON string but got " + data['mode']);
-        }
-
-        return true;
+    getActualInstance() {
+        return this.actualInstance;
     }
 
+    /**
+     * Sets the actual instance, which can be <code>Default</code>, <code>DentalMode</code>.
+     * @param {(module:model/Default|module:model/DentalMode)} obj The actual instance.
+     */
+    setActualInstance(obj) {
+       this.actualInstance = SceneAutoOrientPostRequest.constructFromObject(obj).getActualInstance();
+    }
 
+    /**
+     * Returns the JSON representation of the actual instance.
+     * @return {string}
+     */
+    toJSON = function(){
+        return this.getActualInstance();
+    }
+
+    /**
+     * Create an instance of SceneAutoOrientPostRequest from a JSON string.
+     * @param {string} json_string JSON string.
+     * @return {module:model/SceneAutoOrientPostRequest} An instance of SceneAutoOrientPostRequest.
+     */
+    static fromJSON = function(json_string){
+        return SceneAutoOrientPostRequest.constructFromObject(JSON.parse(json_string));
+    }
 }
-
-SceneAutoOrientPostRequest.RequiredProperties = ["models"];
 
 /**
  * @member {module:model/ModelsSelectionModel} models
@@ -109,30 +139,7 @@ SceneAutoOrientPostRequest.prototype['mode'] = undefined;
 SceneAutoOrientPostRequest.prototype['tilt'] = undefined;
 
 
-
-
-
-/**
- * Allowed values for the <code>mode</code> property.
- * @enum {String}
- * @readonly
- */
-SceneAutoOrientPostRequest['ModeEnum'] = {
-
-    /**
-     * value: "DEFAULT"
-     * @const
-     */
-    "DEFAULT": "DEFAULT",
-
-    /**
-     * value: "DENTAL"
-     * @const
-     */
-    "DENTAL": "DENTAL"
-};
-
-
+SceneAutoOrientPostRequest.OneOf = ["Default", "DentalMode"];
 
 export default SceneAutoOrientPostRequest;
 

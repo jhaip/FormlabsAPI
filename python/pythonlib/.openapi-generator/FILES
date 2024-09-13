@@ -4,7 +4,9 @@
 .travis.yml
 README.md
 docs/AccessToken.md
+docs/Default.md
 docs/DefaultApi.md
+docs/DentalMode.md
 docs/DeviceStatusModel.md
 docs/DevicesGet200Response.md
 docs/DirectionVectorsModel.md
@@ -65,6 +67,8 @@ formlabs/configuration.py
 formlabs/exceptions.py
 formlabs/models/__init__.py
 formlabs/models/access_token.py
+formlabs/models/default.py
+formlabs/models/dental_mode.py
 formlabs/models/device_status_model.py
 formlabs/models/devices_get200_response.py
 formlabs/models/direction_vectors_model.py
@@ -124,5 +128,6 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
-test/test_scene_auto_layout_post_request.py
+test/test_default.py
+test/test_dental_mode.py
 tox.ini

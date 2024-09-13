@@ -14,6 +14,8 @@
 
 import ApiClient from './ApiClient';
 import AccessToken from './model/AccessToken';
+import Default from './model/Default';
+import DentalMode from './model/DentalMode';
 import DeviceStatusModel from './model/DeviceStatusModel';
 import DevicesGet200Response from './model/DevicesGet200Response';
 import DirectionVectorsModel from './model/DirectionVectorsModel';
@@ -110,6 +112,18 @@ export {
      * @property {module:model/AccessToken}
      */
     AccessToken,
+
+    /**
+     * The Default model constructor.
+     * @property {module:model/Default}
+     */
+    Default,
+
+    /**
+     * The DentalMode model constructor.
+     * @property {module:model/DentalMode}
+     */
+    DentalMode,
 
     /**
      * The DeviceStatusModel model constructor.

@@ -1,4 +1,4 @@
-# PreFormApi.SceneAutoOrientPostRequest
+# PreFormApi.DentalMode
 
 ## Properties
 

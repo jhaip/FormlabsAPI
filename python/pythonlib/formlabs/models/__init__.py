@@ -15,6 +15,8 @@
 
 # import models into model package
 from formlabs.models.access_token import AccessToken
+from formlabs.models.default import Default
+from formlabs.models.dental_mode import DentalMode
 from formlabs.models.device_status_model import DeviceStatusModel
 from formlabs.models.devices_get200_response import DevicesGet200Response
 from formlabs.models.direction_vectors_model import DirectionVectorsModel

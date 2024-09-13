@@ -148,6 +148,8 @@ Class | Method | HTTP request | Description
 ## Documentation for Models
 
  - [PreFormApi.AccessToken](docs/AccessToken.md)
+ - [PreFormApi.Default](docs/Default.md)
+ - [PreFormApi.DentalMode](docs/DentalMode.md)
  - [PreFormApi.DeviceStatusModel](docs/DeviceStatusModel.md)
  - [PreFormApi.DevicesGet200Response](docs/DevicesGet200Response.md)
  - [PreFormApi.DirectionVectorsModel](docs/DirectionVectorsModel.md)

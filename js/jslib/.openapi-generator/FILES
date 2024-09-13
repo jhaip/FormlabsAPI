@@ -3,7 +3,9 @@
 .travis.yml
 README.md
 docs/AccessToken.md
+docs/Default.md
 docs/DefaultApi.md
+docs/DentalMode.md
 docs/DeviceStatusModel.md
 docs/DevicesGet200Response.md
 docs/DirectionVectorsModel.md
@@ -61,6 +63,8 @@ src/ApiClient.js
 src/api/DefaultApi.js
 src/index.js
 src/model/AccessToken.js
+src/model/Default.js
+src/model/DentalMode.js
 src/model/DeviceStatusModel.js
 src/model/DevicesGet200Response.js
 src/model/DirectionVectorsModel.js
@@ -111,4 +115,5 @@ src/model/TransformMatrixModel.js
 src/model/UnitsModel.js
 src/model/UsernameAndPassword.js
 src/model/WebAuthTokensModel.js
-test/model/SceneAutoLayoutPostRequest.spec.js
+test/model/Default.spec.js
+test/model/DentalMode.spec.js

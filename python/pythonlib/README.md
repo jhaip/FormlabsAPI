@@ -111,6 +111,8 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AccessToken](docs/AccessToken.md)
+ - [Default](docs/Default.md)
+ - [DentalMode](docs/DentalMode.md)
  - [DeviceStatusModel](docs/DeviceStatusModel.md)
  - [DevicesGet200Response](docs/DevicesGet200Response.md)
  - [DirectionVectorsModel](docs/DirectionVectorsModel.md)

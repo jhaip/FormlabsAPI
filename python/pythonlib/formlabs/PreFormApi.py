@@ -6,8 +6,6 @@ import formlabs
 import subprocess
 import os
 import sys
-import threading
-import queue
 
 class PreFormApi:
     server_process = None
@@ -28,26 +26,21 @@ class PreFormApi:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True)
-        
-        def output_reader(proc, outq):
-            for line in iter(proc.stdout.readline, ""):
-                outq.put(line)
-        
-        outq = queue.Queue()
-        t = threading.Thread(target=output_reader, args=(server_process, outq))
-        t.start()
 
         while True:
-            try:
-                line = outq.get(block=True) # Add timeout?
-                if "READY FOR INPUT" in line:
+            output = server_process.stdout.readline()
+            if output:
+                if "READY FOR INPUT" in output:
                     preformApi = PreFormApi(preform_port)
                     preformApi.server_process = server_process
                     return preformApi
-                if "address is already in use" in line:
-                    raise RuntimeError("Port already in use, probably another PreForm server is already running.")
-            except queue.Empty:
-                print('could not get line from queue')
+            elif server_process.poll() is not None:
+                return_code = server_process.returncode
+                if return_code != 0:
+                    error_message = server_process.stderr.read()
+                    raise RuntimeError(f"Server process terminated while starting with return code {return_code}: {error_message}")
+                else:
+                    raise RuntimeError("Server process terminated while starting.")
 
     # This solves a problem while developing where it's easy to end up with an orphaned server process
     # TODO: start_preform_server_if_needed

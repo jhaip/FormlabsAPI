@@ -1,4 +1,4 @@
-# SceneAutoOrientPostRequest
+# DentalMode
 
 
 ## Properties
@@ -12,19 +12,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
+from formlabs.models.dental_mode import DentalMode
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of SceneAutoOrientPostRequest from a JSON string
-scene_auto_orient_post_request_instance = SceneAutoOrientPostRequest.from_json(json)
+# create an instance of DentalMode from a JSON string
+dental_mode_instance = DentalMode.from_json(json)
 # print the JSON string representation of the object
-print(SceneAutoOrientPostRequest.to_json())
+print(DentalMode.to_json())
 
 # convert the object into a dict
-scene_auto_orient_post_request_dict = scene_auto_orient_post_request_instance.to_dict()
-# create an instance of SceneAutoOrientPostRequest from a dict
-scene_auto_orient_post_request_from_dict = SceneAutoOrientPostRequest.from_dict(scene_auto_orient_post_request_dict)
+dental_mode_dict = dental_mode_instance.to_dict()
+# create an instance of DentalMode from a dict
+dental_mode_from_dict = DentalMode.from_dict(dental_mode_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

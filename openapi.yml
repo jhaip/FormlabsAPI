@@ -1094,19 +1094,31 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - models
-              properties:
-                models:
-                  $ref: '#/components/schemas/ModelsSelectionModel'
-                mode:
-                  type: string
-                  enum:
-                  - "DEFAULT"
-                  - "DENTAL"
-                tilt:
-                  type: integer
-                  description: Degrees of tilt. Only applies to the DENTAL mode
+              oneOf:
+                - type: object
+                  title: "Default"
+                  required:
+                    - models
+                  properties:
+                    models:
+                      $ref: '#/components/schemas/ModelsSelectionModel'
+                  additionalProperties: false
+                - type: object
+                  title: "Dental Mode"
+                  required:
+                    - models
+                    - mode
+                  properties:
+                    models:
+                      $ref: '#/components/schemas/ModelsSelectionModel'
+                    mode:
+                      type: string
+                      enum:
+                      - "DENTAL"
+                    tilt:
+                      type: integer
+                      description: Degrees of tilt. Only applies to the DENTAL mode
+                  additionalProperties: false
             examples:
               AllModels:
                 value:
@@ -1114,6 +1126,11 @@ paths:
               SpecificModels:
                 value:
                   models: ["0000537c-9ae2-426a-82ee-a007191a8fb5"]
+              DentalModeWithTilt:
+                value:
+                  models: "ALL"
+                  mode: "DENTAL"
+                  tilt: 10
       responses:
         "200":
           description: Success
