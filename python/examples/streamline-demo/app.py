@@ -250,7 +250,8 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
     with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
         clear_scene(preform)
         for stl_file_and_quantity in order_parameters.stl_files_and_quantities:
-            for i in range(stl_file_and_quantity.quantity):
+            qty_to_print = stl_file_and_quantity.quantity
+            while qty_to_print >= 1:
                 print(f"Importing model {stl_file_and_quantity.filename} qty {i+1}/{stl_file_and_quantity.quantity}")
                 new_model = preform.api.scene_import_model_post({"file": os.path.join(order_parameters.order_folder_path, stl_file_and_quantity.filename)})
                 print(f"Auto orienting {new_model.id}")
@@ -264,6 +265,8 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
                     )
                     batch_has_unsaved_changed = True
                     batch_results[-1].part_quantity_in_this_print += 1
+                    qty_to_print -= 1
+                    print(f"Model {stl_file_and_quantity.filename} added to scene")
                 except formlabs.exceptions.ApiException as e:
                     print("Not all models can fit, removing model")
                     preform.api.scene_models_id_delete(str(new_model.id))
@@ -273,7 +276,6 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
                     print("Error during auto layout")
                     print(e)
                     raise e
-                print(f"Model {stl_file_and_quantity.filename} added to scene")
 
         if batch_has_unsaved_changed:
             save_batch_form(preform)
