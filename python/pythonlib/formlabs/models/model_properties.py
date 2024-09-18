@@ -41,7 +41,9 @@ class ModelProperties(BaseModel):
     visible: Optional[StrictBool] = Field(default=None, description="Whether the model is visible in the scene")
     has_supports: Optional[StrictBool] = Field(default=None, description="Whether the model has supports")
     in_bounds: Optional[StrictBool] = Field(default=None, description="Whether the model is within the build volume")
-    __properties: ClassVar[List[str]] = ["id", "name", "position", "orientation", "scale", "units", "bbox", "original_file", "visible", "has_supports", "in_bounds"]
+    raw_mesh_hash: Optional[StrictStr] = Field(default=None, description="The hash of the raw mesh data")
+    canonical_model_hash: Optional[StrictStr] = Field(default=None, description="The hash of the canonical model data")
+    __properties: ClassVar[List[str]] = ["id", "name", "position", "orientation", "scale", "units", "bbox", "original_file", "visible", "has_supports", "in_bounds", "raw_mesh_hash", "canonical_model_hash"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -113,7 +115,9 @@ class ModelProperties(BaseModel):
             "original_file": obj.get("original_file"),
             "visible": obj.get("visible"),
             "has_supports": obj.get("has_supports"),
-            "in_bounds": obj.get("in_bounds")
+            "in_bounds": obj.get("in_bounds"),
+            "raw_mesh_hash": obj.get("raw_mesh_hash"),
+            "canonical_model_hash": obj.get("canonical_model_hash")
         })
         return _obj
 

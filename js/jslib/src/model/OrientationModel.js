@@ -140,22 +140,22 @@ class OrientationModel {
 }
 
 /**
- * Euler angle x rotation
- * @member {Number} x
+ * Rotation of pitch degrees around the x axis (applied second)
+ * @member {Number} pitch
  */
-OrientationModel.prototype['x'] = undefined;
+OrientationModel.prototype['pitch'] = undefined;
 
 /**
- * Euler angle y rotation
- * @member {Number} y
+ * Rotation of yaw degrees around the y axis (applied last)
+ * @member {Number} yaw
  */
-OrientationModel.prototype['y'] = undefined;
+OrientationModel.prototype['yaw'] = undefined;
 
 /**
- * Euler angle z rotation
- * @member {Number} z
+ * Rotation of roll degress around the z axis (applied first)
+ * @member {Number} roll
  */
-OrientationModel.prototype['z'] = undefined;
+OrientationModel.prototype['roll'] = undefined;
 
 /**
  * @member {Array.<Array.<Number>>} linear
@@ -163,13 +163,13 @@ OrientationModel.prototype['z'] = undefined;
 OrientationModel.prototype['linear'] = undefined;
 
 /**
- * 3D unit vector in model space saying which piece of the model will point \"up\" in scene space. If \"X direction\" is not set, X direction is chosen arbitrarily by projecting the nearest major axis to be perpendicular to Z direction. 
+ * 3D unit vector in model space saying which piece of the model will point \"up\" in scene space. 
  * @member {Array.<Number>} z_direction
  */
 OrientationModel.prototype['z_direction'] = undefined;
 
 /**
- * Optional 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \"right\" in scene space. 
+ * 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \"right\" in scene space. 
  * @member {Array.<Number>} x_direction
  */
 OrientationModel.prototype['x_direction'] = undefined;

@@ -24,12 +24,12 @@ from typing_extensions import Self
 
 class EulerAnglesModel(BaseModel):
     """
-    Orientation specified using Euler angles in radians. TODO applied in what order, in which direction? What axis has worst gimbal lock?
+    Orientation specified using Euler angles in degrees. Rotation applied in the order: roll, pitch, yaw
     """ # noqa: E501
-    x: Union[StrictFloat, StrictInt] = Field(description="Euler angle x rotation")
-    y: Union[StrictFloat, StrictInt] = Field(description="Euler angle y rotation")
-    z: Union[StrictFloat, StrictInt] = Field(description="Euler angle z rotation")
-    __properties: ClassVar[List[str]] = ["x", "y", "z"]
+    pitch: Union[StrictFloat, StrictInt] = Field(description="Rotation of pitch degrees around the x axis (applied second)")
+    yaw: Union[StrictFloat, StrictInt] = Field(description="Rotation of yaw degrees around the y axis (applied last)")
+    roll: Union[StrictFloat, StrictInt] = Field(description="Rotation of roll degress around the z axis (applied first)")
+    __properties: ClassVar[List[str]] = ["pitch", "yaw", "roll"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -82,9 +82,9 @@ class EulerAnglesModel(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "x": obj.get("x"),
-            "y": obj.get("y"),
-            "z": obj.get("z")
+            "pitch": obj.get("pitch"),
+            "yaw": obj.get("yaw"),
+            "roll": obj.get("roll")
         })
         return _obj
 

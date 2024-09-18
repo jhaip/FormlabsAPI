@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List
-from formlabs.models.auto_orient_post_request_models import AutoOrientPostRequestModels
+from formlabs.models.models_selection_model import ModelsSelectionModel
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,7 +27,7 @@ class AutoOrientPostRequest(BaseModel):
     """
     AutoOrientPostRequest
     """ # noqa: E501
-    models: AutoOrientPostRequestModels
+    models: ModelsSelectionModel
     __properties: ClassVar[List[str]] = ["models"]
 
     model_config = ConfigDict(
@@ -84,7 +84,7 @@ class AutoOrientPostRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "models": AutoOrientPostRequestModels.from_dict(obj["models"]) if obj.get("models") is not None else None
+            "models": ModelsSelectionModel.from_dict(obj["models"]) if obj.get("models") is not None else None
         })
         return _obj
 

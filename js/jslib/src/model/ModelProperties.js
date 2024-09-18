@@ -84,6 +84,12 @@ class ModelProperties {
             if (data.hasOwnProperty('in_bounds')) {
                 obj['in_bounds'] = ApiClient.convertToType(data['in_bounds'], 'Boolean');
             }
+            if (data.hasOwnProperty('raw_mesh_hash')) {
+                obj['raw_mesh_hash'] = ApiClient.convertToType(data['raw_mesh_hash'], 'String');
+            }
+            if (data.hasOwnProperty('canonical_model_hash')) {
+                obj['canonical_model_hash'] = ApiClient.convertToType(data['canonical_model_hash'], 'String');
+            }
         }
         return obj;
     }
@@ -117,6 +123,14 @@ class ModelProperties {
         // ensure the json data is a string
         if (data['original_file'] && !(typeof data['original_file'] === 'string' || data['original_file'] instanceof String)) {
             throw new Error("Expected the field `original_file` to be a primitive type in the JSON string but got " + data['original_file']);
+        }
+        // ensure the json data is a string
+        if (data['raw_mesh_hash'] && !(typeof data['raw_mesh_hash'] === 'string' || data['raw_mesh_hash'] instanceof String)) {
+            throw new Error("Expected the field `raw_mesh_hash` to be a primitive type in the JSON string but got " + data['raw_mesh_hash']);
+        }
+        // ensure the json data is a string
+        if (data['canonical_model_hash'] && !(typeof data['canonical_model_hash'] === 'string' || data['canonical_model_hash'] instanceof String)) {
+            throw new Error("Expected the field `canonical_model_hash` to be a primitive type in the JSON string but got " + data['canonical_model_hash']);
         }
 
         return true;
@@ -188,6 +202,18 @@ ModelProperties.prototype['has_supports'] = undefined;
  * @member {Boolean} in_bounds
  */
 ModelProperties.prototype['in_bounds'] = undefined;
+
+/**
+ * The hash of the raw mesh data
+ * @member {String} raw_mesh_hash
+ */
+ModelProperties.prototype['raw_mesh_hash'] = undefined;
+
+/**
+ * The hash of the canonical model data
+ * @member {String} canonical_model_hash
+ */
+ModelProperties.prototype['canonical_model_hash'] = undefined;
 
 
 

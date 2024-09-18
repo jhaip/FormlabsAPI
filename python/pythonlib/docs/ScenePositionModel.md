@@ -6,9 +6,9 @@ The global position within the build volume of a printer of the model in the sce
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**x** | **float** | X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer. | [optional] 
-**y** | **float** | Y-position, with 0 at the center of the print volume and positive values moving away from you as you face the printer. | [optional] 
-**z** | **float** | Vertical position of the model, with 0 at the bottom of the build platform. | [optional] 
+**x** | **float** | X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer. | 
+**y** | **float** | Y-position, with 0 at the center of the print volume and positive values moving away from you as you face the printer. | 
+**z** | **float** | Vertical position of the model, with 0 at the bottom of the build platform. | 
 
 ## Example
 

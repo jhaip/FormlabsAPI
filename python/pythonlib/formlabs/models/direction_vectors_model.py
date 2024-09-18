@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,8 +27,8 @@ class DirectionVectorsModel(BaseModel):
     """
     DirectionVectorsModel
     """ # noqa: E501
-    z_direction: Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=3, max_length=3)] = Field(description="3D unit vector in model space saying which piece of the model will point \"up\" in scene space. If \"X direction\" is not set, X direction is chosen arbitrarily by projecting the nearest major axis to be perpendicular to Z direction. ")
-    x_direction: Optional[Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=3, max_length=3)]] = Field(default=None, description="Optional 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \"right\" in scene space. ")
+    z_direction: Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=3, max_length=3)] = Field(description="3D unit vector in model space saying which piece of the model will point \"up\" in scene space. ")
+    x_direction: Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=3, max_length=3)] = Field(description="3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \"right\" in scene space. ")
     __properties: ClassVar[List[str]] = ["z_direction", "x_direction"]
 
     model_config = ConfigDict(

@@ -4,28 +4,39 @@ All URIs are relative to *http://localhost:44388*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**autoLayoutPost**](DefaultApi.md#autoLayoutPost) | **POST** /auto-layout/ | 
-[**autoOrientPost**](DefaultApi.md#autoOrientPost) | **POST** /auto-orient/ | 
-[**autoSupportPost**](DefaultApi.md#autoSupportPost) | **POST** /auto-support/ | 
-[**exportPost**](DefaultApi.md#exportPost) | **POST** /export/ | 
+[**devicesGet**](DefaultApi.md#devicesGet) | **GET** /devices/ | 
+[**devicesIdGet**](DefaultApi.md#devicesIdGet) | **GET** /devices/{id}/ | 
+[**discoverDevicesPost**](DefaultApi.md#discoverDevicesPost) | **POST** /discover-devices/ | 
 [**loadFormPost**](DefaultApi.md#loadFormPost) | **POST** /load-form/ | 
-[**modelsIdDelete**](DefaultApi.md#modelsIdDelete) | **DELETE** /models/{id}/ | 
-[**saveFormPost**](DefaultApi.md#saveFormPost) | **POST** /save-form/ | 
-[**sceneGet**](DefaultApi.md#sceneGet) | **GET** /scene | 
+[**loginPost**](DefaultApi.md#loginPost) | **POST** /login/ | 
+[**rootGet**](DefaultApi.md#rootGet) | **GET** / | 
+[**sceneAutoLayoutPost**](DefaultApi.md#sceneAutoLayoutPost) | **POST** /scene/auto-layout/ | 
+[**sceneAutoOrientPost**](DefaultApi.md#sceneAutoOrientPost) | **POST** /scene/auto-orient/ | 
+[**sceneAutoPackPost**](DefaultApi.md#sceneAutoPackPost) | **POST** /scene/auto-pack/ | 
+[**sceneAutoSupportPost**](DefaultApi.md#sceneAutoSupportPost) | **POST** /scene/auto-support/ | 
+[**sceneEstimatePrintTimeGet**](DefaultApi.md#sceneEstimatePrintTimeGet) | **GET** /scene/estimate-print-time/ | 
+[**sceneGet**](DefaultApi.md#sceneGet) | **GET** /scene/ | 
 [**sceneImportModelPost**](DefaultApi.md#sceneImportModelPost) | **POST** /scene/import-model/ | 
-[**scenePost**](DefaultApi.md#scenePost) | **POST** /scene | 
-[**v1PrintPost**](DefaultApi.md#v1PrintPost) | **POST** /v1/print/ | 
-[**v1SlicePost**](DefaultApi.md#v1SlicePost) | **POST** /v1/slice/ | 
+[**sceneModelsIdDelete**](DefaultApi.md#sceneModelsIdDelete) | **DELETE** /scene/models/{id}/ | 
+[**sceneModelsIdDuplicatePost**](DefaultApi.md#sceneModelsIdDuplicatePost) | **POST** /scene/models/{id}/duplicate/ | 
+[**sceneModelsIdGet**](DefaultApi.md#sceneModelsIdGet) | **GET** /scene/models/{id}/ | 
+[**sceneModelsIdPost**](DefaultApi.md#sceneModelsIdPost) | **POST** /scene/models/{id}/ | 
+[**sceneModelsIdReplacePost**](DefaultApi.md#sceneModelsIdReplacePost) | **POST** /scene/models/{id}/replace/ | 
+[**scenePost**](DefaultApi.md#scenePost) | **POST** /scene/ | 
+[**scenePrintPost**](DefaultApi.md#scenePrintPost) | **POST** /scene/print/ | 
+[**scenePrintValidationGet**](DefaultApi.md#scenePrintValidationGet) | **GET** /scene/print-validation/ | 
+[**sceneSaveFormPost**](DefaultApi.md#sceneSaveFormPost) | **POST** /scene/save-form/ | 
+[**sceneSaveScreenshotPost**](DefaultApi.md#sceneSaveScreenshotPost) | **POST** /scene/save-screenshot/ | 
 
 
 
-## autoLayoutPost
+## devicesGet
 
-> autoLayoutPost(autoOrientPostRequest)
+> DevicesGet200Response devicesGet()
 
 
 
-Run auto layout operation
+List available device statuses
 
 ### Example
 
@@ -33,26 +44,22 @@ Run auto layout operation
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let autoOrientPostRequest = {"models":"ALL"}; // AutoOrientPostRequest | Models to run the auto layout operation on
-apiInstance.autoLayoutPost(autoOrientPostRequest, (error, data, response) => {
+apiInstance.devicesGet((error, data, response) => {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 });
 ```
 
 ### Parameters
 
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **autoOrientPostRequest** | [**AutoOrientPostRequest**](AutoOrientPostRequest.md)| Models to run the auto layout operation on | 
+This endpoint does not need any parameter.
 
 ### Return type
 
-null (empty response body)
+[**DevicesGet200Response**](DevicesGet200Response.md)
 
 ### Authorization
 
@@ -60,62 +67,17 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 
-## autoOrientPost
+## devicesIdGet
 
-> autoOrientPost(autoOrientPostRequest)
-
-
-
-Run auto orient operation
-
-### Example
-
-```javascript
-import PreFormApi from 'pre_form_api';
-
-let apiInstance = new PreFormApi.DefaultApi();
-let autoOrientPostRequest = {"models":"ALL"}; // AutoOrientPostRequest | Models to run the auto orient operation on
-apiInstance.autoOrientPost(autoOrientPostRequest, (error, data, response) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-});
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **autoOrientPostRequest** | [**AutoOrientPostRequest**](AutoOrientPostRequest.md)| Models to run the auto orient operation on | 
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: Not defined
-
-
-## autoSupportPost
-
-> autoSupportPost(autoOrientPostRequest)
+> DeviceStatusModel devicesIdGet(id)
 
 
 
-Run auto support operation
+Get device status
 
 ### Example
 
@@ -123,53 +85,8 @@ Run auto support operation
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let autoOrientPostRequest = {"models":"ALL"}; // AutoOrientPostRequest | Models to run the auto support operation on
-apiInstance.autoSupportPost(autoOrientPostRequest, (error, data, response) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully.');
-  }
-});
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **autoOrientPostRequest** | [**AutoOrientPostRequest**](AutoOrientPostRequest.md)| Models to run the auto support operation on | 
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: Not defined
-
-
-## exportPost
-
-> ExportPost200Response exportPost(outputPath)
-
-
-
-Export current scene as a STL
-
-### Example
-
-```javascript
-import PreFormApi from 'pre_form_api';
-
-let apiInstance = new PreFormApi.DefaultApi();
-let outputPath = "outputPath_example"; // String | The path to the output file where the .STL will be saved
-apiInstance.exportPost(outputPath, (error, data, response) => {
+let id = "id_example"; // String | The unique identifier of the printer
+apiInstance.devicesIdGet(id, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -183,11 +100,11 @@ apiInstance.exportPost(outputPath, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **outputPath** | **String**| The path to the output file where the .STL will be saved | 
+ **id** | **String**| The unique identifier of the printer | 
 
 ### Return type
 
-[**ExportPost200Response**](ExportPost200Response.md)
+[**DeviceStatusModel**](DeviceStatusModel.md)
 
 ### Authorization
 
@@ -199,9 +116,54 @@ No authorization required
 - **Accept**: application/json
 
 
+## discoverDevicesPost
+
+> DiscoverDevicesPost200Response discoverDevicesPost(discoverDevicesPostRequest)
+
+
+
+Discover devices on the network
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let discoverDevicesPostRequest = {"timeout_seconds":10}; // DiscoverDevicesPostRequest | 
+apiInstance.discoverDevicesPost(discoverDevicesPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **discoverDevicesPostRequest** | [**DiscoverDevicesPostRequest**](DiscoverDevicesPostRequest.md)|  | 
+
+### Return type
+
+[**DiscoverDevicesPost200Response**](DiscoverDevicesPost200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
 ## loadFormPost
 
-> loadFormPost(file)
+> loadFormPost(loadFormPostRequest)
 
 
 
@@ -213,8 +175,8 @@ Load a file into the current scene
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let file = "file_example"; // String | 
-apiInstance.loadFormPost(file, (error, data, response) => {
+let loadFormPostRequest = {"file":"C:\\Users\\user\\Desktop\\test.form"}; // LoadFormPostRequest | Full path to the file to load
+apiInstance.loadFormPost(loadFormPostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -228,7 +190,7 @@ apiInstance.loadFormPost(file, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file** | **String**|  | 
+ **loadFormPostRequest** | [**LoadFormPostRequest**](LoadFormPostRequest.md)| Full path to the file to load | 
 
 ### Return type
 
@@ -240,17 +202,17 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: multipart/form-data
+- **Content-Type**: application/json
 - **Accept**: Not defined
 
 
-## modelsIdDelete
+## loginPost
 
-> modelsIdDelete(id)
+> WebAuthTokensModel loginPost(loginPostRequest)
 
 
 
-Delete a model into the current scene
+Log in to Formlabs Web Services
 
 ### Example
 
@@ -258,12 +220,12 @@ Delete a model into the current scene
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let id = "id_example"; // String | The unique identifier of the model
-apiInstance.modelsIdDelete(id, (error, data, response) => {
+let loginPostRequest = {"username":"username","password":"password"}; // LoginPostRequest | User credentials
+apiInstance.loginPost(loginPostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 });
 ```
@@ -273,11 +235,50 @@ apiInstance.modelsIdDelete(id, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String**| The unique identifier of the model | 
+ **loginPostRequest** | [**LoginPostRequest**](LoginPostRequest.md)| User credentials | 
 
 ### Return type
 
-null (empty response body)
+[**WebAuthTokensModel**](WebAuthTokensModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## rootGet
+
+> Get200Response rootGet()
+
+
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+apiInstance.rootGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**Get200Response**](Get200Response.md)
 
 ### Authorization
 
@@ -286,16 +287,16 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: application/json
 
 
-## saveFormPost
+## sceneAutoLayoutPost
 
-> saveFormPost(file)
+> SceneModel sceneAutoLayoutPost(sceneAutoLayoutPostRequest)
 
 
 
-Save the current scene to a .FORM file
+Run auto layout operation
 
 ### Example
 
@@ -303,8 +304,53 @@ Save the current scene to a .FORM file
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let file = "file_example"; // String | 
-apiInstance.saveFormPost(file, (error, data, response) => {
+let sceneAutoLayoutPostRequest = {"models":"ALL"}; // SceneAutoLayoutPostRequest | Models to run the auto layout operation on
+apiInstance.sceneAutoLayoutPost(sceneAutoLayoutPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneAutoLayoutPostRequest** | [**SceneAutoLayoutPostRequest**](SceneAutoLayoutPostRequest.md)| Models to run the auto layout operation on | 
+
+### Return type
+
+[**SceneModel**](SceneModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## sceneAutoOrientPost
+
+> sceneAutoOrientPost(sceneAutoOrientPostRequest)
+
+
+
+Run auto orient operation
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneAutoOrientPostRequest = {"models":"ALL"}; // SceneAutoOrientPostRequest | Models to run the auto orient operation on
+apiInstance.sceneAutoOrientPost(sceneAutoOrientPostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -318,7 +364,7 @@ apiInstance.saveFormPost(file, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file** | **String**|  | 
+ **sceneAutoOrientPostRequest** | [**SceneAutoOrientPostRequest**](SceneAutoOrientPostRequest.md)| Models to run the auto orient operation on | 
 
 ### Return type
 
@@ -330,13 +376,144 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: multipart/form-data
-- **Accept**: Not defined
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## sceneAutoPackPost
+
+> SceneModel sceneAutoPackPost(sceneAutoPackPostRequest)
+
+
+
+Run auto pack operation
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneAutoPackPostRequest = new PreFormApi.SceneAutoPackPostRequest(); // SceneAutoPackPostRequest | Auto pack parameters
+apiInstance.sceneAutoPackPost(sceneAutoPackPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneAutoPackPostRequest** | [**SceneAutoPackPostRequest**](SceneAutoPackPostRequest.md)| Auto pack parameters | 
+
+### Return type
+
+[**SceneModel**](SceneModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## sceneAutoSupportPost
+
+> sceneAutoSupportPost(sceneAutoSupportPostRequest)
+
+
+
+Run auto support operation
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneAutoSupportPostRequest = {"models":"ALL"}; // SceneAutoSupportPostRequest | Models to run the auto support operation on
+apiInstance.sceneAutoSupportPost(sceneAutoSupportPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneAutoSupportPostRequest** | [**SceneAutoSupportPostRequest**](SceneAutoSupportPostRequest.md)| Models to run the auto support operation on | 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## sceneEstimatePrintTimeGet
+
+> EstimatedPrintTimeModel sceneEstimatePrintTimeGet()
+
+
+
+Calculate the estimate print time for the current scene
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+apiInstance.sceneEstimatePrintTimeGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**EstimatedPrintTimeModel**](EstimatedPrintTimeModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
 ## sceneGet
 
-> {String: Object} sceneGet()
+> SceneModel sceneGet()
 
 
 
@@ -361,7 +538,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**{String: Object}**
+[**SceneModel**](SceneModel.md)
 
 ### Authorization
 
@@ -375,7 +552,7 @@ No authorization required
 
 ## sceneImportModelPost
 
-> SceneImportModelPost200Response sceneImportModelPost(sceneImportModelPostRequest)
+> ModelProperties sceneImportModelPost(sceneImportModelPostRequest)
 
 
 
@@ -406,7 +583,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SceneImportModelPost200Response**](SceneImportModelPost200Response.md)
+[**ModelProperties**](ModelProperties.md)
 
 ### Authorization
 
@@ -418,13 +595,13 @@ No authorization required
 - **Accept**: application/json
 
 
-## scenePost
+## sceneModelsIdDelete
 
-> scenePost(scenePostRequest)
+> sceneModelsIdDelete(id)
 
 
 
-Create a new scene
+Delete a model into the current scene
 
 ### Example
 
@@ -432,8 +609,8 @@ Create a new scene
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let scenePostRequest = {"machineType":"PILK-1-0","materialCode":"FLP11B01","printSetting":"DEFAULT","sliceThickness":0.11}; // ScenePostRequest | Machine type and material type selection
-apiInstance.scenePost(scenePostRequest, (error, data, response) => {
+let id = "id_example"; // String | The unique identifier of the model
+apiInstance.sceneModelsIdDelete(id, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -447,7 +624,7 @@ apiInstance.scenePost(scenePostRequest, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scenePostRequest** | [**ScenePostRequest**](ScenePostRequest.md)| Machine type and material type selection | 
+ **id** | **String**| The unique identifier of the model | 
 
 ### Return type
 
@@ -459,17 +636,17 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
+- **Content-Type**: Not defined
 - **Accept**: Not defined
 
 
-## v1PrintPost
+## sceneModelsIdDuplicatePost
 
-> V1PrintPost200Response v1PrintPost(printer, jobName)
+> SceneModel sceneModelsIdDuplicatePost(id, sceneModelsIdDuplicatePostRequest)
 
 
 
-Send the current scene to the printer
+Duplicate a model
 
 ### Example
 
@@ -477,9 +654,9 @@ Send the current scene to the printer
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let printer = "printer_example"; // String | 
-let jobName = "jobName_example"; // String | 
-apiInstance.v1PrintPost(printer, jobName, (error, data, response) => {
+let id = "id_example"; // String | The unique identifier of the model
+let sceneModelsIdDuplicatePostRequest = new PreFormApi.SceneModelsIdDuplicatePostRequest(); // SceneModelsIdDuplicatePostRequest | 
+apiInstance.sceneModelsIdDuplicatePost(id, sceneModelsIdDuplicatePostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -493,12 +670,12 @@ apiInstance.v1PrintPost(printer, jobName, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **printer** | **String**|  | 
- **jobName** | **String**|  | 
+ **id** | **String**| The unique identifier of the model | 
+ **sceneModelsIdDuplicatePostRequest** | [**SceneModelsIdDuplicatePostRequest**](SceneModelsIdDuplicatePostRequest.md)|  | 
 
 ### Return type
 
-[**V1PrintPost200Response**](V1PrintPost200Response.md)
+[**SceneModel**](SceneModel.md)
 
 ### Authorization
 
@@ -506,17 +683,17 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: multipart/form-data
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 
-## v1SlicePost
+## sceneModelsIdGet
 
-> v1SlicePost(file, jobName)
+> ModelProperties sceneModelsIdGet(id)
 
 
 
-Slice the current scene
+Get a model&#39;s properties
 
 ### Example
 
@@ -524,9 +701,54 @@ Slice the current scene
 import PreFormApi from 'pre_form_api';
 
 let apiInstance = new PreFormApi.DefaultApi();
-let file = "file_example"; // String | 
-let jobName = "jobName_example"; // String | 
-apiInstance.v1SlicePost(file, jobName, (error, data, response) => {
+let id = "id_example"; // String | The unique identifier of the model
+apiInstance.sceneModelsIdGet(id, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String**| The unique identifier of the model | 
+
+### Return type
+
+[**ModelProperties**](ModelProperties.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## sceneModelsIdPost
+
+> sceneModelsIdPost(id, sceneModelsIdPostRequest)
+
+
+
+Update a model&#39;s properties
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let id = "id_example"; // String | The unique identifier of the model
+let sceneModelsIdPostRequest = {"position":{"x":10,"y":1,"z":2}}; // SceneModelsIdPostRequest | Model properties to update
+apiInstance.sceneModelsIdPost(id, sceneModelsIdPostRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -540,8 +762,8 @@ apiInstance.v1SlicePost(file, jobName, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file** | **String**|  | 
- **jobName** | **String**|  | 
+ **id** | **String**| The unique identifier of the model | 
+ **sceneModelsIdPostRequest** | [**SceneModelsIdPostRequest**](SceneModelsIdPostRequest.md)| Model properties to update | 
 
 ### Return type
 
@@ -553,6 +775,274 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: multipart/form-data
-- **Accept**: Not defined
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## sceneModelsIdReplacePost
+
+> SceneModelsIdReplacePost200Response sceneModelsIdReplacePost(id, sceneModelsIdReplacePostRequest)
+
+
+
+Replace a model currently in the scene with a new model, copying the existing models setup
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let id = "id_example"; // String | The unique identifier of the model
+let sceneModelsIdReplacePostRequest = new PreFormApi.SceneModelsIdReplacePostRequest(); // SceneModelsIdReplacePostRequest | 
+apiInstance.sceneModelsIdReplacePost(id, sceneModelsIdReplacePostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String**| The unique identifier of the model | 
+ **sceneModelsIdReplacePostRequest** | [**SceneModelsIdReplacePostRequest**](SceneModelsIdReplacePostRequest.md)|  | 
+
+### Return type
+
+[**SceneModelsIdReplacePost200Response**](SceneModelsIdReplacePost200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## scenePost
+
+> SceneModel scenePost(sceneTypeModel)
+
+
+
+Create a new scene
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneTypeModel = {"machine_type":"FS30-1-0","material_code":"FLP11B01","print_setting":"DEFAULT","layer_thickness":"0.11"}; // SceneTypeModel | Create a scene with a given printing setup
+apiInstance.scenePost(sceneTypeModel, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneTypeModel** | [**SceneTypeModel**](SceneTypeModel.md)| Create a scene with a given printing setup | 
+
+### Return type
+
+[**SceneModel**](SceneModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## scenePrintPost
+
+> ScenePrintPost200Response scenePrintPost(scenePrintPostRequest)
+
+
+
+Slice and upload
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let scenePrintPostRequest = {"printer":"192.168.1.2"}; // ScenePrintPostRequest | 
+apiInstance.scenePrintPost(scenePrintPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **scenePrintPostRequest** | [**ScenePrintPostRequest**](ScenePrintPostRequest.md)|  | 
+
+### Return type
+
+[**ScenePrintPost200Response**](ScenePrintPost200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## scenePrintValidationGet
+
+> PrintValidationResultModel scenePrintValidationGet()
+
+
+
+Calculate the print validation for the current scene
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+apiInstance.scenePrintValidationGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**PrintValidationResultModel**](PrintValidationResultModel.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## sceneSaveFormPost
+
+> sceneSaveFormPost(loadFormPostRequest)
+
+
+
+Save the current scene to a .FORM file
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let loadFormPostRequest = {"file":"C:\\Users\\user\\Desktop\\test.form"}; // LoadFormPostRequest | Full path where the file should be saved
+apiInstance.sceneSaveFormPost(loadFormPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **loadFormPostRequest** | [**LoadFormPostRequest**](LoadFormPostRequest.md)| Full path where the file should be saved | 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## sceneSaveScreenshotPost
+
+> sceneSaveScreenshotPost(sceneSaveScreenshotPostRequest)
+
+
+
+Save a screenshot the current scene.
+
+### Example
+
+```javascript
+import PreFormApi from 'pre_form_api';
+
+let apiInstance = new PreFormApi.DefaultApi();
+let sceneSaveScreenshotPostRequest = {"file":"C:\\Users\\user\\Desktop\\screenshot.png"}; // SceneSaveScreenshotPostRequest | Full path where the image should be saved
+apiInstance.sceneSaveScreenshotPost(sceneSaveScreenshotPostRequest, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sceneSaveScreenshotPostRequest** | [**SceneSaveScreenshotPostRequest**](SceneSaveScreenshotPostRequest.md)| Full path where the image should be saved | 
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
 

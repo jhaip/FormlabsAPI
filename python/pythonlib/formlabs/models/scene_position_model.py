@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,9 +26,9 @@ class ScenePositionModel(BaseModel):
     """
     The global position within the build volume of a printer of the model in the scene
     """ # noqa: E501
-    x: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer.")
-    y: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Y-position, with 0 at the center of the print volume and positive values moving away from you as you face the printer.")
-    z: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Vertical position of the model, with 0 at the bottom of the build platform.")
+    x: Union[StrictFloat, StrictInt] = Field(description="X-position, with 0 at the center of the print volume, and positive values moving to the right as you face the printer.")
+    y: Union[StrictFloat, StrictInt] = Field(description="Y-position, with 0 at the center of the print volume and positive values moving away from you as you face the printer.")
+    z: Union[StrictFloat, StrictInt] = Field(description="Vertical position of the model, with 0 at the bottom of the build platform.")
     __properties: ClassVar[List[str]] = ["x", "y", "z"]
 
     model_config = ConfigDict(
