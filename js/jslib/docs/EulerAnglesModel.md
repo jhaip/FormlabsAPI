@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**x** | **Number** | Euler angle x rotation | 
-**y** | **Number** | Euler angle y rotation | 
-**z** | **Number** | Euler angle z rotation | 
+**pitch** | **Number** | Rotation of pitch degrees around the x axis (applied second) | 
+**yaw** | **Number** | Rotation of yaw degrees around the y axis (applied last) | 
+**roll** | **Number** | Rotation of roll degress around the z axis (applied first) | 
 
 

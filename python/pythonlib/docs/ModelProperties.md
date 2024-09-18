@@ -16,6 +16,8 @@ Name | Type | Description | Notes
 **visible** | **bool** | Whether the model is visible in the scene | [optional] 
 **has_supports** | **bool** | Whether the model has supports | [optional] 
 **in_bounds** | **bool** | Whether the model is within the build volume | [optional] 
+**raw_mesh_hash** | **str** | The hash of the raw mesh data | [optional] 
+**canonical_model_hash** | **str** | The hash of the canonical model data | [optional] 
 
 ## Example
 

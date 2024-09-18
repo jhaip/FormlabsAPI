@@ -22,11 +22,12 @@ class DirectionVectorsModel {
     /**
      * Constructs a new <code>DirectionVectorsModel</code>.
      * @alias module:model/DirectionVectorsModel
-     * @param zDirection {Array.<Number>} 3D unit vector in model space saying which piece of the model will point \"up\" in scene space. If \"X direction\" is not set, X direction is chosen arbitrarily by projecting the nearest major axis to be perpendicular to Z direction. 
+     * @param zDirection {Array.<Number>} 3D unit vector in model space saying which piece of the model will point \"up\" in scene space. 
+     * @param xDirection {Array.<Number>} 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \"right\" in scene space. 
      */
-    constructor(zDirection) { 
+    constructor(zDirection, xDirection) { 
         
-        DirectionVectorsModel.initialize(this, zDirection);
+        DirectionVectorsModel.initialize(this, zDirection, xDirection);
     }
 
     /**
@@ -34,8 +35,9 @@ class DirectionVectorsModel {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, zDirection) { 
+    static initialize(obj, zDirection, xDirection) { 
         obj['z_direction'] = zDirection;
+        obj['x_direction'] = xDirection;
     }
 
     /**
@@ -86,16 +88,16 @@ class DirectionVectorsModel {
 
 }
 
-DirectionVectorsModel.RequiredProperties = ["z_direction"];
+DirectionVectorsModel.RequiredProperties = ["z_direction", "x_direction"];
 
 /**
- * 3D unit vector in model space saying which piece of the model will point \"up\" in scene space. If \"X direction\" is not set, X direction is chosen arbitrarily by projecting the nearest major axis to be perpendicular to Z direction. 
+ * 3D unit vector in model space saying which piece of the model will point \"up\" in scene space. 
  * @member {Array.<Number>} z_direction
  */
 DirectionVectorsModel.prototype['z_direction'] = undefined;
 
 /**
- * Optional 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \"right\" in scene space. 
+ * 3D unit vector in model space, perpendicular to Z direction, saying which piece of the model will point \"right\" in scene space. 
  * @member {Array.<Number>} x_direction
  */
 DirectionVectorsModel.prototype['x_direction'] = undefined;

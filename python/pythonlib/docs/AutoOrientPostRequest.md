@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**models** | [**AutoOrientPostRequestModels**](AutoOrientPostRequestModels.md) |  | 
+**models** | [**ModelsSelectionModel**](ModelsSelectionModel.md) |  | 
 
 ## Example
 
