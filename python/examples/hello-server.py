@@ -1,10 +1,17 @@
 import formlabs
+from formlabs import SceneTypeModel, SceneTypeModelLayerThickness
 import pathlib
-from formlabs.models.scene_type_model import SceneTypeModel
-from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
+import sys
 
 def hello_server():
-    pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+    pathToPreformServer = None
+    if sys.platform == 'win32':
+        pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.exe"
+    elif sys.platform == 'darwin':
+        pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+    else:
+        print("Unsupported platform")
+        sys.exit(1)
     with formlabs.PreFormApi.start_preform_server(pathToPreformServer=pathToPreformServer) as preform:
         preform.api.scene_post(SceneTypeModel(
             machine_type="FORM-4-0",

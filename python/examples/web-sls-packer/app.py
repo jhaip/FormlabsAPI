@@ -7,12 +7,20 @@ import pathlib
 from pathlib import Path
 import formlabs
 import subprocess
+import sys
 
 # Directory where jobs are stored
 JOBS_DIR = 'jobs'
 UPLOAD_FOLDER = '/tmp'
 
-pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.app/Contents/MacOS/PreFormServer"
+pathToPreformServer = None
+if sys.platform == 'win32':
+    pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.exe"
+elif sys.platform == 'darwin':
+    pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.app/Contents/MacOS/PreFormServer"
+else:
+    print("Unsupported platform")
+    sys.exit(1)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -34,7 +42,6 @@ class PreFormApi:
         self.api.scene_auto_pack_post(formlabs.SceneAutoPackPostRequest())
 
     def save_screenshot(self, screenshot_path):
-        # Path(screenshot_path).write_bytes(Path('/Users/jacob.haip/Downloads/lena.png').read_bytes())
         self.api.scene_save_screenshot_post(formlabs.SceneSaveScreenshotPostRequest(file=screenshot_path))
 
     def get_scene(self):
@@ -160,15 +167,6 @@ def create_new_from_form():
     api.save_screenshot(os.path.abspath(os.path.join(job_folder, f"{job_name}.png")))
     return jsonify({'success': 'New job created successfully', 'id': id})
 
-
-
-# @app.route('/new-empty-scene', methods=['POST'])
-# def create_new_empty_scene():
-#     # Case 2: empty scene
-#     # Given scene type and material information
-#     # Use API to create a new scene
-#     # Use API to get metadata and screenshot from scene
-#     # Create new folder
 
 @app.route('/import-models/<job_id>', methods=['POST'])
 def import_parts(job_id):

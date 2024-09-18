@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import sys
 import copy
 import difflib
 import pathlib
@@ -8,7 +9,14 @@ import math
 import formlabs
 
 
-pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.app/Contents/MacOS/PreFormServer"
+pathToPreformServer = None
+if sys.platform == 'win32':
+    pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.exe"
+elif sys.platform == 'darwin':
+    pathToPreformServer = pathlib.Path().resolve().parents[1] / "PreFormServer.app/Contents/MacOS/PreFormServer"
+else:
+    print("Unsupported platform")
+    sys.exit(1)
 
 def main():
     args = parse_args()

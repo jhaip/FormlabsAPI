@@ -1,5 +1,6 @@
 import re
 import os
+import sys
 import time
 import pathlib
 import shutil
@@ -53,7 +54,15 @@ CACHE_OF_INPUT_FOLDERS = {
 }
 PATH_TO_FOLDER_FOR_SAVING_PRINT_FILES = r"C:\Users\haip_formlabs\Desktop\Job File Output"
 DELAY_BETWEEN_NEW_ORDER_FOLDER_CHECKS_SECONDS = 2
-pathToPreformServer = r"C:\Users\haip_formlabs\code\FormlabsSDK\python\PreForm_Server\PreFormServer.exe"
+
+pathToPreformServer = None
+if sys.platform == 'win32':
+    pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.exe"
+elif sys.platform == 'darwin':
+    pathToPreformServer = pathlib.Path().resolve() / "PreFormServer.app/Contents/MacOS/PreFormServer"
+else:
+    print("Unsupported platform")
+    sys.exit(1)
 
 
 def check_input_folder(order_type: OrderType):
