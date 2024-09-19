@@ -3,16 +3,22 @@ import os
 import time
 import pathlib
 import shutil
+import sys
 import formlabs
+from formlabs import (
+    SceneAutoOrientPostRequest,
+    SceneAutoLayoutPostRequest,
+    SceneImportModelPostRequest,
+    SceneTypeModel,
+    SceneTypeModelLayerThickness,
+    ModelsSelectionModel,
+    LoadFormPostRequest,
+    RepairBehaviorModel,
+    DentalMode
+)
 from datetime import datetime
 from dataclasses import dataclass
 from enum import Enum
-from formlabs.models.scene_auto_orient_post_request import SceneAutoOrientPostRequest
-from formlabs.models.scene_auto_layout_post_request import SceneAutoLayoutPostRequest
-from formlabs.models.scene_type_model import SceneTypeModel
-from formlabs.models.scene_type_model_layer_thickness import SceneTypeModelLayerThickness
-from formlabs.models.models_selection_model import ModelsSelectionModel
-from formlabs.models.load_form_post_request import LoadFormPostRequest
 
 
 FORMLABS_MATERIAL_SELECTION = SceneTypeModel(
@@ -76,8 +82,17 @@ CACHE_OF_INPUT_FOLDERS = {
     OrderType.REOCCURING_PATIENT: set(),
 }
 PATH_TO_FOLDER_FOR_SAVING_PRINT_FILES = r"C:\Users\haip_formlabs\Desktop\Job File Output"
+PATH_TO_FOLDER_FOR_SAVING_SUMMARY_TXT_FILES = r"C:\Users\haip_formlabs\Desktop\Job File Output"
 DELAY_BETWEEN_NEW_ORDER_FOLDER_CHECKS_SECONDS = 2
-pathToPreformServer = r"C:\Users\haip_formlabs\code\FormlabsSDK\python\PreForm_Server\PreFormServer.exe"
+
+pathToPreformServer = None
+if sys.platform == 'win32':
+    pathToPreformServer = pathlib.Path().resolve() / "PreForm_Server/PreFormServer.exe"
+elif sys.platform == 'darwin':
+    pathToPreformServer = pathlib.Path().resolve() / "PreForm_Server/PreFormServer.app/Contents/MacOS/PreFormServer"
+else:
+    print("Unsupported platform")
+    sys.exit(1)
 
 
 def check_input_folder(order_type: OrderType):
@@ -122,7 +137,6 @@ def move_order_order_to_completed_folder(order_folder_path, order_type: OrderTyp
 def parse_recurring_order_folder_name(order_folder_path):
     folder_name = os.path.basename(order_folder_path)
     # Regular expression pattern to extract the required parts, allowing for missing T and B quantities
-    # Written by Chat GPT:
     pattern = re.compile(r"(?P<order_id>\d+)-SCANS-\s*(?P<previous_order_id>\d+)-T?(?P<top_quantity>\d*)-B?(?P<bottom_quantity>\d*)")
     match = pattern.match(folder_name)
     if match:
@@ -142,6 +156,28 @@ def parse_recurring_order_folder_name(order_folder_path):
         return None
 
 
+def parse_new_patient_order_folder_name(order_folder_path):
+    # TODO: Streamline to edit and write code for this
+    raise Exception("Not implemented")
+
+
+def parse_local_patient_order_folder_name(order_folder_path):
+    # TODO: Streamline to edit and write code for this
+    raise Exception("Not implemented")
+
+
+def parse_order_parameters(order_folder_path, order_type) -> OrderParameters:
+    order_parameters = None
+    if order_type == OrderType.REOCCURING_PATIENT:
+        return parse_recurring_order_folder_name(order_folder_path)
+    elif order_type == OrderType.NEW_PATIENT:
+        return parse_new_patient_order_folder_name(order_folder_path)
+    elif order_type == OrderType.LOCAL_PATIENT:
+        return parse_local_patient_order_folder_name(order_folder_path)
+    if order_parameters is None:
+        raise Exception("Unable to parse order folder name")
+
+
 def parse_type_of_stl_from_filename(stl_filename) -> StlModelType:
     flags = {
         StlModelType.L1: ["_L_1", "-L-1", "_1_L", "-1-L"],
@@ -154,18 +190,6 @@ def parse_type_of_stl_from_filename(stl_filename) -> StlModelType:
             if flag_str in stl_filename:
                 return model_type
     return StlModelType.UNKNOWN
-
-
-def parse_order_parameters(order_folder_path, order_type) -> OrderParameters:
-    order_parameters = None
-    if order_type == OrderType.REOCCURING_PATIENT:
-        return parse_recurring_order_folder_name(order_folder_path)
-    elif order_type == OrderType.NEW_PATIENT:
-        raise Exception("Not implemented")
-    elif order_type == OrderType.LOCAL_PATIENT:
-        raise Exception("Not implemented")
-    if order_parameters is None:
-        raise Exception("Unable to parse order folder name")
 
 
 def update_order_parameters_with_stl_files(order_parameters: OrderParameters) -> OrderParameters:
@@ -207,7 +231,7 @@ def create_result_string(order_parameters: OrderParameters, part_quantity_in_thi
 
 
 def write_result_file(order_parameters: OrderParameters, batch_results: list[BatchResult]):
-    RESULT_TXT_FILE = os.path.join(order_parameters.order_folder_path, "summary.txt")
+    RESULT_TXT_FILE = os.path.join(PATH_TO_FOLDER_FOR_SAVING_SUMMARY_TXT_FILES, f"{order_parameters.order_id}_summary.txt")
     with open(RESULT_TXT_FILE, 'w', newline='') as result_file:
         label_contents_list = []
         for i, batch_result in enumerate(batch_results):
@@ -252,11 +276,17 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
         for stl_file_and_quantity in order_parameters.stl_files_and_quantities:
             qty_to_print = stl_file_and_quantity.quantity
             while qty_to_print >= 1:
-                print(f"Importing model {stl_file_and_quantity.filename} qty {i+1}/{stl_file_and_quantity.quantity}")
-                new_model = preform.api.scene_import_model_post({"file": os.path.join(order_parameters.order_folder_path, stl_file_and_quantity.filename)})
+                model_qty_index = stl_file_and_quantity.quantity - qty_to_print
+                print(f"Importing model {stl_file_and_quantity.filename} qty {model_qty_index + 1}/{stl_file_and_quantity.quantity}")
+                new_model = preform.api.scene_import_model_post(
+                    SceneImportModelPostRequest(
+                        file=os.path.join(order_parameters.order_folder_path, stl_file_and_quantity.filename),
+                        repair_behavior=RepairBehaviorModel.IGNORE
+                    )
+                )
                 print(f"Auto orienting {new_model.id}")
                 preform.api.scene_auto_orient_post(
-                    SceneAutoOrientPostRequest(models=ModelsSelectionModel([new_model.id]), mode="DENTAL", tilt=0)
+                    SceneAutoOrientPostRequest(DentalMode(models=ModelsSelectionModel([new_model.id]), mode="DENTAL", tilt=0))
                 )
                 try:
                     print(f"Auto layouting all")
@@ -268,6 +298,7 @@ def process_order_models(order_parameters: OrderParameters) -> list[BatchResult]
                     qty_to_print -= 1
                     print(f"Model {stl_file_and_quantity.filename} added to scene")
                 except formlabs.exceptions.ApiException as e:
+                    print(e)
                     print("Not all models can fit, removing model")
                     preform.api.scene_models_id_delete(str(new_model.id))
                     save_batch_form(preform)
@@ -291,7 +322,6 @@ if __name__ == "__main__":
     print("\nNew orders in those folders will be processed automatically")
     while True:
         check_input_folder(OrderType.REOCCURING_PATIENT)
-        # Local and new patient folders are implemented in this demo.
-        # check_input_folder(OrderType.LOCAL_PATIENT)
-        # check_input_folder(OrderType.NEW_PATIENT)
+        check_input_folder(OrderType.LOCAL_PATIENT)
+        check_input_folder(OrderType.NEW_PATIENT)
         time.sleep(DELAY_BETWEEN_NEW_ORDER_FOLDER_CHECKS_SECONDS)
